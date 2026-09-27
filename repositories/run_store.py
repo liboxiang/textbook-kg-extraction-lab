@@ -100,3 +100,33 @@ class RunStore:
                 "SELECT * FROM experiment_run ORDER BY id DESC LIMIT ?", (limit,)
             ).fetchall()
         return [dict(r) for r in rows]
+
+    def update_run(
+        self,
+        *,
+        run_id: str,
+        stage: str,
+        status: str,
+        raw_response: str | None = None,
+        parsed_payload: Any = None,
+        validation_payload: Any = None,
+    ) -> bool:
+        """Update one run without affecting another stage or run."""
+        def dumps(x):
+            if x is None:
+                return None
+            if hasattr(x, "model_dump"):
+                x = x.model_dump()
+            return json.dumps(x, ensure_ascii=False, indent=2)
+
+        with self._connect() as conn:
+            cursor = conn.execute(
+                """
+                UPDATE experiment_run
+                SET status=?, raw_response=?, parsed_json=?, validation_json=?
+                WHERE run_id=? AND stage=?
+                """,
+                (status, raw_response, dumps(parsed_payload), dumps(validation_payload), run_id, stage),
+            )
+            conn.commit()
+            return cursor.rowcount == 1

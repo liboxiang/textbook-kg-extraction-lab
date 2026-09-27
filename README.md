@@ -7,7 +7,7 @@
 
 暂不做 KP/KU 关系、ExamPoint、共同考查、Neo4j/Milvus 入库。
 
-当前版本仍处于实验阶段，但已经支持 Prompt 版本管理、实验状态恢复、结构化结果校验和完整 HTML 图谱报告导出。
+当前版本仍处于实验阶段，但已经支持 Prompt 版本管理、实验状态恢复、结构化结果校验、历史运行状态回写和完整 HTML 图谱报告导出。
 
 ## Codex 中的完整操作流程
 
@@ -61,6 +61,8 @@ result.json
 ```
 
 回到 Streamlit 点击“加载 Codex 结果”即可。
+
+加载结果并通过校验后，历史运行记录会自动回写状态：Stage 1 为 `STAGE1_COMPLETED`，Stage 2 为 `COMPLETED`；解析或校验失败会记录为 `FAIL`。任务目录仍保留在 `.kg_tasks/pending/`，其中是否存在 `result.json` 用于判断任务文件是否已完成。
 
 > 说明：Streamlit 按钮本身不能“自动借用”当前 Codex/ChatGPT 账号额度发起一次隐藏模型调用。模式 A 是一个 workspace handoff：由 Codex 当前会话完成语义任务，因此使用当前 Codex 会话的用量。
 
@@ -158,6 +160,7 @@ tests/
 - 人工修改 KU 暂时通过 JSON 编辑器完成；后续可增加“拆分/合并/拖拽边界”可视化操作。
 - Source Block 采用确定性标点/换行切分，仅用于定位，未来可优化但不能影响 100% 原文重构。
 - SQLite 只保存运行历史。
+- 任务创建时历史状态为 `PENDING`；加载并成功校验结果后会按阶段回写完成状态，失败时回写 `FAIL`。
 - Prompt 以文件版本管理，便于 A/B；历史版本保留，运行时默认选择当前最新稳定版本。
 - `data/app.db` 和 `data/active_experiment.json` 是项目随附的本地实验示例，不代表生产数据库。
 
