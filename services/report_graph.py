@@ -44,6 +44,7 @@ def build_graph_data(result: FinalExtraction) -> dict:
                 "knowledge_type": ku.knowledge_type,
                 "knowledge_type_name": ku.knowledge_type_name,
                 "source_range": f"{ku.start_block_id} ~ {ku.end_block_id}",
+                "source_text": ku.source_text,
             },
         })
         edges.append({"source": kp_id, "target": ku_id, "label": "包含"})

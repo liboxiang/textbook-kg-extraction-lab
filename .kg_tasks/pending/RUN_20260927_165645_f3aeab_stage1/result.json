@@ -1,0 +1,44 @@
+{
+  "knowledge_units": [
+    {
+      "temp_ku_id": "KU_01",
+      "order_index": 1,
+      "title": "工程用土分类",
+      "main_question": "工程用土通常依据什么方法分类，各类土分别包含哪些土质并具有怎样的坚实系数范围？",
+      "start_block_id": "S0001",
+      "end_block_id": "S0035"
+    },
+    {
+      "temp_ku_id": "KU_02",
+      "order_index": 2,
+      "title": "常用路基土的主要性能参数",
+      "main_question": "常用路基土需要掌握哪些主要性能参数，各参数如何定义、计算或用于判别土的状态？",
+      "start_block_id": "S0036",
+      "end_block_id": "S0077"
+    },
+    {
+      "temp_ku_id": "KU_03",
+      "order_index": 3,
+      "title": "不良土质路基处理的分类",
+      "main_question": "不良土质路基按作用机理可以分为哪几类，各类处理分别通过什么原理改善路基土？",
+      "start_block_id": "S0078",
+      "end_block_id": "S0087"
+    },
+    {
+      "temp_ku_id": "KU_04",
+      "order_index": 4,
+      "title": "路基处理方法分类",
+      "main_question": "路基处理方法依据作用和原理分为哪几类，各类方法的处理方式、原理作用、适用范围及选用依据是什么？",
+      "start_block_id": "S0088",
+      "end_block_id": "S0101"
+    },
+    {
+      "temp_ku_id": "KU_05",
+      "order_index": 5,
+      "title": "路基处理常用的方法",
+      "main_question": "考虑城镇道路的地下管线、环境、资源和费用等因素，路基处理常用哪些具体方法？",
+      "start_block_id": "S0102",
+      "end_block_id": "S0121"
+    }
+  ]
+}

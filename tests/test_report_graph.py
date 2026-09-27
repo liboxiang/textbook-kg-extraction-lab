@@ -64,7 +64,9 @@ class ReportGraphTests(unittest.TestCase):
             graph["edges"],
         )
         ce_node = next(node for node in graph["nodes"] if node["id"].startswith("ce:"))
+        ku_node = next(node for node in graph["nodes"] if node["id"] == "ku:KP1_KU_01")
         self.assertEqual(ce_node["attributes"]["element_type_name"], "定义")
+        self.assertIn("source_text", ku_node["attributes"])
 
     def test_graph_allocates_vertical_space_for_many_content_elements(self):
         from services.report_graph import build_graph_data
@@ -90,6 +92,10 @@ class ReportGraphTests(unittest.TestCase):
         self.assertIn("知识图谱", html)
         self.assertIn("element_type_name", html)
         self.assertNotIn("证据</th>", html)
+        self.assertIn("全屏展示", html)
+        self.assertIn("requestFullscreen", html)
+        self.assertIn("教材原文", html)
+        self.assertIn("detail-source", html)
         self.assertIn("KP1_KU_01", html)
 
 
