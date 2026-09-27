@@ -1,0 +1,28 @@
+{
+  "knowledge_units": [
+    {
+      "temp_ku_id": "KU_01",
+      "order_index": 1,
+      "title": "土的工程分类及坚实系数",
+      "main_question": "土如何按工程性质进行分类，各类土的坚实系数及其主要组成或特征是什么？",
+      "start_block_id": "S0001",
+      "end_block_id": "S0035"
+    },
+    {
+      "temp_ku_id": "KU_02",
+      "order_index": 2,
+      "title": "路基土的主要物理指标",
+      "main_question": "路基土的主要物理指标有哪些，各指标如何定义、计算或反映土的状态？",
+      "start_block_id": "S0036",
+      "end_block_id": "S0077"
+    },
+    {
+      "temp_ku_id": "KU_03",
+      "order_index": 3,
+      "title": "地基处理与路基加固方法",
+      "main_question": "地基处理与路基加固有哪些方法，各方法的原理、适用范围和作用是什么？",
+      "start_block_id": "S0078",
+      "end_block_id": "S0121"
+    }
+  ]
+}

@@ -1,0 +1,1874 @@
+{
+  "knowledge_point": {
+    "kp_id": "KP_SZ_002",
+    "kp_name": "1.1.2 道路路面结构特征",
+    "source_text": "1.1.2 道路路面结构特征\n1. 沥青路面结构组成特点\n1）路面结构组成\n路面结构自下至上由垫层、基层、面层组成（见图 1.1-3）。\n\n(1) 垫层\n垫层是介于基层和路基之间的层位，主要设置在温度和湿度状况不良的路段上，以改善路面结构的使用性能。在季节性冰冻地区路面结构厚度小于最小防冻厚度要求时，设置防冻垫层可以使路面结构免除或减轻冻胀和翻浆病害。以下路段按设计要求设置垫层：\n\n① 季节性冰冻地区的中湿或潮湿路段。\n\n② 地下水位高、排水不良，路基处于潮湿或过湿状态的路段。\n\n③ 水文地质条件不良的土质路堑，路床土处于潮湿或过湿状态的路段。\n\n垫层宜采用砂、砂砾等颗粒材料，小于 0.075mm 的颗粒含量不大于 5%。\n\n(2) 基层\n① 基层可分为上基层和下基层，基层可采用刚性、半刚性或柔性材料。\n\n② 应根据道路交通等级和路基抗冲刷能力来选择基层材料。在冰冻、多雨潮湿地区，石灰粉煤灰稳定类材料宜用于特重、重交通的下基层。石灰稳定类材料宜用于各类交通等级的下基层以及中、轻交通的基层。热拌沥青碎石宜用于重交通及以下道路的基层；级配碎石可用于中、轻交通道路的下基层及轻交通道路的基层；级配砾石可用于轻交通道路的下基层。\n\n③ 常用的基层材料：\na. 无机结合料稳定粒料：\n无机结合料稳定粒料基层属于半刚性基层，包括石灰稳定土类基层、石灰粉煤灰稳定砂砾基层、石灰粉煤灰钢渣稳定土类基层、水泥稳定土类基层、水泥稳定碎石基层等，其强度高，整体性好，适用于交通量大、轴载重的道路。所用的工业废渣（粉煤灰、钢渣等）应性能稳定、无风化、无腐蚀。\n\nb. 级配型材料：\n级配型材料基层包括级配砂砾与级配砾石基层，属于柔性基层，可用作城市次干路及其以下道路基层。为防止冻胀和湿软，天然砂砾应质地坚硬，含泥量不应大于砂质量（粒径小于5mm）的10%，砾石颗粒中细长及扁平颗粒的含量不应超过20%。级配砾石用作次干路及其以下道路下基层时，级配中最大粒径宜小于53mm，用作上基层时最大粒径不应大于37.5mm。\n\n(3) 面层\n① 高级沥青路面面层可划分为上（表）面层、中面层、下（底）面层。\n\n② 面层直接承受行车的作用，用以改善汽车的行驶条件，提升道路服务水平（包括舒适性和经济性），以满足汽车运输的要求。\n\n③ 面层直接同行车和大气相接触，承受行车荷载引起的竖向力、水平力和冲击力的作用，同时又受降水的侵蚀作用和温度变化的影响。\n\n④ 沥青路面面层类型：\n\na. 热拌沥青混合料面层：\n热拌沥青混合料，按空隙率大小将沥青混合料分为密级配、半开级配、开级配三大类。密级配，又可分粗级配型（AC—C）和细级配型（AC—F），空隙率3%～6%。AC型混合料以及骨架型混合料SMA均属于密级配混合料；热拌沥青碎石（AM）是一种半开级配混合料，空隙率8%～15%；OGFC排水沥青混合料是一种开级配沥青混合料，空隙率18%～23%。\n\nb. 温拌沥青面层：\n温拌沥青是一种在比同等“热拌沥青”（HMA）温度低20～40℃的温度下生产和施工的沥青。\n\n温拌沥青混凝土是通过在混合前向沥青粘合剂中添加沸石、氧化蜡、沥青乳液，甚至是水来生产的。这可以显著降低拌合和铺设温度，进而降低石油资源的消耗，释放更少的二氧化碳、气溶胶和蒸汽。施工时可在较低温度摊铺，路面可以更快放行；施工季节放宽，尤其适用于较冷的地区。\n\nc. 冷拌沥青混合料面层：\n冷拌沥青混合料适用于支路及其以下道路的面层、支路的表面层，以及各级沥青路面的基层、连接层或整平层；冷拌改性沥青混合料可用于沥青路面的坑槽、井周冷补。\n\nd. 沥青贯入式面层：\n沥青贯入式面层宜用作城市次干路以下道路面层，其主石料层厚度应依据碎石的粒径确定，厚度不宜超过100mm。\n\ne. 沥青表面处治面层：\n沥青表面处治面层主要起防水层、磨耗层、防滑层或改善碎（砾）石路面的作用，其集料最大粒径应与处治层厚度相匹配。\n\n2）沥青路面结构层的性能要求\n(1) 垫层性能主要指标\n① 垫层宜采用砂、砂砾等颗粒材料，小于 0.075mm 的颗粒含量不宜大于 5%。\n\n② 排水垫层应与边缘排水系统相连接，厚度宜大于 150mm，宽度不宜小于基层底面的宽度。\n\n③ 防冻垫层和排水垫层宜采用砂、砂砾等颗粒材料。半刚性垫层宜采用低剂量水泥、石灰等无机结合稳定粒料或土类材料。\n\n(2) 基层性能主要指标\n① 应满足结构强度、扩散荷载的能力以及水稳性和抗冻性的要求。\n\n② 不透水性好。底基层顶面宜铺设沥青封层或防水土工织物；为防止地下渗水影响路基，排水基层下应设置由水泥稳定粒料或密级配粒料组成的不透水底基层。\n\n(3) 面层路面使用指标\n具体指标包括承载能力、平整度、温度稳定性、透水性、水稳定性、抗滑能力、噪声量。\n\n近年我国城市开始修筑降噪排水路面，以提升城市道路的使用功能、减少城市交通噪声。降噪排水路面的面层结构组合一般为：上面层采用 OGFC 沥青混合料，或透水沥青混合料 PAC，中、下面层等采用密级配沥青混合料。这种组合既满足沥青路面强度高、高低温性能好和平整密实等路用功能，又实现了城市道路排水降噪功能。\n\n2. 水泥混凝土路面结构组成特点\n水泥混凝土路面结构的组成包括垫层、基层以及面层。\n\n1）结构特点\n(1) 垫层\n水泥混凝土路面垫层选用的材料和作用参见本书1.1.2中1.1）（1）的相关内容。\n\n(2) 基层\n① 水泥混凝土道路基层作用：防止或减轻由于唧泥导致的板底脱空和错台等病害；与垫层共同作用，可控制或减少路基不均匀冻胀或体积变形对混凝土面层产生的不利影响；为混凝土面层提供稳定而坚实的基础，并改善接缝的荷载传递能力。\n\n② 基层材料的选用原则：根据道路交通等级和路基抗冲刷能力来选择基层材料。特重交通宜选用贫混凝土、碾压混凝土或沥青混凝土；重交通道路宜选用水泥稳定粒料或沥青稳定碎石；中、轻交通道路宜选择水泥或石灰粉煤灰稳定粒料或级配粒料。湿润和多雨地区，繁重交通路段宜采用排水基层。\n\n③ 基层的宽度应根据混凝土面层施工方式的不同，比混凝土面层每侧至少宽出300mm（小型机具施工时）或500mm（轨模式摊铺机施工时）或650mm（滑模式摊铺机施工时）。\n\n④ 各类基层结构性能、施工或排水要求不同，厚度也不同。\n\n⑤ 为防止下渗水影响路基，排水基层下应设置由水泥稳定粒料或密级配粒料组成的不透水底基层，底基层顶面宜铺设沥青封层或防水土工织物。\n\n⑥ 碾压混凝土基层应设置与混凝土面层相对应的接缝。贫混凝土基层弯拉强度大于 1.5MPa 时，应设置与面层相对应的横向缩缝，一次摊铺宽度大于 7.5m 时，应设置纵向缩缝。\n\n(3) 面层\n① 面层混凝土通常分为普通（素）混凝土、钢筋混凝土、连续配筋混凝土、预应力混凝土等。目前我国多采用普通（素）混凝土。水泥混凝土面层应具有足够的强度、耐久性（抗冻性），表面应抗滑、耐磨、平整。\n\n② 混凝土面层在温度变化影响下会产生胀缩。为防止胀缩作用导致裂缝或翘曲，混凝土面层设有垂直相交的纵向和横向接缝，形成一块块矩形板。一般相邻的接缝对齐，不错缝。每块矩形板的板长按面层类型、厚度并由应力计算确定。\n\n③ 纵向接缝根据路面宽度和施工铺筑宽度设置。一次铺筑宽度小于路面宽度时，应设置带拉杆的平缝形式的纵向施工缝。一次铺筑宽度大于4.5m时，应设置带拉杆的假缝形式的纵向缩缝，纵缝应与线路中线平行。\n\n横向接缝可分为横向缩缝、胀缝和横向施工缝。横向施工缝尽可能选在缩缝或胀缝处。快速路、主干路的横向缩缝应加设传力杆；在邻近桥梁或其他固定构筑物处、板厚改变处、小半径平曲线等处，应设置胀缝。\n\n④ 对于特重及重交通等级的混凝土路面，横向胀缝、缩缝均设置传力杆。在自由边处，承受繁重交通的胀缝、施工缝，小于90°的面层角隅，下穿市政管线路段，以及雨水口和地下设施的检查井周围，应配筋补强。\n\n混凝土既是刚性材料，又属于脆性材料。因此混凝土路面板的构造，以最大限度发挥其刚性特点为目的，使路面能承受车轮荷载，保证行车平顺；同时又要克服其脆性的弱点，防止在车载和自然因素作用下发生开裂、破坏，最大限度提升其耐久性，延长使用年限。\n\n⑤ 抗滑构造——混凝土面层应具有较大的粗糙度，即应具备较高的抗滑性能，以提升行车的安全性。因此可采用刻槽、压槽、拉槽或拉毛等方法形成一定的构造深度。\n\n⑥ 混凝土路面与沥青路面相接时，设置长度不少于 3m 的过渡段，过渡段路面应采用两种路面呈阶梯状叠合布置。\n\n2）主要原材料选择\n（1）重交通以上等级道路、城市快速路、主干路应采用42.5级及以上的道路硅酸盐水泥或硅酸盐水泥、普通硅酸盐水泥；其他道路可采用矿渣硅酸盐水泥，其强度等级不宜低于32.5级。\n\n(2) 粗集料应采用质地坚硬、耐久、洁净的碎石、砾石、破碎砾石, 技术指标应符合规范要求, 粗集料的最大公称粒径, 碎砾石不得大于 \n26.5\n \nm\nm\n26.5 mm , 碎石不得大于 \n31.5\n \nm\nm\n31.5 mm , 砾石不宜大于 \n19.0\n \nm\nm\n19.0 mm ; 钢纤维混凝土粗集料最大粒径不宜大于 \n16.0\n \nm\nm\n16.0 mm 。\n\n（3）宜采用质地坚硬，细度模数在2.5以上，符合级配规定的洁净粗砂、中砂，技术指标应符合规范要求。使用机制砂时，还应检验磨光值，其值宜大于35，不宜使用抗磨性较差的水成岩类机制砂。海砂不得直接用于混凝土面层。使用经过净化处理的海砂应符合《海砂混凝土应用技术规范》JGJ 206—2010的规定。\n\n（4）外加剂应符合《混凝土外加剂》GB 8076—2008 的有关规定，并有合格证。使用外加剂应进行试验，确认符合《混凝土外加剂应用技术规范》GB 50119—2013 的有关规定方可使用。\n\n（5）钢筋的品种、规格、成分，应符合设计和现行国家标准规定，具有生产厂的牌号、炉号，检验报告和合格证，并经复试（含见证取样）合格。钢筋不得有锈蚀、裂纹、断伤和刻痕等缺陷。传力杆（拉杆）、滑动套材质、规格应符合规定。\n\n（6）胀缝板宜用厚 20mm，水稳定性好，具有一定柔性的板材制作，且应经防腐处理。填缝材料宜用硅酮类、聚氨酯类、树脂类、橡胶沥青类、聚氯乙烯胶泥类、改性沥青类填缝材料，并宜加入耐老化剂。\n\n3. 砌块路面结构组成特点\n1) 砌块路面结构的组成\n包括垫层、基层、面层。\n\n2）砌块路面结构特点\n\n(1) 垫层和基层\n砌块路面垫层和基层选用的材料和作用参见本书1.1.2中1.1）（1）（2）相关内容。\n\n(2) 面层\n\n砌块路面铺装的材料种类较多，用于城镇道路路面铺装的砌块路面多为天然石材路面和预制混凝土砌块路面。\n\n① 应具备较高的抗滑性能，以提升行车、行人的安全性。加工材料时可采用刻槽、压槽、拉槽等方法形成一定的构造深度。\n\n②应具有足够的强度、耐久性（抗冻性）、表面应耐磨、平整。\n\n③ 砌块路面在温度变化较大时会产生胀缩，为防止胀缩作用导致裂缝或翘曲，面层设有垂直相交的纵向和横向接缝，形成一块块矩形或正方形板块，面层胀缩缝位置和基层一致。",
+    "page_start": null,
+    "page_end": 10
+  },
+  "source_blocks": [
+    {
+      "block_id": "S0001",
+      "index": 1,
+      "start_offset": 0,
+      "end_offset": 15,
+      "text": "1.1.2 道路路面结构特征\n"
+    },
+    {
+      "block_id": "S0002",
+      "index": 2,
+      "start_offset": 15,
+      "end_offset": 29,
+      "text": "1. 沥青路面结构组成特点\n"
+    },
+    {
+      "block_id": "S0003",
+      "index": 3,
+      "start_offset": 29,
+      "end_offset": 38,
+      "text": "1）路面结构组成\n"
+    },
+    {
+      "block_id": "S0004",
+      "index": 4,
+      "start_offset": 38,
+      "end_offset": 68,
+      "text": "路面结构自下至上由垫层、基层、面层组成（见图 1.1-3）。"
+    },
+    {
+      "block_id": "S0005",
+      "index": 5,
+      "start_offset": 68,
+      "end_offset": 69,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0006",
+      "index": 6,
+      "start_offset": 69,
+      "end_offset": 70,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0007",
+      "index": 7,
+      "start_offset": 70,
+      "end_offset": 77,
+      "text": "(1) 垫层\n"
+    },
+    {
+      "block_id": "S0008",
+      "index": 8,
+      "start_offset": 77,
+      "end_offset": 125,
+      "text": "垫层是介于基层和路基之间的层位，主要设置在温度和湿度状况不良的路段上，以改善路面结构的使用性能。"
+    },
+    {
+      "block_id": "S0009",
+      "index": 9,
+      "start_offset": 125,
+      "end_offset": 177,
+      "text": "在季节性冰冻地区路面结构厚度小于最小防冻厚度要求时，设置防冻垫层可以使路面结构免除或减轻冻胀和翻浆病害。"
+    },
+    {
+      "block_id": "S0010",
+      "index": 10,
+      "start_offset": 177,
+      "end_offset": 192,
+      "text": "以下路段按设计要求设置垫层：\n"
+    },
+    {
+      "block_id": "S0011",
+      "index": 11,
+      "start_offset": 192,
+      "end_offset": 193,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0012",
+      "index": 12,
+      "start_offset": 193,
+      "end_offset": 211,
+      "text": "① 季节性冰冻地区的中湿或潮湿路段。"
+    },
+    {
+      "block_id": "S0013",
+      "index": 13,
+      "start_offset": 211,
+      "end_offset": 212,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0014",
+      "index": 14,
+      "start_offset": 212,
+      "end_offset": 213,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0015",
+      "index": 15,
+      "start_offset": 213,
+      "end_offset": 241,
+      "text": "② 地下水位高、排水不良，路基处于潮湿或过湿状态的路段。"
+    },
+    {
+      "block_id": "S0016",
+      "index": 16,
+      "start_offset": 241,
+      "end_offset": 242,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0017",
+      "index": 17,
+      "start_offset": 242,
+      "end_offset": 243,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0018",
+      "index": 18,
+      "start_offset": 243,
+      "end_offset": 275,
+      "text": "③ 水文地质条件不良的土质路堑，路床土处于潮湿或过湿状态的路段。"
+    },
+    {
+      "block_id": "S0019",
+      "index": 19,
+      "start_offset": 275,
+      "end_offset": 276,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0020",
+      "index": 20,
+      "start_offset": 276,
+      "end_offset": 277,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0021",
+      "index": 21,
+      "start_offset": 277,
+      "end_offset": 315,
+      "text": "垫层宜采用砂、砂砾等颗粒材料，小于 0.075mm 的颗粒含量不大于 5%。"
+    },
+    {
+      "block_id": "S0022",
+      "index": 22,
+      "start_offset": 315,
+      "end_offset": 316,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0023",
+      "index": 23,
+      "start_offset": 316,
+      "end_offset": 317,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0024",
+      "index": 24,
+      "start_offset": 317,
+      "end_offset": 324,
+      "text": "(2) 基层\n"
+    },
+    {
+      "block_id": "S0025",
+      "index": 25,
+      "start_offset": 324,
+      "end_offset": 356,
+      "text": "① 基层可分为上基层和下基层，基层可采用刚性、半刚性或柔性材料。"
+    },
+    {
+      "block_id": "S0026",
+      "index": 26,
+      "start_offset": 356,
+      "end_offset": 357,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0027",
+      "index": 27,
+      "start_offset": 357,
+      "end_offset": 358,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0028",
+      "index": 28,
+      "start_offset": 358,
+      "end_offset": 385,
+      "text": "② 应根据道路交通等级和路基抗冲刷能力来选择基层材料。"
+    },
+    {
+      "block_id": "S0029",
+      "index": 29,
+      "start_offset": 385,
+      "end_offset": 420,
+      "text": "在冰冻、多雨潮湿地区，石灰粉煤灰稳定类材料宜用于特重、重交通的下基层。"
+    },
+    {
+      "block_id": "S0030",
+      "index": 30,
+      "start_offset": 420,
+      "end_offset": 451,
+      "text": "石灰稳定类材料宜用于各类交通等级的下基层以及中、轻交通的基层。"
+    },
+    {
+      "block_id": "S0031",
+      "index": 31,
+      "start_offset": 451,
+      "end_offset": 472,
+      "text": "热拌沥青碎石宜用于重交通及以下道路的基层；"
+    },
+    {
+      "block_id": "S0032",
+      "index": 32,
+      "start_offset": 472,
+      "end_offset": 500,
+      "text": "级配碎石可用于中、轻交通道路的下基层及轻交通道路的基层；"
+    },
+    {
+      "block_id": "S0033",
+      "index": 33,
+      "start_offset": 500,
+      "end_offset": 517,
+      "text": "级配砾石可用于轻交通道路的下基层。"
+    },
+    {
+      "block_id": "S0034",
+      "index": 34,
+      "start_offset": 517,
+      "end_offset": 518,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0035",
+      "index": 35,
+      "start_offset": 518,
+      "end_offset": 519,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0036",
+      "index": 36,
+      "start_offset": 519,
+      "end_offset": 530,
+      "text": "③ 常用的基层材料：\n"
+    },
+    {
+      "block_id": "S0037",
+      "index": 37,
+      "start_offset": 530,
+      "end_offset": 544,
+      "text": "a. 无机结合料稳定粒料：\n"
+    },
+    {
+      "block_id": "S0038",
+      "index": 38,
+      "start_offset": 544,
+      "end_offset": 644,
+      "text": "无机结合料稳定粒料基层属于半刚性基层，包括石灰稳定土类基层、石灰粉煤灰稳定砂砾基层、石灰粉煤灰钢渣稳定土类基层、水泥稳定土类基层、水泥稳定碎石基层等，其强度高，整体性好，适用于交通量大、轴载重的道路。"
+    },
+    {
+      "block_id": "S0039",
+      "index": 39,
+      "start_offset": 644,
+      "end_offset": 674,
+      "text": "所用的工业废渣（粉煤灰、钢渣等）应性能稳定、无风化、无腐蚀。"
+    },
+    {
+      "block_id": "S0040",
+      "index": 40,
+      "start_offset": 674,
+      "end_offset": 675,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0041",
+      "index": 41,
+      "start_offset": 675,
+      "end_offset": 676,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0042",
+      "index": 42,
+      "start_offset": 676,
+      "end_offset": 686,
+      "text": "b. 级配型材料：\n"
+    },
+    {
+      "block_id": "S0043",
+      "index": 43,
+      "start_offset": 686,
+      "end_offset": 731,
+      "text": "级配型材料基层包括级配砂砾与级配砾石基层，属于柔性基层，可用作城市次干路及其以下道路基层。"
+    },
+    {
+      "block_id": "S0044",
+      "index": 44,
+      "start_offset": 731,
+      "end_offset": 797,
+      "text": "为防止冻胀和湿软，天然砂砾应质地坚硬，含泥量不应大于砂质量（粒径小于5mm）的10%，砾石颗粒中细长及扁平颗粒的含量不应超过20%。"
+    },
+    {
+      "block_id": "S0045",
+      "index": 45,
+      "start_offset": 797,
+      "end_offset": 853,
+      "text": "级配砾石用作次干路及其以下道路下基层时，级配中最大粒径宜小于53mm，用作上基层时最大粒径不应大于37.5mm。"
+    },
+    {
+      "block_id": "S0046",
+      "index": 46,
+      "start_offset": 853,
+      "end_offset": 854,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0047",
+      "index": 47,
+      "start_offset": 854,
+      "end_offset": 855,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0048",
+      "index": 48,
+      "start_offset": 855,
+      "end_offset": 862,
+      "text": "(3) 面层\n"
+    },
+    {
+      "block_id": "S0049",
+      "index": 49,
+      "start_offset": 862,
+      "end_offset": 894,
+      "text": "① 高级沥青路面面层可划分为上（表）面层、中面层、下（底）面层。"
+    },
+    {
+      "block_id": "S0050",
+      "index": 50,
+      "start_offset": 894,
+      "end_offset": 895,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0051",
+      "index": 51,
+      "start_offset": 895,
+      "end_offset": 896,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0052",
+      "index": 52,
+      "start_offset": 896,
+      "end_offset": 953,
+      "text": "② 面层直接承受行车的作用，用以改善汽车的行驶条件，提升道路服务水平（包括舒适性和经济性），以满足汽车运输的要求。"
+    },
+    {
+      "block_id": "S0053",
+      "index": 53,
+      "start_offset": 953,
+      "end_offset": 954,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0054",
+      "index": 54,
+      "start_offset": 954,
+      "end_offset": 955,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0055",
+      "index": 55,
+      "start_offset": 955,
+      "end_offset": 1015,
+      "text": "③ 面层直接同行车和大气相接触，承受行车荷载引起的竖向力、水平力和冲击力的作用，同时又受降水的侵蚀作用和温度变化的影响。"
+    },
+    {
+      "block_id": "S0056",
+      "index": 56,
+      "start_offset": 1015,
+      "end_offset": 1016,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0057",
+      "index": 57,
+      "start_offset": 1016,
+      "end_offset": 1017,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0058",
+      "index": 58,
+      "start_offset": 1017,
+      "end_offset": 1029,
+      "text": "④ 沥青路面面层类型：\n"
+    },
+    {
+      "block_id": "S0059",
+      "index": 59,
+      "start_offset": 1029,
+      "end_offset": 1030,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0060",
+      "index": 60,
+      "start_offset": 1030,
+      "end_offset": 1044,
+      "text": "a. 热拌沥青混合料面层：\n"
+    },
+    {
+      "block_id": "S0061",
+      "index": 61,
+      "start_offset": 1044,
+      "end_offset": 1082,
+      "text": "热拌沥青混合料，按空隙率大小将沥青混合料分为密级配、半开级配、开级配三大类。"
+    },
+    {
+      "block_id": "S0062",
+      "index": 62,
+      "start_offset": 1082,
+      "end_offset": 1120,
+      "text": "密级配，又可分粗级配型（AC—C）和细级配型（AC—F），空隙率3%～6%。"
+    },
+    {
+      "block_id": "S0063",
+      "index": 63,
+      "start_offset": 1120,
+      "end_offset": 1147,
+      "text": "AC型混合料以及骨架型混合料SMA均属于密级配混合料；"
+    },
+    {
+      "block_id": "S0064",
+      "index": 64,
+      "start_offset": 1147,
+      "end_offset": 1178,
+      "text": "热拌沥青碎石（AM）是一种半开级配混合料，空隙率8%～15%；"
+    },
+    {
+      "block_id": "S0065",
+      "index": 65,
+      "start_offset": 1178,
+      "end_offset": 1212,
+      "text": "OGFC排水沥青混合料是一种开级配沥青混合料，空隙率18%～23%。"
+    },
+    {
+      "block_id": "S0066",
+      "index": 66,
+      "start_offset": 1212,
+      "end_offset": 1213,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0067",
+      "index": 67,
+      "start_offset": 1213,
+      "end_offset": 1214,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0068",
+      "index": 68,
+      "start_offset": 1214,
+      "end_offset": 1225,
+      "text": "b. 温拌沥青面层：\n"
+    },
+    {
+      "block_id": "S0069",
+      "index": 69,
+      "start_offset": 1225,
+      "end_offset": 1269,
+      "text": "温拌沥青是一种在比同等“热拌沥青”（HMA）温度低20～40℃的温度下生产和施工的沥青。"
+    },
+    {
+      "block_id": "S0070",
+      "index": 70,
+      "start_offset": 1269,
+      "end_offset": 1270,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0071",
+      "index": 71,
+      "start_offset": 1270,
+      "end_offset": 1271,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0072",
+      "index": 72,
+      "start_offset": 1271,
+      "end_offset": 1315,
+      "text": "温拌沥青混凝土是通过在混合前向沥青粘合剂中添加沸石、氧化蜡、沥青乳液，甚至是水来生产的。"
+    },
+    {
+      "block_id": "S0073",
+      "index": 73,
+      "start_offset": 1315,
+      "end_offset": 1359,
+      "text": "这可以显著降低拌合和铺设温度，进而降低石油资源的消耗，释放更少的二氧化碳、气溶胶和蒸汽。"
+    },
+    {
+      "block_id": "S0074",
+      "index": 74,
+      "start_offset": 1359,
+      "end_offset": 1380,
+      "text": "施工时可在较低温度摊铺，路面可以更快放行；"
+    },
+    {
+      "block_id": "S0075",
+      "index": 75,
+      "start_offset": 1380,
+      "end_offset": 1398,
+      "text": "施工季节放宽，尤其适用于较冷的地区。"
+    },
+    {
+      "block_id": "S0076",
+      "index": 76,
+      "start_offset": 1398,
+      "end_offset": 1399,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0077",
+      "index": 77,
+      "start_offset": 1399,
+      "end_offset": 1400,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0078",
+      "index": 78,
+      "start_offset": 1400,
+      "end_offset": 1414,
+      "text": "c. 冷拌沥青混合料面层：\n"
+    },
+    {
+      "block_id": "S0079",
+      "index": 79,
+      "start_offset": 1414,
+      "end_offset": 1463,
+      "text": "冷拌沥青混合料适用于支路及其以下道路的面层、支路的表面层，以及各级沥青路面的基层、连接层或整平层；"
+    },
+    {
+      "block_id": "S0080",
+      "index": 80,
+      "start_offset": 1463,
+      "end_offset": 1488,
+      "text": "冷拌改性沥青混合料可用于沥青路面的坑槽、井周冷补。"
+    },
+    {
+      "block_id": "S0081",
+      "index": 81,
+      "start_offset": 1488,
+      "end_offset": 1489,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0082",
+      "index": 82,
+      "start_offset": 1489,
+      "end_offset": 1490,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0083",
+      "index": 83,
+      "start_offset": 1490,
+      "end_offset": 1502,
+      "text": "d. 沥青贯入式面层：\n"
+    },
+    {
+      "block_id": "S0084",
+      "index": 84,
+      "start_offset": 1502,
+      "end_offset": 1554,
+      "text": "沥青贯入式面层宜用作城市次干路以下道路面层，其主石料层厚度应依据碎石的粒径确定，厚度不宜超过100mm。"
+    },
+    {
+      "block_id": "S0085",
+      "index": 85,
+      "start_offset": 1554,
+      "end_offset": 1555,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0086",
+      "index": 86,
+      "start_offset": 1555,
+      "end_offset": 1556,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0087",
+      "index": 87,
+      "start_offset": 1556,
+      "end_offset": 1569,
+      "text": "e. 沥青表面处治面层：\n"
+    },
+    {
+      "block_id": "S0088",
+      "index": 88,
+      "start_offset": 1569,
+      "end_offset": 1623,
+      "text": "沥青表面处治面层主要起防水层、磨耗层、防滑层或改善碎（砾）石路面的作用，其集料最大粒径应与处治层厚度相匹配。"
+    },
+    {
+      "block_id": "S0089",
+      "index": 89,
+      "start_offset": 1623,
+      "end_offset": 1624,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0090",
+      "index": 90,
+      "start_offset": 1624,
+      "end_offset": 1625,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0091",
+      "index": 91,
+      "start_offset": 1625,
+      "end_offset": 1640,
+      "text": "2）沥青路面结构层的性能要求\n"
+    },
+    {
+      "block_id": "S0092",
+      "index": 92,
+      "start_offset": 1640,
+      "end_offset": 1653,
+      "text": "(1) 垫层性能主要指标\n"
+    },
+    {
+      "block_id": "S0093",
+      "index": 93,
+      "start_offset": 1653,
+      "end_offset": 1694,
+      "text": "① 垫层宜采用砂、砂砾等颗粒材料，小于 0.075mm 的颗粒含量不宜大于 5%。"
+    },
+    {
+      "block_id": "S0094",
+      "index": 94,
+      "start_offset": 1694,
+      "end_offset": 1695,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0095",
+      "index": 95,
+      "start_offset": 1695,
+      "end_offset": 1696,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0096",
+      "index": 96,
+      "start_offset": 1696,
+      "end_offset": 1740,
+      "text": "② 排水垫层应与边缘排水系统相连接，厚度宜大于 150mm，宽度不宜小于基层底面的宽度。"
+    },
+    {
+      "block_id": "S0097",
+      "index": 97,
+      "start_offset": 1740,
+      "end_offset": 1741,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0098",
+      "index": 98,
+      "start_offset": 1741,
+      "end_offset": 1742,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0099",
+      "index": 99,
+      "start_offset": 1742,
+      "end_offset": 1766,
+      "text": "③ 防冻垫层和排水垫层宜采用砂、砂砾等颗粒材料。"
+    },
+    {
+      "block_id": "S0100",
+      "index": 100,
+      "start_offset": 1766,
+      "end_offset": 1797,
+      "text": "半刚性垫层宜采用低剂量水泥、石灰等无机结合稳定粒料或土类材料。"
+    },
+    {
+      "block_id": "S0101",
+      "index": 101,
+      "start_offset": 1797,
+      "end_offset": 1798,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0102",
+      "index": 102,
+      "start_offset": 1798,
+      "end_offset": 1799,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0103",
+      "index": 103,
+      "start_offset": 1799,
+      "end_offset": 1812,
+      "text": "(2) 基层性能主要指标\n"
+    },
+    {
+      "block_id": "S0104",
+      "index": 104,
+      "start_offset": 1812,
+      "end_offset": 1842,
+      "text": "① 应满足结构强度、扩散荷载的能力以及水稳性和抗冻性的要求。"
+    },
+    {
+      "block_id": "S0105",
+      "index": 105,
+      "start_offset": 1842,
+      "end_offset": 1843,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0106",
+      "index": 106,
+      "start_offset": 1843,
+      "end_offset": 1844,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0107",
+      "index": 107,
+      "start_offset": 1844,
+      "end_offset": 1852,
+      "text": "② 不透水性好。"
+    },
+    {
+      "block_id": "S0108",
+      "index": 108,
+      "start_offset": 1852,
+      "end_offset": 1872,
+      "text": "底基层顶面宜铺设沥青封层或防水土工织物；"
+    },
+    {
+      "block_id": "S0109",
+      "index": 109,
+      "start_offset": 1872,
+      "end_offset": 1915,
+      "text": "为防止地下渗水影响路基，排水基层下应设置由水泥稳定粒料或密级配粒料组成的不透水底基层。"
+    },
+    {
+      "block_id": "S0110",
+      "index": 110,
+      "start_offset": 1915,
+      "end_offset": 1916,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0111",
+      "index": 111,
+      "start_offset": 1916,
+      "end_offset": 1917,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0112",
+      "index": 112,
+      "start_offset": 1917,
+      "end_offset": 1930,
+      "text": "(3) 面层路面使用指标\n"
+    },
+    {
+      "block_id": "S0113",
+      "index": 113,
+      "start_offset": 1930,
+      "end_offset": 1969,
+      "text": "具体指标包括承载能力、平整度、温度稳定性、透水性、水稳定性、抗滑能力、噪声量。"
+    },
+    {
+      "block_id": "S0114",
+      "index": 114,
+      "start_offset": 1969,
+      "end_offset": 1970,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0115",
+      "index": 115,
+      "start_offset": 1970,
+      "end_offset": 1971,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0116",
+      "index": 116,
+      "start_offset": 1971,
+      "end_offset": 2010,
+      "text": "近年我国城市开始修筑降噪排水路面，以提升城市道路的使用功能、减少城市交通噪声。"
+    },
+    {
+      "block_id": "S0117",
+      "index": 117,
+      "start_offset": 2010,
+      "end_offset": 2074,
+      "text": "降噪排水路面的面层结构组合一般为：上面层采用 OGFC 沥青混合料，或透水沥青混合料 PAC，中、下面层等采用密级配沥青混合料。"
+    },
+    {
+      "block_id": "S0118",
+      "index": 118,
+      "start_offset": 2074,
+      "end_offset": 2121,
+      "text": "这种组合既满足沥青路面强度高、高低温性能好和平整密实等路用功能，又实现了城市道路排水降噪功能。"
+    },
+    {
+      "block_id": "S0119",
+      "index": 119,
+      "start_offset": 2121,
+      "end_offset": 2122,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0120",
+      "index": 120,
+      "start_offset": 2122,
+      "end_offset": 2123,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0121",
+      "index": 121,
+      "start_offset": 2123,
+      "end_offset": 2140,
+      "text": "2. 水泥混凝土路面结构组成特点\n"
+    },
+    {
+      "block_id": "S0122",
+      "index": 122,
+      "start_offset": 2140,
+      "end_offset": 2164,
+      "text": "水泥混凝土路面结构的组成包括垫层、基层以及面层。"
+    },
+    {
+      "block_id": "S0123",
+      "index": 123,
+      "start_offset": 2164,
+      "end_offset": 2165,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0124",
+      "index": 124,
+      "start_offset": 2165,
+      "end_offset": 2166,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0125",
+      "index": 125,
+      "start_offset": 2166,
+      "end_offset": 2173,
+      "text": "1）结构特点\n"
+    },
+    {
+      "block_id": "S0126",
+      "index": 126,
+      "start_offset": 2173,
+      "end_offset": 2180,
+      "text": "(1) 垫层\n"
+    },
+    {
+      "block_id": "S0127",
+      "index": 127,
+      "start_offset": 2180,
+      "end_offset": 2220,
+      "text": "水泥混凝土路面垫层选用的材料和作用参见本书1.1.2中1.1）（1）的相关内容。"
+    },
+    {
+      "block_id": "S0128",
+      "index": 128,
+      "start_offset": 2220,
+      "end_offset": 2221,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0129",
+      "index": 129,
+      "start_offset": 2221,
+      "end_offset": 2222,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0130",
+      "index": 130,
+      "start_offset": 2222,
+      "end_offset": 2229,
+      "text": "(2) 基层\n"
+    },
+    {
+      "block_id": "S0131",
+      "index": 131,
+      "start_offset": 2229,
+      "end_offset": 2266,
+      "text": "① 水泥混凝土道路基层作用：防止或减轻由于唧泥导致的板底脱空和错台等病害；"
+    },
+    {
+      "block_id": "S0132",
+      "index": 132,
+      "start_offset": 2266,
+      "end_offset": 2306,
+      "text": "与垫层共同作用，可控制或减少路基不均匀冻胀或体积变形对混凝土面层产生的不利影响；"
+    },
+    {
+      "block_id": "S0133",
+      "index": 133,
+      "start_offset": 2306,
+      "end_offset": 2336,
+      "text": "为混凝土面层提供稳定而坚实的基础，并改善接缝的荷载传递能力。"
+    },
+    {
+      "block_id": "S0134",
+      "index": 134,
+      "start_offset": 2336,
+      "end_offset": 2337,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0135",
+      "index": 135,
+      "start_offset": 2337,
+      "end_offset": 2338,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0136",
+      "index": 136,
+      "start_offset": 2338,
+      "end_offset": 2374,
+      "text": "② 基层材料的选用原则：根据道路交通等级和路基抗冲刷能力来选择基层材料。"
+    },
+    {
+      "block_id": "S0137",
+      "index": 137,
+      "start_offset": 2374,
+      "end_offset": 2398,
+      "text": "特重交通宜选用贫混凝土、碾压混凝土或沥青混凝土；"
+    },
+    {
+      "block_id": "S0138",
+      "index": 138,
+      "start_offset": 2398,
+      "end_offset": 2420,
+      "text": "重交通道路宜选用水泥稳定粒料或沥青稳定碎石；"
+    },
+    {
+      "block_id": "S0139",
+      "index": 139,
+      "start_offset": 2420,
+      "end_offset": 2448,
+      "text": "中、轻交通道路宜选择水泥或石灰粉煤灰稳定粒料或级配粒料。"
+    },
+    {
+      "block_id": "S0140",
+      "index": 140,
+      "start_offset": 2448,
+      "end_offset": 2470,
+      "text": "湿润和多雨地区，繁重交通路段宜采用排水基层。"
+    },
+    {
+      "block_id": "S0141",
+      "index": 141,
+      "start_offset": 2470,
+      "end_offset": 2471,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0142",
+      "index": 142,
+      "start_offset": 2471,
+      "end_offset": 2472,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0143",
+      "index": 143,
+      "start_offset": 2472,
+      "end_offset": 2556,
+      "text": "③ 基层的宽度应根据混凝土面层施工方式的不同，比混凝土面层每侧至少宽出300mm（小型机具施工时）或500mm（轨模式摊铺机施工时）或650mm（滑模式摊铺机施工时）。"
+    },
+    {
+      "block_id": "S0144",
+      "index": 144,
+      "start_offset": 2556,
+      "end_offset": 2557,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0145",
+      "index": 145,
+      "start_offset": 2557,
+      "end_offset": 2558,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0146",
+      "index": 146,
+      "start_offset": 2558,
+      "end_offset": 2585,
+      "text": "④ 各类基层结构性能、施工或排水要求不同，厚度也不同。"
+    },
+    {
+      "block_id": "S0147",
+      "index": 147,
+      "start_offset": 2585,
+      "end_offset": 2586,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0148",
+      "index": 148,
+      "start_offset": 2586,
+      "end_offset": 2587,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0149",
+      "index": 149,
+      "start_offset": 2587,
+      "end_offset": 2651,
+      "text": "⑤ 为防止下渗水影响路基，排水基层下应设置由水泥稳定粒料或密级配粒料组成的不透水底基层，底基层顶面宜铺设沥青封层或防水土工织物。"
+    },
+    {
+      "block_id": "S0150",
+      "index": 150,
+      "start_offset": 2651,
+      "end_offset": 2652,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0151",
+      "index": 151,
+      "start_offset": 2652,
+      "end_offset": 2653,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0152",
+      "index": 152,
+      "start_offset": 2653,
+      "end_offset": 2678,
+      "text": "⑥ 碾压混凝土基层应设置与混凝土面层相对应的接缝。"
+    },
+    {
+      "block_id": "S0153",
+      "index": 153,
+      "start_offset": 2678,
+      "end_offset": 2739,
+      "text": "贫混凝土基层弯拉强度大于 1.5MPa 时，应设置与面层相对应的横向缩缝，一次摊铺宽度大于 7.5m 时，应设置纵向缩缝。"
+    },
+    {
+      "block_id": "S0154",
+      "index": 154,
+      "start_offset": 2739,
+      "end_offset": 2740,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0155",
+      "index": 155,
+      "start_offset": 2740,
+      "end_offset": 2741,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0156",
+      "index": 156,
+      "start_offset": 2741,
+      "end_offset": 2748,
+      "text": "(3) 面层\n"
+    },
+    {
+      "block_id": "S0157",
+      "index": 157,
+      "start_offset": 2748,
+      "end_offset": 2790,
+      "text": "① 面层混凝土通常分为普通（素）混凝土、钢筋混凝土、连续配筋混凝土、预应力混凝土等。"
+    },
+    {
+      "block_id": "S0158",
+      "index": 158,
+      "start_offset": 2790,
+      "end_offset": 2806,
+      "text": "目前我国多采用普通（素）混凝土。"
+    },
+    {
+      "block_id": "S0159",
+      "index": 159,
+      "start_offset": 2806,
+      "end_offset": 2843,
+      "text": "水泥混凝土面层应具有足够的强度、耐久性（抗冻性），表面应抗滑、耐磨、平整。"
+    },
+    {
+      "block_id": "S0160",
+      "index": 160,
+      "start_offset": 2843,
+      "end_offset": 2844,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0161",
+      "index": 161,
+      "start_offset": 2844,
+      "end_offset": 2845,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0162",
+      "index": 162,
+      "start_offset": 2845,
+      "end_offset": 2866,
+      "text": "② 混凝土面层在温度变化影响下会产生胀缩。"
+    },
+    {
+      "block_id": "S0163",
+      "index": 163,
+      "start_offset": 2866,
+      "end_offset": 2910,
+      "text": "为防止胀缩作用导致裂缝或翘曲，混凝土面层设有垂直相交的纵向和横向接缝，形成一块块矩形板。"
+    },
+    {
+      "block_id": "S0164",
+      "index": 164,
+      "start_offset": 2910,
+      "end_offset": 2924,
+      "text": "一般相邻的接缝对齐，不错缝。"
+    },
+    {
+      "block_id": "S0165",
+      "index": 165,
+      "start_offset": 2924,
+      "end_offset": 2949,
+      "text": "每块矩形板的板长按面层类型、厚度并由应力计算确定。"
+    },
+    {
+      "block_id": "S0166",
+      "index": 166,
+      "start_offset": 2949,
+      "end_offset": 2950,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0167",
+      "index": 167,
+      "start_offset": 2950,
+      "end_offset": 2951,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0168",
+      "index": 168,
+      "start_offset": 2951,
+      "end_offset": 2973,
+      "text": "③ 纵向接缝根据路面宽度和施工铺筑宽度设置。"
+    },
+    {
+      "block_id": "S0169",
+      "index": 169,
+      "start_offset": 2973,
+      "end_offset": 3005,
+      "text": "一次铺筑宽度小于路面宽度时，应设置带拉杆的平缝形式的纵向施工缝。"
+    },
+    {
+      "block_id": "S0170",
+      "index": 170,
+      "start_offset": 3005,
+      "end_offset": 3047,
+      "text": "一次铺筑宽度大于4.5m时，应设置带拉杆的假缝形式的纵向缩缝，纵缝应与线路中线平行。"
+    },
+    {
+      "block_id": "S0171",
+      "index": 171,
+      "start_offset": 3047,
+      "end_offset": 3048,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0172",
+      "index": 172,
+      "start_offset": 3048,
+      "end_offset": 3049,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0173",
+      "index": 173,
+      "start_offset": 3049,
+      "end_offset": 3070,
+      "text": "横向接缝可分为横向缩缝、胀缝和横向施工缝。"
+    },
+    {
+      "block_id": "S0174",
+      "index": 174,
+      "start_offset": 3070,
+      "end_offset": 3087,
+      "text": "横向施工缝尽可能选在缩缝或胀缝处。"
+    },
+    {
+      "block_id": "S0175",
+      "index": 175,
+      "start_offset": 3087,
+      "end_offset": 3106,
+      "text": "快速路、主干路的横向缩缝应加设传力杆；"
+    },
+    {
+      "block_id": "S0176",
+      "index": 176,
+      "start_offset": 3106,
+      "end_offset": 3142,
+      "text": "在邻近桥梁或其他固定构筑物处、板厚改变处、小半径平曲线等处，应设置胀缝。"
+    },
+    {
+      "block_id": "S0177",
+      "index": 177,
+      "start_offset": 3142,
+      "end_offset": 3143,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0178",
+      "index": 178,
+      "start_offset": 3143,
+      "end_offset": 3144,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0179",
+      "index": 179,
+      "start_offset": 3144,
+      "end_offset": 3177,
+      "text": "④ 对于特重及重交通等级的混凝土路面，横向胀缝、缩缝均设置传力杆。"
+    },
+    {
+      "block_id": "S0180",
+      "index": 180,
+      "start_offset": 3177,
+      "end_offset": 3240,
+      "text": "在自由边处，承受繁重交通的胀缝、施工缝，小于90°的面层角隅，下穿市政管线路段，以及雨水口和地下设施的检查井周围，应配筋补强。"
+    },
+    {
+      "block_id": "S0181",
+      "index": 181,
+      "start_offset": 3240,
+      "end_offset": 3241,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0182",
+      "index": 182,
+      "start_offset": 3241,
+      "end_offset": 3242,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0183",
+      "index": 183,
+      "start_offset": 3242,
+      "end_offset": 3260,
+      "text": "混凝土既是刚性材料，又属于脆性材料。"
+    },
+    {
+      "block_id": "S0184",
+      "index": 184,
+      "start_offset": 3260,
+      "end_offset": 3306,
+      "text": "因此混凝土路面板的构造，以最大限度发挥其刚性特点为目的，使路面能承受车轮荷载，保证行车平顺；"
+    },
+    {
+      "block_id": "S0185",
+      "index": 185,
+      "start_offset": 3306,
+      "end_offset": 3358,
+      "text": "同时又要克服其脆性的弱点，防止在车载和自然因素作用下发生开裂、破坏，最大限度提升其耐久性，延长使用年限。"
+    },
+    {
+      "block_id": "S0186",
+      "index": 186,
+      "start_offset": 3358,
+      "end_offset": 3359,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0187",
+      "index": 187,
+      "start_offset": 3359,
+      "end_offset": 3360,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0188",
+      "index": 188,
+      "start_offset": 3360,
+      "end_offset": 3405,
+      "text": "⑤ 抗滑构造——混凝土面层应具有较大的粗糙度，即应具备较高的抗滑性能，以提升行车的安全性。"
+    },
+    {
+      "block_id": "S0189",
+      "index": 189,
+      "start_offset": 3405,
+      "end_offset": 3434,
+      "text": "因此可采用刻槽、压槽、拉槽或拉毛等方法形成一定的构造深度。"
+    },
+    {
+      "block_id": "S0190",
+      "index": 190,
+      "start_offset": 3434,
+      "end_offset": 3435,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0191",
+      "index": 191,
+      "start_offset": 3435,
+      "end_offset": 3436,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0192",
+      "index": 192,
+      "start_offset": 3436,
+      "end_offset": 3489,
+      "text": "⑥ 混凝土路面与沥青路面相接时，设置长度不少于 3m 的过渡段，过渡段路面应采用两种路面呈阶梯状叠合布置。"
+    },
+    {
+      "block_id": "S0193",
+      "index": 193,
+      "start_offset": 3489,
+      "end_offset": 3490,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0194",
+      "index": 194,
+      "start_offset": 3490,
+      "end_offset": 3491,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0195",
+      "index": 195,
+      "start_offset": 3491,
+      "end_offset": 3501,
+      "text": "2）主要原材料选择\n"
+    },
+    {
+      "block_id": "S0196",
+      "index": 196,
+      "start_offset": 3501,
+      "end_offset": 3557,
+      "text": "（1）重交通以上等级道路、城市快速路、主干路应采用42.5级及以上的道路硅酸盐水泥或硅酸盐水泥、普通硅酸盐水泥；"
+    },
+    {
+      "block_id": "S0197",
+      "index": 197,
+      "start_offset": 3557,
+      "end_offset": 3587,
+      "text": "其他道路可采用矿渣硅酸盐水泥，其强度等级不宜低于32.5级。"
+    },
+    {
+      "block_id": "S0198",
+      "index": 198,
+      "start_offset": 3587,
+      "end_offset": 3588,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0199",
+      "index": 199,
+      "start_offset": 3588,
+      "end_offset": 3589,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0200",
+      "index": 200,
+      "start_offset": 3589,
+      "end_offset": 3656,
+      "text": "(2) 粗集料应采用质地坚硬、耐久、洁净的碎石、砾石、破碎砾石, 技术指标应符合规范要求, 粗集料的最大公称粒径, 碎砾石不得大于 \n"
+    },
+    {
+      "block_id": "S0201",
+      "index": 201,
+      "start_offset": 3656,
+      "end_offset": 3661,
+      "text": "26.5\n"
+    },
+    {
+      "block_id": "S0202",
+      "index": 202,
+      "start_offset": 3661,
+      "end_offset": 3663,
+      "text": " \n"
+    },
+    {
+      "block_id": "S0203",
+      "index": 203,
+      "start_offset": 3663,
+      "end_offset": 3665,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0204",
+      "index": 204,
+      "start_offset": 3665,
+      "end_offset": 3667,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0205",
+      "index": 205,
+      "start_offset": 3667,
+      "end_offset": 3685,
+      "text": "26.5 mm , 碎石不得大于 \n"
+    },
+    {
+      "block_id": "S0206",
+      "index": 206,
+      "start_offset": 3685,
+      "end_offset": 3690,
+      "text": "31.5\n"
+    },
+    {
+      "block_id": "S0207",
+      "index": 207,
+      "start_offset": 3690,
+      "end_offset": 3692,
+      "text": " \n"
+    },
+    {
+      "block_id": "S0208",
+      "index": 208,
+      "start_offset": 3692,
+      "end_offset": 3694,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0209",
+      "index": 209,
+      "start_offset": 3694,
+      "end_offset": 3696,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0210",
+      "index": 210,
+      "start_offset": 3696,
+      "end_offset": 3714,
+      "text": "31.5 mm , 砾石不宜大于 \n"
+    },
+    {
+      "block_id": "S0211",
+      "index": 211,
+      "start_offset": 3714,
+      "end_offset": 3719,
+      "text": "19.0\n"
+    },
+    {
+      "block_id": "S0212",
+      "index": 212,
+      "start_offset": 3719,
+      "end_offset": 3721,
+      "text": " \n"
+    },
+    {
+      "block_id": "S0213",
+      "index": 213,
+      "start_offset": 3721,
+      "end_offset": 3723,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0214",
+      "index": 214,
+      "start_offset": 3723,
+      "end_offset": 3725,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0215",
+      "index": 215,
+      "start_offset": 3725,
+      "end_offset": 3734,
+      "text": "19.0 mm ;"
+    },
+    {
+      "block_id": "S0216",
+      "index": 216,
+      "start_offset": 3734,
+      "end_offset": 3754,
+      "text": " 钢纤维混凝土粗集料最大粒径不宜大于 \n"
+    },
+    {
+      "block_id": "S0217",
+      "index": 217,
+      "start_offset": 3754,
+      "end_offset": 3759,
+      "text": "16.0\n"
+    },
+    {
+      "block_id": "S0218",
+      "index": 218,
+      "start_offset": 3759,
+      "end_offset": 3761,
+      "text": " \n"
+    },
+    {
+      "block_id": "S0219",
+      "index": 219,
+      "start_offset": 3761,
+      "end_offset": 3763,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0220",
+      "index": 220,
+      "start_offset": 3763,
+      "end_offset": 3765,
+      "text": "m\n"
+    },
+    {
+      "block_id": "S0221",
+      "index": 221,
+      "start_offset": 3765,
+      "end_offset": 3774,
+      "text": "16.0 mm 。"
+    },
+    {
+      "block_id": "S0222",
+      "index": 222,
+      "start_offset": 3774,
+      "end_offset": 3775,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0223",
+      "index": 223,
+      "start_offset": 3775,
+      "end_offset": 3776,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0224",
+      "index": 224,
+      "start_offset": 3776,
+      "end_offset": 3825,
+      "text": "（3）宜采用质地坚硬，细度模数在2.5以上，符合级配规定的洁净粗砂、中砂，技术指标应符合规范要求。"
+    },
+    {
+      "block_id": "S0225",
+      "index": 225,
+      "start_offset": 3825,
+      "end_offset": 3866,
+      "text": "使用机制砂时，还应检验磨光值，其值宜大于35，不宜使用抗磨性较差的水成岩类机制砂。"
+    },
+    {
+      "block_id": "S0226",
+      "index": 226,
+      "start_offset": 3866,
+      "end_offset": 3880,
+      "text": "海砂不得直接用于混凝土面层。"
+    },
+    {
+      "block_id": "S0227",
+      "index": 227,
+      "start_offset": 3880,
+      "end_offset": 3923,
+      "text": "使用经过净化处理的海砂应符合《海砂混凝土应用技术规范》JGJ 206—2010的规定。"
+    },
+    {
+      "block_id": "S0228",
+      "index": 228,
+      "start_offset": 3923,
+      "end_offset": 3924,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0229",
+      "index": 229,
+      "start_offset": 3924,
+      "end_offset": 3925,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0230",
+      "index": 230,
+      "start_offset": 3925,
+      "end_offset": 3967,
+      "text": "（4）外加剂应符合《混凝土外加剂》GB 8076—2008 的有关规定，并有合格证。"
+    },
+    {
+      "block_id": "S0231",
+      "index": 231,
+      "start_offset": 3967,
+      "end_offset": 4020,
+      "text": "使用外加剂应进行试验，确认符合《混凝土外加剂应用技术规范》GB 50119—2013 的有关规定方可使用。"
+    },
+    {
+      "block_id": "S0232",
+      "index": 232,
+      "start_offset": 4020,
+      "end_offset": 4021,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0233",
+      "index": 233,
+      "start_offset": 4021,
+      "end_offset": 4022,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0234",
+      "index": 234,
+      "start_offset": 4022,
+      "end_offset": 4087,
+      "text": "（5）钢筋的品种、规格、成分，应符合设计和现行国家标准规定，具有生产厂的牌号、炉号，检验报告和合格证，并经复试（含见证取样）合格。"
+    },
+    {
+      "block_id": "S0235",
+      "index": 235,
+      "start_offset": 4087,
+      "end_offset": 4107,
+      "text": "钢筋不得有锈蚀、裂纹、断伤和刻痕等缺陷。"
+    },
+    {
+      "block_id": "S0236",
+      "index": 236,
+      "start_offset": 4107,
+      "end_offset": 4129,
+      "text": "传力杆（拉杆）、滑动套材质、规格应符合规定。"
+    },
+    {
+      "block_id": "S0237",
+      "index": 237,
+      "start_offset": 4129,
+      "end_offset": 4130,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0238",
+      "index": 238,
+      "start_offset": 4130,
+      "end_offset": 4131,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0239",
+      "index": 239,
+      "start_offset": 4131,
+      "end_offset": 4172,
+      "text": "（6）胀缝板宜用厚 20mm，水稳定性好，具有一定柔性的板材制作，且应经防腐处理。"
+    },
+    {
+      "block_id": "S0240",
+      "index": 240,
+      "start_offset": 4172,
+      "end_offset": 4224,
+      "text": "填缝材料宜用硅酮类、聚氨酯类、树脂类、橡胶沥青类、聚氯乙烯胶泥类、改性沥青类填缝材料，并宜加入耐老化剂。"
+    },
+    {
+      "block_id": "S0241",
+      "index": 241,
+      "start_offset": 4224,
+      "end_offset": 4225,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0242",
+      "index": 242,
+      "start_offset": 4225,
+      "end_offset": 4226,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0243",
+      "index": 243,
+      "start_offset": 4226,
+      "end_offset": 4240,
+      "text": "3. 砌块路面结构组成特点\n"
+    },
+    {
+      "block_id": "S0244",
+      "index": 244,
+      "start_offset": 4240,
+      "end_offset": 4253,
+      "text": "1) 砌块路面结构的组成\n"
+    },
+    {
+      "block_id": "S0245",
+      "index": 245,
+      "start_offset": 4253,
+      "end_offset": 4264,
+      "text": "包括垫层、基层、面层。"
+    },
+    {
+      "block_id": "S0246",
+      "index": 246,
+      "start_offset": 4264,
+      "end_offset": 4265,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0247",
+      "index": 247,
+      "start_offset": 4265,
+      "end_offset": 4266,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0248",
+      "index": 248,
+      "start_offset": 4266,
+      "end_offset": 4277,
+      "text": "2）砌块路面结构特点\n"
+    },
+    {
+      "block_id": "S0249",
+      "index": 249,
+      "start_offset": 4277,
+      "end_offset": 4278,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0250",
+      "index": 250,
+      "start_offset": 4278,
+      "end_offset": 4288,
+      "text": "(1) 垫层和基层\n"
+    },
+    {
+      "block_id": "S0251",
+      "index": 251,
+      "start_offset": 4288,
+      "end_offset": 4330,
+      "text": "砌块路面垫层和基层选用的材料和作用参见本书1.1.2中1.1）（1）（2）相关内容。"
+    },
+    {
+      "block_id": "S0252",
+      "index": 252,
+      "start_offset": 4330,
+      "end_offset": 4331,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0253",
+      "index": 253,
+      "start_offset": 4331,
+      "end_offset": 4332,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0254",
+      "index": 254,
+      "start_offset": 4332,
+      "end_offset": 4339,
+      "text": "(2) 面层\n"
+    },
+    {
+      "block_id": "S0255",
+      "index": 255,
+      "start_offset": 4339,
+      "end_offset": 4340,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0256",
+      "index": 256,
+      "start_offset": 4340,
+      "end_offset": 4388,
+      "text": "砌块路面铺装的材料种类较多，用于城镇道路路面铺装的砌块路面多为天然石材路面和预制混凝土砌块路面。"
+    },
+    {
+      "block_id": "S0257",
+      "index": 257,
+      "start_offset": 4388,
+      "end_offset": 4389,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0258",
+      "index": 258,
+      "start_offset": 4389,
+      "end_offset": 4390,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0259",
+      "index": 259,
+      "start_offset": 4390,
+      "end_offset": 4416,
+      "text": "① 应具备较高的抗滑性能，以提升行车、行人的安全性。"
+    },
+    {
+      "block_id": "S0260",
+      "index": 260,
+      "start_offset": 4416,
+      "end_offset": 4445,
+      "text": "加工材料时可采用刻槽、压槽、拉槽等方法形成一定的构造深度。"
+    },
+    {
+      "block_id": "S0261",
+      "index": 261,
+      "start_offset": 4445,
+      "end_offset": 4446,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0262",
+      "index": 262,
+      "start_offset": 4446,
+      "end_offset": 4447,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0263",
+      "index": 263,
+      "start_offset": 4447,
+      "end_offset": 4475,
+      "text": "②应具有足够的强度、耐久性（抗冻性）、表面应耐磨、平整。"
+    },
+    {
+      "block_id": "S0264",
+      "index": 264,
+      "start_offset": 4475,
+      "end_offset": 4476,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0265",
+      "index": 265,
+      "start_offset": 4476,
+      "end_offset": 4477,
+      "text": "\n"
+    },
+    {
+      "block_id": "S0266",
+      "index": 266,
+      "start_offset": 4477,
+      "end_offset": 4556,
+      "text": "③ 砌块路面在温度变化较大时会产生胀缩，为防止胀缩作用导致裂缝或翘曲，面层设有垂直相交的纵向和横向接缝，形成一块块矩形或正方形板块，面层胀缩缝位置和基层一致。"
+    }
+  ],
+  "note": "Source Block 仅用于定位。必须对全部 blocks 做连续、有序、无遗漏、无重叠的 KU 分区。"
+}

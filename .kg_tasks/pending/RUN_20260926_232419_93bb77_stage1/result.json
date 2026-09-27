@@ -1,0 +1,108 @@
+{
+  "knowledge_units": [
+    {
+      "temp_ku_id": "KU_01",
+      "order_index": 1,
+      "title": "沥青路面垫层的组成、设置条件与材料要求",
+      "main_question": "沥青路面垫层的作用、设置条件和材料要求是什么？",
+      "start_block_id": "S0001",
+      "end_block_id": "S0023"
+    },
+    {
+      "temp_ku_id": "KU_02",
+      "order_index": 2,
+      "title": "沥青路面基层的组成、材料选用与性能特点",
+      "main_question": "沥青路面基层如何分类，基层材料应如何按交通等级和路基条件选用？",
+      "start_block_id": "S0024",
+      "end_block_id": "S0047"
+    },
+    {
+      "temp_ku_id": "KU_03",
+      "order_index": 3,
+      "title": "沥青路面面层的结构功能与类型",
+      "main_question": "沥青路面面层的结构、作用、受力环境及主要类型和适用特点是什么？",
+      "start_block_id": "S0048",
+      "end_block_id": "S0090"
+    },
+    {
+      "temp_ku_id": "KU_04",
+      "order_index": 4,
+      "title": "沥青路面结构层的性能与使用要求",
+      "main_question": "沥青路面垫层、基层和面层分别应满足哪些性能及使用要求？",
+      "start_block_id": "S0091",
+      "end_block_id": "S0120"
+    },
+    {
+      "temp_ku_id": "KU_05",
+      "order_index": 5,
+      "title": "水泥混凝土路面垫层与基层的结构特点",
+      "main_question": "水泥混凝土路面垫层和基层的作用、材料选用、尺寸及构造要求是什么？",
+      "start_block_id": "S0121",
+      "end_block_id": "S0155"
+    },
+    {
+      "temp_ku_id": "KU_06",
+      "order_index": 6,
+      "title": "水泥混凝土路面面层的构造与使用要求",
+      "main_question": "水泥混凝土路面面层如何构造以满足承载、抗裂、接缝、抗滑和路面衔接要求？",
+      "start_block_id": "S0156",
+      "end_block_id": "S0194"
+    },
+    {
+      "temp_ku_id": "KU_07",
+      "order_index": 7,
+      "title": "水泥混凝土路面水泥材料的选用",
+      "main_question": "不同交通等级和道路等级的水泥混凝土路面应如何选用水泥及强度等级？",
+      "start_block_id": "S0195",
+      "end_block_id": "S0199"
+    },
+    {
+      "temp_ku_id": "KU_08",
+      "order_index": 8,
+      "title": "水泥混凝土路面粗集料的技术要求",
+      "main_question": "水泥混凝土路面粗集料的材质和最大公称粒径应满足哪些要求？",
+      "start_block_id": "S0200",
+      "end_block_id": "S0223"
+    },
+    {
+      "temp_ku_id": "KU_09",
+      "order_index": 9,
+      "title": "水泥混凝土路面细集料的选用要求",
+      "main_question": "水泥混凝土路面细集料及海砂使用应满足哪些材质、级配和规范要求？",
+      "start_block_id": "S0224",
+      "end_block_id": "S0229"
+    },
+    {
+      "temp_ku_id": "KU_10",
+      "order_index": 10,
+      "title": "水泥混凝土路面外加剂的使用要求",
+      "main_question": "水泥混凝土路面外加剂使用前应满足哪些标准、合格证明和试验要求？",
+      "start_block_id": "S0230",
+      "end_block_id": "S0233"
+    },
+    {
+      "temp_ku_id": "KU_11",
+      "order_index": 11,
+      "title": "水泥混凝土路面钢筋、接缝板与填缝材料要求",
+      "main_question": "水泥混凝土路面钢筋、传力杆、胀缝板和填缝材料应满足哪些选用与质量要求？",
+      "start_block_id": "S0234",
+      "end_block_id": "S0242"
+    },
+    {
+      "temp_ku_id": "KU_12",
+      "order_index": 12,
+      "title": "砌块路面的结构组成及垫层基层特点",
+      "main_question": "砌块路面由哪些结构层组成，其垫层和基层材料及作用如何确定？",
+      "start_block_id": "S0243",
+      "end_block_id": "S0253"
+    },
+    {
+      "temp_ku_id": "KU_13",
+      "order_index": 13,
+      "title": "砌块路面面层材料与构造特点",
+      "main_question": "砌块路面面层的材料类型、性能要求及接缝构造特点是什么？",
+      "start_block_id": "S0254",
+      "end_block_id": "S0266"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "knowledge_units": [
+    {
+      "temp_ku_id": "KU_01",
+      "order_index": 1,
+      "title": "沥青路面结构组成及结构层性能要求",
+      "main_question": "沥青路面由哪些结构层组成，各结构层有哪些构造特点、材料与适用条件，以及应满足哪些性能要求？",
+      "start_block_id": "S0001",
+      "end_block_id": "S0120"
+    },
+    {
+      "temp_ku_id": "KU_02",
+      "order_index": 2,
+      "title": "水泥混凝土路面结构组成特点及主要原材料选择",
+      "main_question": "水泥混凝土路面由哪些结构层组成，各结构层具有哪些结构特点、构造要求和材料选用要求？",
+      "start_block_id": "S0121",
+      "end_block_id": "S0242"
+    },
+    {
+      "temp_ku_id": "KU_03",
+      "order_index": 3,
+      "title": "砌块路面结构组成特点",
+      "main_question": "砌块路面由哪些结构层组成，其各部分分别有哪些特点与要求？",
+      "start_block_id": "S0243",
+      "end_block_id": "S0266"
+    }
+  ]
+}

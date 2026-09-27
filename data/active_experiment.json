@@ -1,0 +1,1263 @@
+{
+  "kp_id": "KP_SZ_002",
+  "kp_name": "1.1.2 道路路面结构特征",
+  "source_text": "## 1.2.2 特殊路基处理\n\n## 1. 工程用土分类\n\n工程用土的分类方法有很多种，通常采用坚实系数分类方法。\n\n## 1）一类土，松软土\n\n主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6。\n\n## 2）二类土，普通土\n\n主要包括粉质黏土，潮湿的黄土，夹有碎石、卵石的砂，粉土混卵（碎）石；种植土、填土等，坚实系数为0.6～0.8。\n\n## (3) 三类土, 坚土\n\n主要包括软及中等密实黏土，重粉质黏土，砾石土，干黄土、含有碎石卵石的黄土、粉质黏土；压实的填土等，坚实系数为0.8～1.0。\n\n## 4）四类土，砂砾坚土\n\n主要包括坚实密实的黏性土或黄土，含有碎石卵石的中等密实的黏性土或黄土，粗卵石；天然级配砂石，软泥灰岩等，坚实系数为1.0～1.5。\n\n## 5）五类土～八类土\n\n五类土是软石，六类土是次坚石，七类土是坚石，八类土是特坚石。\n\n## 2. 常用路基土的主要性能参数\n\n1) 含水率 $\\omega$\n\n土中水的质量与干土粒质量之比。\n\n2) 天然密度 $\\rho$\n\n土的单位体积的质量。\n\n3) 孔隙比 $e$\n\n土的孔隙体积与土粒体积之比。\n\n## 4）孔隙率 $n$\n\n土的孔隙体积与土的体积之比。\n\n5）塑限 $\\omega_{\\mathrm{p}}$\n\n土由可塑状态转为半固体状态时的界限含水率为塑性下限，称为塑性界限，简称塑限。\n\n## 6）液限 $\\omega_{\\mathrm{L}}$\n\n土由可塑状态转为流体状态时的界限含水率为液性上限，称为液性界限，简称液限。\n\n## 7）塑性指数 $I_{\\mathrm{p}}$\n\n土的液限与塑限之差值， $I_{p}=\\omega_{L}-\\omega_{p}$\n\n## 8）液性指数 $I_{\\mathrm{L}}$\n\n土的天然含水率与塑限之差值对塑性指数之比值， $I_{\\mathrm{L}} = (\\omega - \\omega_{\\mathrm{p}}) / I_{\\mathrm{p}}$ ， $I_{\\mathrm{L}}$ 可用以判别土的软硬程度； $I_{\\mathrm{L}} < 0$ 坚硬、半坚硬状态， $0 \\leqslant I_{\\mathrm{L}} < 0.5$ 硬塑状态， $0.5 \\leqslant I_{\\mathrm{L}} < 1.0$ 软塑状态， $I_{\\mathrm{L}} \\geqslant 1.0$ 流塑状态。\n\n## 3. 不良土质路基处理\n\n## 1) 不良土质路基处理的分类\n\n按路基处理的作用机理，大致分为：土质改良、土的置换、土的补强三类。土质改良是指用机械（力学）、化学、电、热等手段增加路基土的密度，或使路基土固结，这一方法的原理是尽可能地利用原有路基。土的置换是将软土层换填为良质土如砂垫层等。土的补强是采用薄膜、绳网、板桩等约束住路基土，或者在土中放入抗拉强度高的补强材料形成复合路基以加强和改善路基土的剪切特性。\n\n## 2）路基处理方法分类\n\n路基处理的方法，根据其作用和原理大致分为六类，见表 1.2-1。表中所列各种方法是根据软弱土的特点和所需处理的目的而发展起来的，各种方法的具体选用，应从路基条件、处理的指标及范围、工程费用、工程进度及材料来源、当地环境等多方面进行考虑和研究。\n\n表 1.2-1 路基处理的方法\n\n<table><tr><td>序号</td><td>分类</td><td>处理方法</td><td>原理及作用</td><td>适用范围</td></tr><tr><td>1</td><td>碾压及夯实</td><td>重锤夯实、机械碾压、振动压实、强夯(动力固结)</td><td>利用压实原理,通过机械碾压、夯击,把表层地基压实;强夯则利用强大的夯击能,在地基中产生强烈的冲击波和动应力,迫使土在动力固结效应下密实</td><td>适用于碎石土、砂土、粉土、低饱和度的黏性土、杂填土等,对饱和黏性土应慎重采用</td></tr><tr><td>2</td><td>换土垫层</td><td>砂石垫层、素土垫层、灰土垫层、矿渣垫层</td><td>以砂石、素土、灰土和矿渣等强度较高的材料,置换地基表层软弱土,提高持力层的承载力,扩散应力,减小沉降量</td><td>适用于暗沟、暗塘等软弱土的浅层处理</td></tr><tr><td>3</td><td>排水固结</td><td>天然地基预压、砂井预压、塑料排水板预压、真空预压、降水预压</td><td>在地基中设竖向排水体,加速地基的固结和强度增长,提升地基的稳定性;加速沉降发展,使基础沉降提前完成</td><td>适用于处理饱和软弱土层,对于渗透性极低的泥炭土,必须慎重对待</td></tr><tr><td>4</td><td>振冲、挤密</td><td>振冲挤密、灰土挤密桩、砂桩、砂砾桩、碎石桩、石灰桩、爆破挤密、强夯置换</td><td>采用一定的技术措施,通过振动或挤密,使土体的孔隙减少,强度提升;必要时,在振动挤密过程中,回填砂、砾石、碎石、灰土、素土等,在夯坑中回填片块石、碎砾石、卵石与地基土组成复合地基,从而提升地基的承载力,减小沉降量</td><td>适用于处理松砂、粉土、杂填土及湿陷性黄土</td></tr><tr><td>5</td><td>振冲置换及拌入</td><td>振冲置换、深层搅拌、高压喷射注浆、石灰桩、CFG桩等</td><td>采用专门的技术措施,以砂、碎石等置换软弱土地基中的部分软弱土,或在部分软弱土地基中掺入水泥、石灰或砂浆等形成加固体,与未处理部分的土组成复合地基,从而提升地基承载力,减小沉降量</td><td>黏性土、冲填土、粉砂、细砂等;振冲置换法在不排水剪切强度 $c_{U} < 20kPa$ 时慎用</td></tr><tr><td>6</td><td>加筋</td><td>土工聚合物加筋、锚固、树根桩、加筋土</td><td>在地基或土体中埋设强度较大的土工聚合物、钢片等加筋材料,使地基或土体能承受抗拉力,防止断裂,保持整体性,提升刚度,改变地基土体的应力场和应变场,从而提升地基的承载力,改善变形特性</td><td>软弱土地基、填土及陡坡填土、砂土</td></tr></table>\n\n## 3）路基处理常用的方法\n\n考虑到城镇道路地下管线众多、环境、土方资源、工程费用等因素，常用方法如下：\n\n（1）路基土方掺灰、好土等改良。\n\n（2）路基土方换填处理（土方、石方、石灰土、水泥土、碎石土、级配碎石等）。\n\n（3）路基加铺土工格栅、土工布等补强处理。\n\n（4）抛石挤淤。\n\n（5）路基打石灰桩挤密土方固化土方处理。\n\n（6）路基堆载预压和加强压实。",
+  "page_start": 0,
+  "page_end": 10,
+  "stage1_task_dir": "D:\\devProject\\textbook_kg_extraction_lab_v1.0\\textbook_kg_extraction_lab\\.kg_tasks\\pending\\RUN_20260927_162115_10e1c9_stage1",
+  "current_run_id": "RUN_20260927_162115_10e1c9",
+  "stage1_llm": {
+    "knowledge_units": [
+      {
+        "temp_ku_id": "KU_01",
+        "order_index": 1,
+        "title": "工程用土分类",
+        "main_question": "工程用土通常依据什么方法分类，各类土分别包含哪些土质并具有怎样的坚实系数范围？",
+        "start_block_id": "S0001",
+        "end_block_id": "S0035"
+      },
+      {
+        "temp_ku_id": "KU_02",
+        "order_index": 2,
+        "title": "常用路基土的主要性能参数",
+        "main_question": "常用路基土需要掌握哪些主要性能参数，各参数如何定义、计算或用于判别土的状态？",
+        "start_block_id": "S0036",
+        "end_block_id": "S0077"
+      },
+      {
+        "temp_ku_id": "KU_03",
+        "order_index": 3,
+        "title": "不良土质路基处理的分类",
+        "main_question": "不良土质路基按作用机理可以分为哪几类，各类处理分别通过什么原理改善路基土？",
+        "start_block_id": "S0078",
+        "end_block_id": "S0087"
+      },
+      {
+        "temp_ku_id": "KU_04",
+        "order_index": 4,
+        "title": "路基处理方法分类",
+        "main_question": "路基处理方法依据作用和原理分为哪几类，各类方法的处理方式、原理作用、适用范围及选用依据是什么？",
+        "start_block_id": "S0088",
+        "end_block_id": "S0101"
+      },
+      {
+        "temp_ku_id": "KU_05",
+        "order_index": 5,
+        "title": "路基处理常用的方法",
+        "main_question": "考虑城镇道路的地下管线、环境、资源和费用等因素，路基处理常用哪些具体方法？",
+        "start_block_id": "S0102",
+        "end_block_id": "S0121"
+      }
+    ]
+  },
+  "stage1_resolved": {
+    "kp_id": "KP_SZ_002",
+    "kp_name": "1.1.2 道路路面结构特征",
+    "source_blocks": [
+      {
+        "block_id": "S0001",
+        "index": 1,
+        "start_offset": 0,
+        "end_offset": 16,
+        "text": "## 1.2.2 特殊路基处理\n"
+      },
+      {
+        "block_id": "S0002",
+        "index": 2,
+        "start_offset": 16,
+        "end_offset": 17,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0003",
+        "index": 3,
+        "start_offset": 17,
+        "end_offset": 30,
+        "text": "## 1. 工程用土分类\n"
+      },
+      {
+        "block_id": "S0004",
+        "index": 4,
+        "start_offset": 30,
+        "end_offset": 31,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0005",
+        "index": 5,
+        "start_offset": 31,
+        "end_offset": 58,
+        "text": "工程用土的分类方法有很多种，通常采用坚实系数分类方法。"
+      },
+      {
+        "block_id": "S0006",
+        "index": 6,
+        "start_offset": 58,
+        "end_offset": 59,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0007",
+        "index": 7,
+        "start_offset": 59,
+        "end_offset": 60,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0008",
+        "index": 8,
+        "start_offset": 60,
+        "end_offset": 73,
+        "text": "## 1）一类土，松软土\n"
+      },
+      {
+        "block_id": "S0009",
+        "index": 9,
+        "start_offset": 73,
+        "end_offset": 74,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0010",
+        "index": 10,
+        "start_offset": 74,
+        "end_offset": 117,
+        "text": "主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6。"
+      },
+      {
+        "block_id": "S0011",
+        "index": 11,
+        "start_offset": 117,
+        "end_offset": 118,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0012",
+        "index": 12,
+        "start_offset": 118,
+        "end_offset": 119,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0013",
+        "index": 13,
+        "start_offset": 119,
+        "end_offset": 132,
+        "text": "## 2）二类土，普通土\n"
+      },
+      {
+        "block_id": "S0014",
+        "index": 14,
+        "start_offset": 132,
+        "end_offset": 133,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0015",
+        "index": 15,
+        "start_offset": 133,
+        "end_offset": 167,
+        "text": "主要包括粉质黏土，潮湿的黄土，夹有碎石、卵石的砂，粉土混卵（碎）石；"
+      },
+      {
+        "block_id": "S0016",
+        "index": 16,
+        "start_offset": 167,
+        "end_offset": 188,
+        "text": "种植土、填土等，坚实系数为0.6～0.8。"
+      },
+      {
+        "block_id": "S0017",
+        "index": 17,
+        "start_offset": 188,
+        "end_offset": 189,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0018",
+        "index": 18,
+        "start_offset": 189,
+        "end_offset": 190,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0019",
+        "index": 19,
+        "start_offset": 190,
+        "end_offset": 205,
+        "text": "## (3) 三类土, 坚土\n"
+      },
+      {
+        "block_id": "S0020",
+        "index": 20,
+        "start_offset": 205,
+        "end_offset": 206,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0021",
+        "index": 21,
+        "start_offset": 206,
+        "end_offset": 248,
+        "text": "主要包括软及中等密实黏土，重粉质黏土，砾石土，干黄土、含有碎石卵石的黄土、粉质黏土；"
+      },
+      {
+        "block_id": "S0022",
+        "index": 22,
+        "start_offset": 248,
+        "end_offset": 268,
+        "text": "压实的填土等，坚实系数为0.8～1.0。"
+      },
+      {
+        "block_id": "S0023",
+        "index": 23,
+        "start_offset": 268,
+        "end_offset": 269,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0024",
+        "index": 24,
+        "start_offset": 269,
+        "end_offset": 270,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0025",
+        "index": 25,
+        "start_offset": 270,
+        "end_offset": 284,
+        "text": "## 4）四类土，砂砾坚土\n"
+      },
+      {
+        "block_id": "S0026",
+        "index": 26,
+        "start_offset": 284,
+        "end_offset": 285,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0027",
+        "index": 27,
+        "start_offset": 285,
+        "end_offset": 324,
+        "text": "主要包括坚实密实的黏性土或黄土，含有碎石卵石的中等密实的黏性土或黄土，粗卵石；"
+      },
+      {
+        "block_id": "S0028",
+        "index": 28,
+        "start_offset": 324,
+        "end_offset": 350,
+        "text": "天然级配砂石，软泥灰岩等，坚实系数为1.0～1.5。"
+      },
+      {
+        "block_id": "S0029",
+        "index": 29,
+        "start_offset": 350,
+        "end_offset": 351,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0030",
+        "index": 30,
+        "start_offset": 351,
+        "end_offset": 352,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0031",
+        "index": 31,
+        "start_offset": 352,
+        "end_offset": 365,
+        "text": "## 5）五类土～八类土\n"
+      },
+      {
+        "block_id": "S0032",
+        "index": 32,
+        "start_offset": 365,
+        "end_offset": 366,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0033",
+        "index": 33,
+        "start_offset": 366,
+        "end_offset": 396,
+        "text": "五类土是软石，六类土是次坚石，七类土是坚石，八类土是特坚石。"
+      },
+      {
+        "block_id": "S0034",
+        "index": 34,
+        "start_offset": 396,
+        "end_offset": 397,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0035",
+        "index": 35,
+        "start_offset": 397,
+        "end_offset": 398,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0036",
+        "index": 36,
+        "start_offset": 398,
+        "end_offset": 417,
+        "text": "## 2. 常用路基土的主要性能参数\n"
+      },
+      {
+        "block_id": "S0037",
+        "index": 37,
+        "start_offset": 417,
+        "end_offset": 418,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0038",
+        "index": 38,
+        "start_offset": 418,
+        "end_offset": 434,
+        "text": "1) 含水率 $\\omega$\n"
+      },
+      {
+        "block_id": "S0039",
+        "index": 39,
+        "start_offset": 434,
+        "end_offset": 435,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0040",
+        "index": 40,
+        "start_offset": 435,
+        "end_offset": 450,
+        "text": "土中水的质量与干土粒质量之比。"
+      },
+      {
+        "block_id": "S0041",
+        "index": 41,
+        "start_offset": 450,
+        "end_offset": 451,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0042",
+        "index": 42,
+        "start_offset": 451,
+        "end_offset": 452,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0043",
+        "index": 43,
+        "start_offset": 452,
+        "end_offset": 467,
+        "text": "2) 天然密度 $\\rho$\n"
+      },
+      {
+        "block_id": "S0044",
+        "index": 44,
+        "start_offset": 467,
+        "end_offset": 468,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0045",
+        "index": 45,
+        "start_offset": 468,
+        "end_offset": 478,
+        "text": "土的单位体积的质量。"
+      },
+      {
+        "block_id": "S0046",
+        "index": 46,
+        "start_offset": 478,
+        "end_offset": 479,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0047",
+        "index": 47,
+        "start_offset": 479,
+        "end_offset": 480,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0048",
+        "index": 48,
+        "start_offset": 480,
+        "end_offset": 491,
+        "text": "3) 孔隙比 $e$\n"
+      },
+      {
+        "block_id": "S0049",
+        "index": 49,
+        "start_offset": 491,
+        "end_offset": 492,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0050",
+        "index": 50,
+        "start_offset": 492,
+        "end_offset": 506,
+        "text": "土的孔隙体积与土粒体积之比。"
+      },
+      {
+        "block_id": "S0051",
+        "index": 51,
+        "start_offset": 506,
+        "end_offset": 507,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0052",
+        "index": 52,
+        "start_offset": 507,
+        "end_offset": 508,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0053",
+        "index": 53,
+        "start_offset": 508,
+        "end_offset": 521,
+        "text": "## 4）孔隙率 $n$\n"
+      },
+      {
+        "block_id": "S0054",
+        "index": 54,
+        "start_offset": 521,
+        "end_offset": 522,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0055",
+        "index": 55,
+        "start_offset": 522,
+        "end_offset": 536,
+        "text": "土的孔隙体积与土的体积之比。"
+      },
+      {
+        "block_id": "S0056",
+        "index": 56,
+        "start_offset": 536,
+        "end_offset": 537,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0057",
+        "index": 57,
+        "start_offset": 537,
+        "end_offset": 538,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0058",
+        "index": 58,
+        "start_offset": 538,
+        "end_offset": 565,
+        "text": "5）塑限 $\\omega_{\\mathrm{p}}$\n"
+      },
+      {
+        "block_id": "S0059",
+        "index": 59,
+        "start_offset": 565,
+        "end_offset": 566,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0060",
+        "index": 60,
+        "start_offset": 566,
+        "end_offset": 604,
+        "text": "土由可塑状态转为半固体状态时的界限含水率为塑性下限，称为塑性界限，简称塑限。"
+      },
+      {
+        "block_id": "S0061",
+        "index": 61,
+        "start_offset": 604,
+        "end_offset": 605,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0062",
+        "index": 62,
+        "start_offset": 605,
+        "end_offset": 606,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0063",
+        "index": 63,
+        "start_offset": 606,
+        "end_offset": 636,
+        "text": "## 6）液限 $\\omega_{\\mathrm{L}}$\n"
+      },
+      {
+        "block_id": "S0064",
+        "index": 64,
+        "start_offset": 636,
+        "end_offset": 637,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0065",
+        "index": 65,
+        "start_offset": 637,
+        "end_offset": 674,
+        "text": "土由可塑状态转为流体状态时的界限含水率为液性上限，称为液性界限，简称液限。"
+      },
+      {
+        "block_id": "S0066",
+        "index": 66,
+        "start_offset": 674,
+        "end_offset": 675,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0067",
+        "index": 67,
+        "start_offset": 675,
+        "end_offset": 676,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0068",
+        "index": 68,
+        "start_offset": 676,
+        "end_offset": 703,
+        "text": "## 7）塑性指数 $I_{\\mathrm{p}}$\n"
+      },
+      {
+        "block_id": "S0069",
+        "index": 69,
+        "start_offset": 703,
+        "end_offset": 704,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0070",
+        "index": 70,
+        "start_offset": 704,
+        "end_offset": 746,
+        "text": "土的液限与塑限之差值， $I_{p}=\\omega_{L}-\\omega_{p}$\n"
+      },
+      {
+        "block_id": "S0071",
+        "index": 71,
+        "start_offset": 746,
+        "end_offset": 747,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0072",
+        "index": 72,
+        "start_offset": 747,
+        "end_offset": 774,
+        "text": "## 8）液性指数 $I_{\\mathrm{L}}$\n"
+      },
+      {
+        "block_id": "S0073",
+        "index": 73,
+        "start_offset": 774,
+        "end_offset": 775,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0074",
+        "index": 74,
+        "start_offset": 775,
+        "end_offset": 896,
+        "text": "土的天然含水率与塑限之差值对塑性指数之比值， $I_{\\mathrm{L}} = (\\omega - \\omega_{\\mathrm{p}}) / I_{\\mathrm{p}}$ ， $I_{\\mathrm{L}}$ 可用以判别土的软硬程度；"
+      },
+      {
+        "block_id": "S0075",
+        "index": 75,
+        "start_offset": 896,
+        "end_offset": 1048,
+        "text": " $I_{\\mathrm{L}} < 0$ 坚硬、半坚硬状态， $0 \\leqslant I_{\\mathrm{L}} < 0.5$ 硬塑状态， $0.5 \\leqslant I_{\\mathrm{L}} < 1.0$ 软塑状态， $I_{\\mathrm{L}} \\geqslant 1.0$ 流塑状态。"
+      },
+      {
+        "block_id": "S0076",
+        "index": 76,
+        "start_offset": 1048,
+        "end_offset": 1049,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0077",
+        "index": 77,
+        "start_offset": 1049,
+        "end_offset": 1050,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0078",
+        "index": 78,
+        "start_offset": 1050,
+        "end_offset": 1065,
+        "text": "## 3. 不良土质路基处理\n"
+      },
+      {
+        "block_id": "S0079",
+        "index": 79,
+        "start_offset": 1065,
+        "end_offset": 1066,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0080",
+        "index": 80,
+        "start_offset": 1066,
+        "end_offset": 1084,
+        "text": "## 1) 不良土质路基处理的分类\n"
+      },
+      {
+        "block_id": "S0081",
+        "index": 81,
+        "start_offset": 1084,
+        "end_offset": 1085,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0082",
+        "index": 82,
+        "start_offset": 1085,
+        "end_offset": 1118,
+        "text": "按路基处理的作用机理，大致分为：土质改良、土的置换、土的补强三类。"
+      },
+      {
+        "block_id": "S0083",
+        "index": 83,
+        "start_offset": 1118,
+        "end_offset": 1177,
+        "text": "土质改良是指用机械（力学）、化学、电、热等手段增加路基土的密度，或使路基土固结，这一方法的原理是尽可能地利用原有路基。"
+      },
+      {
+        "block_id": "S0084",
+        "index": 84,
+        "start_offset": 1177,
+        "end_offset": 1198,
+        "text": "土的置换是将软土层换填为良质土如砂垫层等。"
+      },
+      {
+        "block_id": "S0085",
+        "index": 85,
+        "start_offset": 1198,
+        "end_offset": 1259,
+        "text": "土的补强是采用薄膜、绳网、板桩等约束住路基土，或者在土中放入抗拉强度高的补强材料形成复合路基以加强和改善路基土的剪切特性。"
+      },
+      {
+        "block_id": "S0086",
+        "index": 86,
+        "start_offset": 1259,
+        "end_offset": 1260,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0087",
+        "index": 87,
+        "start_offset": 1260,
+        "end_offset": 1261,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0088",
+        "index": 88,
+        "start_offset": 1261,
+        "end_offset": 1275,
+        "text": "## 2）路基处理方法分类\n"
+      },
+      {
+        "block_id": "S0089",
+        "index": 89,
+        "start_offset": 1275,
+        "end_offset": 1276,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0090",
+        "index": 90,
+        "start_offset": 1276,
+        "end_offset": 1308,
+        "text": "路基处理的方法，根据其作用和原理大致分为六类，见表 1.2-1。"
+      },
+      {
+        "block_id": "S0091",
+        "index": 91,
+        "start_offset": 1308,
+        "end_offset": 1397,
+        "text": "表中所列各种方法是根据软弱土的特点和所需处理的目的而发展起来的，各种方法的具体选用，应从路基条件、处理的指标及范围、工程费用、工程进度及材料来源、当地环境等多方面进行考虑和研究。"
+      },
+      {
+        "block_id": "S0092",
+        "index": 92,
+        "start_offset": 1397,
+        "end_offset": 1398,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0093",
+        "index": 93,
+        "start_offset": 1398,
+        "end_offset": 1399,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0094",
+        "index": 94,
+        "start_offset": 1399,
+        "end_offset": 1415,
+        "text": "表 1.2-1 路基处理的方法\n"
+      },
+      {
+        "block_id": "S0095",
+        "index": 95,
+        "start_offset": 1415,
+        "end_offset": 1416,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0096",
+        "index": 96,
+        "start_offset": 1416,
+        "end_offset": 1583,
+        "text": "<table><tr><td>序号</td><td>分类</td><td>处理方法</td><td>原理及作用</td><td>适用范围</td></tr><tr><td>1</td><td>碾压及夯实</td><td>重锤夯实、机械碾压、振动压实、强夯(动力固结)</td><td>利用压实原理,通过机械碾压、夯击,把表层地基压实;"
+      },
+      {
+        "block_id": "S0097",
+        "index": 97,
+        "start_offset": 1583,
+        "end_offset": 1930,
+        "text": "强夯则利用强大的夯击能,在地基中产生强烈的冲击波和动应力,迫使土在动力固结效应下密实</td><td>适用于碎石土、砂土、粉土、低饱和度的黏性土、杂填土等,对饱和黏性土应慎重采用</td></tr><tr><td>2</td><td>换土垫层</td><td>砂石垫层、素土垫层、灰土垫层、矿渣垫层</td><td>以砂石、素土、灰土和矿渣等强度较高的材料,置换地基表层软弱土,提高持力层的承载力,扩散应力,减小沉降量</td><td>适用于暗沟、暗塘等软弱土的浅层处理</td></tr><tr><td>3</td><td>排水固结</td><td>天然地基预压、砂井预压、塑料排水板预压、真空预压、降水预压</td><td>在地基中设竖向排水体,加速地基的固结和强度增长,提升地基的稳定性;"
+      },
+      {
+        "block_id": "S0098",
+        "index": 98,
+        "start_offset": 1930,
+        "end_offset": 2103,
+        "text": "加速沉降发展,使基础沉降提前完成</td><td>适用于处理饱和软弱土层,对于渗透性极低的泥炭土,必须慎重对待</td></tr><tr><td>4</td><td>振冲、挤密</td><td>振冲挤密、灰土挤密桩、砂桩、砂砾桩、碎石桩、石灰桩、爆破挤密、强夯置换</td><td>采用一定的技术措施,通过振动或挤密,使土体的孔隙减少,强度提升;"
+      },
+      {
+        "block_id": "S0099",
+        "index": 99,
+        "start_offset": 2103,
+        "end_offset": 2396,
+        "text": "必要时,在振动挤密过程中,回填砂、砾石、碎石、灰土、素土等,在夯坑中回填片块石、碎砾石、卵石与地基土组成复合地基,从而提升地基的承载力,减小沉降量</td><td>适用于处理松砂、粉土、杂填土及湿陷性黄土</td></tr><tr><td>5</td><td>振冲置换及拌入</td><td>振冲置换、深层搅拌、高压喷射注浆、石灰桩、CFG桩等</td><td>采用专门的技术措施,以砂、碎石等置换软弱土地基中的部分软弱土,或在部分软弱土地基中掺入水泥、石灰或砂浆等形成加固体,与未处理部分的土组成复合地基,从而提升地基承载力,减小沉降量</td><td>黏性土、冲填土、粉砂、细砂等;"
+      },
+      {
+        "block_id": "S0100",
+        "index": 100,
+        "start_offset": 2396,
+        "end_offset": 2628,
+        "text": "振冲置换法在不排水剪切强度 $c_{U} < 20kPa$ 时慎用</td></tr><tr><td>6</td><td>加筋</td><td>土工聚合物加筋、锚固、树根桩、加筋土</td><td>在地基或土体中埋设强度较大的土工聚合物、钢片等加筋材料,使地基或土体能承受抗拉力,防止断裂,保持整体性,提升刚度,改变地基土体的应力场和应变场,从而提升地基的承载力,改善变形特性</td><td>软弱土地基、填土及陡坡填土、砂土</td></tr></table>\n"
+      },
+      {
+        "block_id": "S0101",
+        "index": 101,
+        "start_offset": 2628,
+        "end_offset": 2629,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0102",
+        "index": 102,
+        "start_offset": 2629,
+        "end_offset": 2644,
+        "text": "## 3）路基处理常用的方法\n"
+      },
+      {
+        "block_id": "S0103",
+        "index": 103,
+        "start_offset": 2644,
+        "end_offset": 2645,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0104",
+        "index": 104,
+        "start_offset": 2645,
+        "end_offset": 2683,
+        "text": "考虑到城镇道路地下管线众多、环境、土方资源、工程费用等因素，常用方法如下：\n"
+      },
+      {
+        "block_id": "S0105",
+        "index": 105,
+        "start_offset": 2683,
+        "end_offset": 2684,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0106",
+        "index": 106,
+        "start_offset": 2684,
+        "end_offset": 2700,
+        "text": "（1）路基土方掺灰、好土等改良。"
+      },
+      {
+        "block_id": "S0107",
+        "index": 107,
+        "start_offset": 2700,
+        "end_offset": 2701,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0108",
+        "index": 108,
+        "start_offset": 2701,
+        "end_offset": 2702,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0109",
+        "index": 109,
+        "start_offset": 2702,
+        "end_offset": 2739,
+        "text": "（2）路基土方换填处理（土方、石方、石灰土、水泥土、碎石土、级配碎石等）。"
+      },
+      {
+        "block_id": "S0110",
+        "index": 110,
+        "start_offset": 2739,
+        "end_offset": 2740,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0111",
+        "index": 111,
+        "start_offset": 2740,
+        "end_offset": 2741,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0112",
+        "index": 112,
+        "start_offset": 2741,
+        "end_offset": 2762,
+        "text": "（3）路基加铺土工格栅、土工布等补强处理。"
+      },
+      {
+        "block_id": "S0113",
+        "index": 113,
+        "start_offset": 2762,
+        "end_offset": 2763,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0114",
+        "index": 114,
+        "start_offset": 2763,
+        "end_offset": 2764,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0115",
+        "index": 115,
+        "start_offset": 2764,
+        "end_offset": 2772,
+        "text": "（4）抛石挤淤。"
+      },
+      {
+        "block_id": "S0116",
+        "index": 116,
+        "start_offset": 2772,
+        "end_offset": 2773,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0117",
+        "index": 117,
+        "start_offset": 2773,
+        "end_offset": 2774,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0118",
+        "index": 118,
+        "start_offset": 2774,
+        "end_offset": 2794,
+        "text": "（5）路基打石灰桩挤密土方固化土方处理。"
+      },
+      {
+        "block_id": "S0119",
+        "index": 119,
+        "start_offset": 2794,
+        "end_offset": 2795,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0120",
+        "index": 120,
+        "start_offset": 2795,
+        "end_offset": 2796,
+        "text": "\n"
+      },
+      {
+        "block_id": "S0121",
+        "index": 121,
+        "start_offset": 2796,
+        "end_offset": 2811,
+        "text": "（6）路基堆载预压和加强压实。"
+      }
+    ],
+    "knowledge_units": [
+      {
+        "temp_ku_id": "KU_01",
+        "order_index": 1,
+        "title": "工程用土分类",
+        "main_question": "工程用土通常依据什么方法分类，各类土分别包含哪些土质并具有怎样的坚实系数范围？",
+        "start_block_id": "S0001",
+        "end_block_id": "S0035",
+        "start_offset": 0,
+        "end_offset": 398,
+        "source_text": "## 1.2.2 特殊路基处理\n\n## 1. 工程用土分类\n\n工程用土的分类方法有很多种，通常采用坚实系数分类方法。\n\n## 1）一类土，松软土\n\n主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6。\n\n## 2）二类土，普通土\n\n主要包括粉质黏土，潮湿的黄土，夹有碎石、卵石的砂，粉土混卵（碎）石；种植土、填土等，坚实系数为0.6～0.8。\n\n## (3) 三类土, 坚土\n\n主要包括软及中等密实黏土，重粉质黏土，砾石土，干黄土、含有碎石卵石的黄土、粉质黏土；压实的填土等，坚实系数为0.8～1.0。\n\n## 4）四类土，砂砾坚土\n\n主要包括坚实密实的黏性土或黄土，含有碎石卵石的中等密实的黏性土或黄土，粗卵石；天然级配砂石，软泥灰岩等，坚实系数为1.0～1.5。\n\n## 5）五类土～八类土\n\n五类土是软石，六类土是次坚石，七类土是坚石，八类土是特坚石。\n\n",
+        "page_start": null,
+        "page_end": 10
+      },
+      {
+        "temp_ku_id": "KU_02",
+        "order_index": 2,
+        "title": "常用路基土的主要性能参数",
+        "main_question": "常用路基土需要掌握哪些主要性能参数，各参数如何定义、计算或用于判别土的状态？",
+        "start_block_id": "S0036",
+        "end_block_id": "S0077",
+        "start_offset": 398,
+        "end_offset": 1050,
+        "source_text": "## 2. 常用路基土的主要性能参数\n\n1) 含水率 $\\omega$\n\n土中水的质量与干土粒质量之比。\n\n2) 天然密度 $\\rho$\n\n土的单位体积的质量。\n\n3) 孔隙比 $e$\n\n土的孔隙体积与土粒体积之比。\n\n## 4）孔隙率 $n$\n\n土的孔隙体积与土的体积之比。\n\n5）塑限 $\\omega_{\\mathrm{p}}$\n\n土由可塑状态转为半固体状态时的界限含水率为塑性下限，称为塑性界限，简称塑限。\n\n## 6）液限 $\\omega_{\\mathrm{L}}$\n\n土由可塑状态转为流体状态时的界限含水率为液性上限，称为液性界限，简称液限。\n\n## 7）塑性指数 $I_{\\mathrm{p}}$\n\n土的液限与塑限之差值， $I_{p}=\\omega_{L}-\\omega_{p}$\n\n## 8）液性指数 $I_{\\mathrm{L}}$\n\n土的天然含水率与塑限之差值对塑性指数之比值， $I_{\\mathrm{L}} = (\\omega - \\omega_{\\mathrm{p}}) / I_{\\mathrm{p}}$ ， $I_{\\mathrm{L}}$ 可用以判别土的软硬程度； $I_{\\mathrm{L}} < 0$ 坚硬、半坚硬状态， $0 \\leqslant I_{\\mathrm{L}} < 0.5$ 硬塑状态， $0.5 \\leqslant I_{\\mathrm{L}} < 1.0$ 软塑状态， $I_{\\mathrm{L}} \\geqslant 1.0$ 流塑状态。\n\n",
+        "page_start": null,
+        "page_end": 10
+      },
+      {
+        "temp_ku_id": "KU_03",
+        "order_index": 3,
+        "title": "不良土质路基处理的分类",
+        "main_question": "不良土质路基按作用机理可以分为哪几类，各类处理分别通过什么原理改善路基土？",
+        "start_block_id": "S0078",
+        "end_block_id": "S0087",
+        "start_offset": 1050,
+        "end_offset": 1261,
+        "source_text": "## 3. 不良土质路基处理\n\n## 1) 不良土质路基处理的分类\n\n按路基处理的作用机理，大致分为：土质改良、土的置换、土的补强三类。土质改良是指用机械（力学）、化学、电、热等手段增加路基土的密度，或使路基土固结，这一方法的原理是尽可能地利用原有路基。土的置换是将软土层换填为良质土如砂垫层等。土的补强是采用薄膜、绳网、板桩等约束住路基土，或者在土中放入抗拉强度高的补强材料形成复合路基以加强和改善路基土的剪切特性。\n\n",
+        "page_start": null,
+        "page_end": 10
+      },
+      {
+        "temp_ku_id": "KU_04",
+        "order_index": 4,
+        "title": "路基处理方法分类",
+        "main_question": "路基处理方法依据作用和原理分为哪几类，各类方法的处理方式、原理作用、适用范围及选用依据是什么？",
+        "start_block_id": "S0088",
+        "end_block_id": "S0101",
+        "start_offset": 1261,
+        "end_offset": 2629,
+        "source_text": "## 2）路基处理方法分类\n\n路基处理的方法，根据其作用和原理大致分为六类，见表 1.2-1。表中所列各种方法是根据软弱土的特点和所需处理的目的而发展起来的，各种方法的具体选用，应从路基条件、处理的指标及范围、工程费用、工程进度及材料来源、当地环境等多方面进行考虑和研究。\n\n表 1.2-1 路基处理的方法\n\n<table><tr><td>序号</td><td>分类</td><td>处理方法</td><td>原理及作用</td><td>适用范围</td></tr><tr><td>1</td><td>碾压及夯实</td><td>重锤夯实、机械碾压、振动压实、强夯(动力固结)</td><td>利用压实原理,通过机械碾压、夯击,把表层地基压实;强夯则利用强大的夯击能,在地基中产生强烈的冲击波和动应力,迫使土在动力固结效应下密实</td><td>适用于碎石土、砂土、粉土、低饱和度的黏性土、杂填土等,对饱和黏性土应慎重采用</td></tr><tr><td>2</td><td>换土垫层</td><td>砂石垫层、素土垫层、灰土垫层、矿渣垫层</td><td>以砂石、素土、灰土和矿渣等强度较高的材料,置换地基表层软弱土,提高持力层的承载力,扩散应力,减小沉降量</td><td>适用于暗沟、暗塘等软弱土的浅层处理</td></tr><tr><td>3</td><td>排水固结</td><td>天然地基预压、砂井预压、塑料排水板预压、真空预压、降水预压</td><td>在地基中设竖向排水体,加速地基的固结和强度增长,提升地基的稳定性;加速沉降发展,使基础沉降提前完成</td><td>适用于处理饱和软弱土层,对于渗透性极低的泥炭土,必须慎重对待</td></tr><tr><td>4</td><td>振冲、挤密</td><td>振冲挤密、灰土挤密桩、砂桩、砂砾桩、碎石桩、石灰桩、爆破挤密、强夯置换</td><td>采用一定的技术措施,通过振动或挤密,使土体的孔隙减少,强度提升;必要时,在振动挤密过程中,回填砂、砾石、碎石、灰土、素土等,在夯坑中回填片块石、碎砾石、卵石与地基土组成复合地基,从而提升地基的承载力,减小沉降量</td><td>适用于处理松砂、粉土、杂填土及湿陷性黄土</td></tr><tr><td>5</td><td>振冲置换及拌入</td><td>振冲置换、深层搅拌、高压喷射注浆、石灰桩、CFG桩等</td><td>采用专门的技术措施,以砂、碎石等置换软弱土地基中的部分软弱土,或在部分软弱土地基中掺入水泥、石灰或砂浆等形成加固体,与未处理部分的土组成复合地基,从而提升地基承载力,减小沉降量</td><td>黏性土、冲填土、粉砂、细砂等;振冲置换法在不排水剪切强度 $c_{U} < 20kPa$ 时慎用</td></tr><tr><td>6</td><td>加筋</td><td>土工聚合物加筋、锚固、树根桩、加筋土</td><td>在地基或土体中埋设强度较大的土工聚合物、钢片等加筋材料,使地基或土体能承受抗拉力,防止断裂,保持整体性,提升刚度,改变地基土体的应力场和应变场,从而提升地基的承载力,改善变形特性</td><td>软弱土地基、填土及陡坡填土、砂土</td></tr></table>\n\n",
+        "page_start": null,
+        "page_end": 10
+      },
+      {
+        "temp_ku_id": "KU_05",
+        "order_index": 5,
+        "title": "路基处理常用的方法",
+        "main_question": "考虑城镇道路的地下管线、环境、资源和费用等因素，路基处理常用哪些具体方法？",
+        "start_block_id": "S0102",
+        "end_block_id": "S0121",
+        "start_offset": 2629,
+        "end_offset": 2811,
+        "source_text": "## 3）路基处理常用的方法\n\n考虑到城镇道路地下管线众多、环境、土方资源、工程费用等因素，常用方法如下：\n\n（1）路基土方掺灰、好土等改良。\n\n（2）路基土方换填处理（土方、石方、石灰土、水泥土、碎石土、级配碎石等）。\n\n（3）路基加铺土工格栅、土工布等补强处理。\n\n（4）抛石挤淤。\n\n（5）路基打石灰桩挤密土方固化土方处理。\n\n（6）路基堆载预压和加强压实。",
+        "page_start": null,
+        "page_end": 10
+      }
+    ],
+    "validation": {
+      "coverage_rate": 1.0,
+      "gap_count": 0,
+      "overlap_count": 0,
+      "order_valid": true,
+      "all_blocks_covered": true,
+      "status": "PASS",
+      "errors": []
+    }
+  },
+  "stage1_editor": "{\n  \"knowledge_units\": [\n    {\n      \"temp_ku_id\": \"KU_01\",\n      \"order_index\": 1,\n      \"title\": \"工程用土分类\",\n      \"main_question\": \"工程用土通常依据什么方法分类，各类土分别包含哪些土质并具有怎样的坚实系数范围？\",\n      \"start_block_id\": \"S0001\",\n      \"end_block_id\": \"S0035\"\n    },\n    {\n      \"temp_ku_id\": \"KU_02\",\n      \"order_index\": 2,\n      \"title\": \"常用路基土的主要性能参数\",\n      \"main_question\": \"常用路基土需要掌握哪些主要性能参数，各参数如何定义、计算或用于判别土的状态？\",\n      \"start_block_id\": \"S0036\",\n      \"end_block_id\": \"S0077\"\n    },\n    {\n      \"temp_ku_id\": \"KU_03\",\n      \"order_index\": 3,\n      \"title\": \"不良土质路基处理的分类\",\n      \"main_question\": \"不良土质路基按作用机理可以分为哪几类，各类处理分别通过什么原理改善路基土？\",\n      \"start_block_id\": \"S0078\",\n      \"end_block_id\": \"S0087\"\n    },\n    {\n      \"temp_ku_id\": \"KU_04\",\n      \"order_index\": 4,\n      \"title\": \"路基处理方法分类\",\n      \"main_question\": \"路基处理方法依据作用和原理分为哪几类，各类方法的处理方式、原理作用、适用范围及选用依据是什么？\",\n      \"start_block_id\": \"S0088\",\n      \"end_block_id\": \"S0101\"\n    },\n    {\n      \"temp_ku_id\": \"KU_05\",\n      \"order_index\": 5,\n      \"title\": \"路基处理常用的方法\",\n      \"main_question\": \"考虑城镇道路的地下管线、环境、资源和费用等因素，路基处理常用哪些具体方法？\",\n      \"start_block_id\": \"S0102\",\n      \"end_block_id\": \"S0121\"\n    }\n  ]\n}",
+  "stage1_confirmed": true,
+  "stage2_task_dir": "D:\\devProject\\textbook_kg_extraction_lab_v1.0\\textbook_kg_extraction_lab\\.kg_tasks\\pending\\RUN_20260927_162302_390394_stage2",
+  "stage2_run_id": "RUN_20260927_162302_390394",
+  "stage2_llm": {
+    "knowledge_units": [
+      {
+        "temp_ku_id": "KU_01",
+        "title": "工程用土分类",
+        "main_question": "工程用土通常依据什么方法分类，各类土分别包含哪些土质并具有怎样的坚实系数范围？",
+        "knowledge_object": "工程用土的分类体系及各类土的土质组成与坚实系数",
+        "core_conclusion": "工程用土通常采用坚实系数分类方法。一类土至四类土分别为松软土、普通土、坚土和砂砾坚土，其坚实系数范围依次为0.5～0.6、0.6～0.8、0.8～1.0和1.0～1.5，并分别对应不同的土质组成；五类土至八类土依次为软石、次坚石、坚石和特坚石。",
+        "knowledge_type": "SOIL_CLASSIFICATION",
+        "knowledge_type_name": "土质分类",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "CLASSIFICATION_SYSTEM",
+            "element_type_name": "分类体系",
+            "name": "工程用土按坚实系数划分的类别、土质组成与范围",
+            "content": "通常采用坚实系数分类方法。一类土为松软土，主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6；二类土为普通土，主要包括粉质黏土、潮湿的黄土、夹有碎石或卵石的砂、粉土混卵（碎）石、种植土、填土等，坚实系数为0.6～0.8；三类土为坚土，主要包括软及中等密实黏土、重粉质黏土、砾石土、干黄土、含有碎石卵石的黄土、粉质黏土、压实的填土等，坚实系数为0.8～1.0；四类土为砂砾坚土，主要包括坚实密实的黏性土或黄土、含有碎石卵石的中等密实黏性土或黄土、粗卵石、天然级配砂石、软泥灰岩等，坚实系数为1.0～1.5；五类土至八类土依次为软石、次坚石、坚石和特坚石。"
+          }
+        ]
+      },
+      {
+        "temp_ku_id": "KU_02",
+        "title": "常用路基土的主要性能参数",
+        "main_question": "常用路基土需要掌握哪些主要性能参数，各参数如何定义、计算或用于判别土的状态？",
+        "knowledge_object": "常用路基土的物理性质、界限含水率及塑性状态指标",
+        "core_conclusion": "常用路基土的主要性能参数包括含水率、天然密度、孔隙比、孔隙率、塑限、液限、塑性指数和液性指数。其中，含水率、天然密度、孔隙比和孔隙率反映土的基本物理性质，塑限和液限表示土由可塑状态向半固体或流体状态转变的界限，塑性指数为液限与塑限之差，液性指数由天然含水率、塑限和塑性指数计算，并可据其范围判别土的软硬状态。",
+        "knowledge_type": "SOIL_PROPERTY_PARAMETERS",
+        "knowledge_type_name": "土体性能参数",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "PHYSICAL_PROPERTY_SET",
+            "element_type_name": "基本物理性质参数",
+            "name": "含水率、天然密度、孔隙比和孔隙率",
+            "content": "含水率ω是土中水的质量与干土粒质量之比；天然密度ρ是土的单位体积质量；孔隙比e是土的孔隙体积与土粒体积之比；孔隙率n是土的孔隙体积与土体积之比。"
+          },
+          {
+            "element_id": "CE_02",
+            "element_type": "CONSISTENCY_LIMIT_SET",
+            "element_type_name": "稠度界限参数",
+            "name": "塑限与液限及其状态转变含义",
+            "content": "塑限ωp是土由可塑状态转为半固体状态时的界限含水率，即塑性下限或塑性界限；液限ωL是土由可塑状态转为流体状态时的界限含水率，即液性上限或液性界限。"
+          },
+          {
+            "element_id": "CE_03",
+            "element_type": "STATE_INDEX_CALCULATION",
+            "element_type_name": "状态指数及计算判别",
+            "name": "塑性指数与液性指数的计算及土的软硬状态判别",
+            "content": "塑性指数Ip为土的液限与塑限之差，Ip=ωL−ωp；液性指数IL为土的天然含水率与塑限之差值对塑性指数的比值，IL=(ω−ωp)/Ip。IL<0时为坚硬、半坚硬状态，0≤IL<0.5时为硬塑状态，0.5≤IL<1.0时为软塑状态，IL≥1.0时为流塑状态。"
+          }
+        ]
+      },
+      {
+        "temp_ku_id": "KU_03",
+        "title": "不良土质路基处理的分类",
+        "main_question": "不良土质路基按作用机理可以分为哪几类，各类处理分别通过什么原理改善路基土？",
+        "knowledge_object": "不良土质路基处理的作用机理分类",
+        "core_conclusion": "按路基处理的作用机理，不良土质路基处理大致分为土质改良、土的置换和土的补强三类。土质改良通过机械、化学、电、热等手段增加路基土密度或使其固结，尽可能利用原有路基；土的置换通过良质土置换软土层；土的补强通过约束路基土或设置高抗拉强度材料形成复合路基，以加强和改善路基土的剪切特性。",
+        "knowledge_type": "TREATMENT_MECHANISM_CLASSIFICATION",
+        "knowledge_type_name": "处理机理分类",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "MECHANISM_CLASSIFICATION",
+            "element_type_name": "作用机理分类",
+            "name": "不良土质路基处理的三类作用机理及改善方式",
+            "content": "土质改良是用机械（力学）、化学、电、热等手段增加路基土的密度或使其固结，原理是尽可能利用原有路基；土的置换是将软土层换填为良质土，如砂垫层；土的补强是采用薄膜、绳网、板桩等约束路基土，或在土中放入抗拉强度高的补强材料形成复合路基，以加强和改善路基土的剪切特性。"
+          }
+        ]
+      },
+      {
+        "temp_ku_id": "KU_04",
+        "title": "路基处理方法分类",
+        "main_question": "路基处理方法依据作用和原理分为哪几类，各类方法的处理方式、原理作用、适用范围及选用依据是什么？",
+        "knowledge_object": "路基处理方法的分类、处理机理、适用范围与选用依据",
+        "core_conclusion": "路基处理方法根据作用和原理大致分为碾压及夯实、换土垫层、排水固结、振冲挤密、振冲置换及拌入、加筋六类。各类方法分别通过压实、置换、排水固结、振动或挤密、形成加固体以及设置加筋材料等方式提高承载力、减小沉降或改善变形与稳定性能；具体选用应综合考虑软弱土特点、路基条件、处理指标和范围、工程费用、进度、材料来源及当地环境等因素。",
+        "knowledge_type": "TREATMENT_METHOD_CLASSIFICATION",
+        "knowledge_type_name": "处理方法分类",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "METHOD_CLASSIFICATION_TABLE",
+            "element_type_name": "方法分类及适用说明",
+            "name": "六类路基处理方法的处理方式、原理作用和适用范围",
+            "content": "六类方法包括：碾压及夯实，采用重锤夯实、机械碾压、振动压实、强夯等，利用压实原理使地基密实，适用于碎石土、砂土、粉土、低饱和度黏性土、杂填土等，对饱和黏性土应慎重；换土垫层，采用砂石垫层、素土垫层、灰土垫层、矿渣垫层等置换浅层软弱土，适用于暗沟、暗塘等软弱土浅层处理；排水固结，通过竖向排水体和预压加速固结、强度增长和沉降完成，适用于饱和软弱土层，对渗透性极低的泥炭土应慎重；振冲、挤密，通过振动或挤密减少孔隙、提升强度，必要时回填材料形成复合地基，适用于松砂、粉土、杂填土及湿陷性黄土；振冲置换及拌入，通过置换部分软弱土或掺入水泥、石灰、砂浆等形成加固体，适用于黏性土、冲填土、粉砂、细砂等，振冲置换法在不排水剪切强度cU<20kPa时慎用；加筋，在地基或土体中埋设土工聚合物、钢片等高强材料，提升承载力、刚度并改善变形特性，适用于软弱土地基、填土及陡坡填土、砂土。具体方法应根据软弱土特点、处理目的、路基条件、处理指标及范围、费用、进度、材料来源和环境等综合选用。"
+          }
+        ]
+      },
+      {
+        "temp_ku_id": "KU_05",
+        "title": "路基处理常用的方法",
+        "main_question": "考虑城镇道路的地下管线、环境、资源和费用等因素，路基处理常用哪些具体方法？",
+        "knowledge_object": "城镇道路路基处理的常用工程方法",
+        "core_conclusion": "考虑城镇道路地下管线众多以及环境、土方资源和工程费用等因素，路基处理常用方法包括路基土方掺灰或掺好土改良、土方或石方等换填、铺设土工格栅或土工布补强、抛石挤淤、打石灰桩挤密或固化土方，以及堆载预压和加强压实。",
+        "knowledge_type": "PRACTICAL_METHOD_SET",
+        "knowledge_type_name": "常用处理方法",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "APPLICATION_METHOD_LIST",
+            "element_type_name": "工程应用方法清单",
+            "name": "城镇道路路基处理的常用方法",
+            "content": "常用方法包括：（1）路基土方掺灰、好土等改良；（2）路基土方换填处理，包括土方、石方、石灰土、水泥土、碎石土、级配碎石等；（3）路基加铺土工格栅、土工布等补强处理；（4）抛石挤淤；（5）路基打石灰桩挤密土方、固化土方处理；（6）路基堆载预压和加强压实。"
+          }
+        ]
+      }
+    ]
+  },
+  "final_result": {
+    "kp": {
+      "kp_id": "KP_SZ_002",
+      "kp_name": "1.1.2 道路路面结构特征",
+      "source_text": "## 1.2.2 特殊路基处理\n\n## 1. 工程用土分类\n\n工程用土的分类方法有很多种，通常采用坚实系数分类方法。\n\n## 1）一类土，松软土\n\n主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6。\n\n## 2）二类土，普通土\n\n主要包括粉质黏土，潮湿的黄土，夹有碎石、卵石的砂，粉土混卵（碎）石；种植土、填土等，坚实系数为0.6～0.8。\n\n## (3) 三类土, 坚土\n\n主要包括软及中等密实黏土，重粉质黏土，砾石土，干黄土、含有碎石卵石的黄土、粉质黏土；压实的填土等，坚实系数为0.8～1.0。\n\n## 4）四类土，砂砾坚土\n\n主要包括坚实密实的黏性土或黄土，含有碎石卵石的中等密实的黏性土或黄土，粗卵石；天然级配砂石，软泥灰岩等，坚实系数为1.0～1.5。\n\n## 5）五类土～八类土\n\n五类土是软石，六类土是次坚石，七类土是坚石，八类土是特坚石。\n\n## 2. 常用路基土的主要性能参数\n\n1) 含水率 $\\omega$\n\n土中水的质量与干土粒质量之比。\n\n2) 天然密度 $\\rho$\n\n土的单位体积的质量。\n\n3) 孔隙比 $e$\n\n土的孔隙体积与土粒体积之比。\n\n## 4）孔隙率 $n$\n\n土的孔隙体积与土的体积之比。\n\n5）塑限 $\\omega_{\\mathrm{p}}$\n\n土由可塑状态转为半固体状态时的界限含水率为塑性下限，称为塑性界限，简称塑限。\n\n## 6）液限 $\\omega_{\\mathrm{L}}$\n\n土由可塑状态转为流体状态时的界限含水率为液性上限，称为液性界限，简称液限。\n\n## 7）塑性指数 $I_{\\mathrm{p}}$\n\n土的液限与塑限之差值， $I_{p}=\\omega_{L}-\\omega_{p}$\n\n## 8）液性指数 $I_{\\mathrm{L}}$\n\n土的天然含水率与塑限之差值对塑性指数之比值， $I_{\\mathrm{L}} = (\\omega - \\omega_{\\mathrm{p}}) / I_{\\mathrm{p}}$ ， $I_{\\mathrm{L}}$ 可用以判别土的软硬程度； $I_{\\mathrm{L}} < 0$ 坚硬、半坚硬状态， $0 \\leqslant I_{\\mathrm{L}} < 0.5$ 硬塑状态， $0.5 \\leqslant I_{\\mathrm{L}} < 1.0$ 软塑状态， $I_{\\mathrm{L}} \\geqslant 1.0$ 流塑状态。\n\n## 3. 不良土质路基处理\n\n## 1) 不良土质路基处理的分类\n\n按路基处理的作用机理，大致分为：土质改良、土的置换、土的补强三类。土质改良是指用机械（力学）、化学、电、热等手段增加路基土的密度，或使路基土固结，这一方法的原理是尽可能地利用原有路基。土的置换是将软土层换填为良质土如砂垫层等。土的补强是采用薄膜、绳网、板桩等约束住路基土，或者在土中放入抗拉强度高的补强材料形成复合路基以加强和改善路基土的剪切特性。\n\n## 2）路基处理方法分类\n\n路基处理的方法，根据其作用和原理大致分为六类，见表 1.2-1。表中所列各种方法是根据软弱土的特点和所需处理的目的而发展起来的，各种方法的具体选用，应从路基条件、处理的指标及范围、工程费用、工程进度及材料来源、当地环境等多方面进行考虑和研究。\n\n表 1.2-1 路基处理的方法\n\n<table><tr><td>序号</td><td>分类</td><td>处理方法</td><td>原理及作用</td><td>适用范围</td></tr><tr><td>1</td><td>碾压及夯实</td><td>重锤夯实、机械碾压、振动压实、强夯(动力固结)</td><td>利用压实原理,通过机械碾压、夯击,把表层地基压实;强夯则利用强大的夯击能,在地基中产生强烈的冲击波和动应力,迫使土在动力固结效应下密实</td><td>适用于碎石土、砂土、粉土、低饱和度的黏性土、杂填土等,对饱和黏性土应慎重采用</td></tr><tr><td>2</td><td>换土垫层</td><td>砂石垫层、素土垫层、灰土垫层、矿渣垫层</td><td>以砂石、素土、灰土和矿渣等强度较高的材料,置换地基表层软弱土,提高持力层的承载力,扩散应力,减小沉降量</td><td>适用于暗沟、暗塘等软弱土的浅层处理</td></tr><tr><td>3</td><td>排水固结</td><td>天然地基预压、砂井预压、塑料排水板预压、真空预压、降水预压</td><td>在地基中设竖向排水体,加速地基的固结和强度增长,提升地基的稳定性;加速沉降发展,使基础沉降提前完成</td><td>适用于处理饱和软弱土层,对于渗透性极低的泥炭土,必须慎重对待</td></tr><tr><td>4</td><td>振冲、挤密</td><td>振冲挤密、灰土挤密桩、砂桩、砂砾桩、碎石桩、石灰桩、爆破挤密、强夯置换</td><td>采用一定的技术措施,通过振动或挤密,使土体的孔隙减少,强度提升;必要时,在振动挤密过程中,回填砂、砾石、碎石、灰土、素土等,在夯坑中回填片块石、碎砾石、卵石与地基土组成复合地基,从而提升地基的承载力,减小沉降量</td><td>适用于处理松砂、粉土、杂填土及湿陷性黄土</td></tr><tr><td>5</td><td>振冲置换及拌入</td><td>振冲置换、深层搅拌、高压喷射注浆、石灰桩、CFG桩等</td><td>采用专门的技术措施,以砂、碎石等置换软弱土地基中的部分软弱土,或在部分软弱土地基中掺入水泥、石灰或砂浆等形成加固体,与未处理部分的土组成复合地基,从而提升地基承载力,减小沉降量</td><td>黏性土、冲填土、粉砂、细砂等;振冲置换法在不排水剪切强度 $c_{U} < 20kPa$ 时慎用</td></tr><tr><td>6</td><td>加筋</td><td>土工聚合物加筋、锚固、树根桩、加筋土</td><td>在地基或土体中埋设强度较大的土工聚合物、钢片等加筋材料,使地基或土体能承受抗拉力,防止断裂,保持整体性,提升刚度,改变地基土体的应力场和应变场,从而提升地基的承载力,改善变形特性</td><td>软弱土地基、填土及陡坡填土、砂土</td></tr></table>\n\n## 3）路基处理常用的方法\n\n考虑到城镇道路地下管线众多、环境、土方资源、工程费用等因素，常用方法如下：\n\n（1）路基土方掺灰、好土等改良。\n\n（2）路基土方换填处理（土方、石方、石灰土、水泥土、碎石土、级配碎石等）。\n\n（3）路基加铺土工格栅、土工布等补强处理。\n\n（4）抛石挤淤。\n\n（5）路基打石灰桩挤密土方固化土方处理。\n\n（6）路基堆载预压和加强压实。",
+      "page_start": null,
+      "page_end": 10
+    },
+    "knowledge_units": [
+      {
+        "ku_id": "KP_SZ_002_KU_01",
+        "kp_id": "KP_SZ_002",
+        "order_index": 1,
+        "title": "工程用土分类",
+        "main_question": "工程用土通常依据什么方法分类，各类土分别包含哪些土质并具有怎样的坚实系数范围？",
+        "knowledge_object": "工程用土的分类体系及各类土的土质组成与坚实系数",
+        "core_conclusion": "工程用土通常采用坚实系数分类方法。一类土至四类土分别为松软土、普通土、坚土和砂砾坚土，其坚实系数范围依次为0.5～0.6、0.6～0.8、0.8～1.0和1.0～1.5，并分别对应不同的土质组成；五类土至八类土依次为软石、次坚石、坚石和特坚石。",
+        "knowledge_type": "SOIL_CLASSIFICATION",
+        "knowledge_type_name": "土质分类",
+        "page_start": null,
+        "page_end": 10,
+        "start_offset": 0,
+        "end_offset": 398,
+        "start_block_id": "S0001",
+        "end_block_id": "S0035",
+        "source_text": "## 1.2.2 特殊路基处理\n\n## 1. 工程用土分类\n\n工程用土的分类方法有很多种，通常采用坚实系数分类方法。\n\n## 1）一类土，松软土\n\n主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6。\n\n## 2）二类土，普通土\n\n主要包括粉质黏土，潮湿的黄土，夹有碎石、卵石的砂，粉土混卵（碎）石；种植土、填土等，坚实系数为0.6～0.8。\n\n## (3) 三类土, 坚土\n\n主要包括软及中等密实黏土，重粉质黏土，砾石土，干黄土、含有碎石卵石的黄土、粉质黏土；压实的填土等，坚实系数为0.8～1.0。\n\n## 4）四类土，砂砾坚土\n\n主要包括坚实密实的黏性土或黄土，含有碎石卵石的中等密实的黏性土或黄土，粗卵石；天然级配砂石，软泥灰岩等，坚实系数为1.0～1.5。\n\n## 5）五类土～八类土\n\n五类土是软石，六类土是次坚石，七类土是坚石，八类土是特坚石。\n\n",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "CLASSIFICATION_SYSTEM",
+            "element_type_name": "分类体系",
+            "name": "工程用土按坚实系数划分的类别、土质组成与范围",
+            "content": "通常采用坚实系数分类方法。一类土为松软土，主要包括砂土、粉土、冲积砂土层、疏松种植土、淤泥（泥炭）等，坚实系数为0.5～0.6；二类土为普通土，主要包括粉质黏土、潮湿的黄土、夹有碎石或卵石的砂、粉土混卵（碎）石、种植土、填土等，坚实系数为0.6～0.8；三类土为坚土，主要包括软及中等密实黏土、重粉质黏土、砾石土、干黄土、含有碎石卵石的黄土、粉质黏土、压实的填土等，坚实系数为0.8～1.0；四类土为砂砾坚土，主要包括坚实密实的黏性土或黄土、含有碎石卵石的中等密实黏性土或黄土、粗卵石、天然级配砂石、软泥灰岩等，坚实系数为1.0～1.5；五类土至八类土依次为软石、次坚石、坚石和特坚石。"
+          }
+        ]
+      },
+      {
+        "ku_id": "KP_SZ_002_KU_02",
+        "kp_id": "KP_SZ_002",
+        "order_index": 2,
+        "title": "常用路基土的主要性能参数",
+        "main_question": "常用路基土需要掌握哪些主要性能参数，各参数如何定义、计算或用于判别土的状态？",
+        "knowledge_object": "常用路基土的物理性质、界限含水率及塑性状态指标",
+        "core_conclusion": "常用路基土的主要性能参数包括含水率、天然密度、孔隙比、孔隙率、塑限、液限、塑性指数和液性指数。其中，含水率、天然密度、孔隙比和孔隙率反映土的基本物理性质，塑限和液限表示土由可塑状态向半固体或流体状态转变的界限，塑性指数为液限与塑限之差，液性指数由天然含水率、塑限和塑性指数计算，并可据其范围判别土的软硬状态。",
+        "knowledge_type": "SOIL_PROPERTY_PARAMETERS",
+        "knowledge_type_name": "土体性能参数",
+        "page_start": null,
+        "page_end": 10,
+        "start_offset": 398,
+        "end_offset": 1050,
+        "start_block_id": "S0036",
+        "end_block_id": "S0077",
+        "source_text": "## 2. 常用路基土的主要性能参数\n\n1) 含水率 $\\omega$\n\n土中水的质量与干土粒质量之比。\n\n2) 天然密度 $\\rho$\n\n土的单位体积的质量。\n\n3) 孔隙比 $e$\n\n土的孔隙体积与土粒体积之比。\n\n## 4）孔隙率 $n$\n\n土的孔隙体积与土的体积之比。\n\n5）塑限 $\\omega_{\\mathrm{p}}$\n\n土由可塑状态转为半固体状态时的界限含水率为塑性下限，称为塑性界限，简称塑限。\n\n## 6）液限 $\\omega_{\\mathrm{L}}$\n\n土由可塑状态转为流体状态时的界限含水率为液性上限，称为液性界限，简称液限。\n\n## 7）塑性指数 $I_{\\mathrm{p}}$\n\n土的液限与塑限之差值， $I_{p}=\\omega_{L}-\\omega_{p}$\n\n## 8）液性指数 $I_{\\mathrm{L}}$\n\n土的天然含水率与塑限之差值对塑性指数之比值， $I_{\\mathrm{L}} = (\\omega - \\omega_{\\mathrm{p}}) / I_{\\mathrm{p}}$ ， $I_{\\mathrm{L}}$ 可用以判别土的软硬程度； $I_{\\mathrm{L}} < 0$ 坚硬、半坚硬状态， $0 \\leqslant I_{\\mathrm{L}} < 0.5$ 硬塑状态， $0.5 \\leqslant I_{\\mathrm{L}} < 1.0$ 软塑状态， $I_{\\mathrm{L}} \\geqslant 1.0$ 流塑状态。\n\n",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "PHYSICAL_PROPERTY_SET",
+            "element_type_name": "基本物理性质参数",
+            "name": "含水率、天然密度、孔隙比和孔隙率",
+            "content": "含水率ω是土中水的质量与干土粒质量之比；天然密度ρ是土的单位体积质量；孔隙比e是土的孔隙体积与土粒体积之比；孔隙率n是土的孔隙体积与土体积之比。"
+          },
+          {
+            "element_id": "CE_02",
+            "element_type": "CONSISTENCY_LIMIT_SET",
+            "element_type_name": "稠度界限参数",
+            "name": "塑限与液限及其状态转变含义",
+            "content": "塑限ωp是土由可塑状态转为半固体状态时的界限含水率，即塑性下限或塑性界限；液限ωL是土由可塑状态转为流体状态时的界限含水率，即液性上限或液性界限。"
+          },
+          {
+            "element_id": "CE_03",
+            "element_type": "STATE_INDEX_CALCULATION",
+            "element_type_name": "状态指数及计算判别",
+            "name": "塑性指数与液性指数的计算及土的软硬状态判别",
+            "content": "塑性指数Ip为土的液限与塑限之差，Ip=ωL−ωp；液性指数IL为土的天然含水率与塑限之差值对塑性指数的比值，IL=(ω−ωp)/Ip。IL<0时为坚硬、半坚硬状态，0≤IL<0.5时为硬塑状态，0.5≤IL<1.0时为软塑状态，IL≥1.0时为流塑状态。"
+          }
+        ]
+      },
+      {
+        "ku_id": "KP_SZ_002_KU_03",
+        "kp_id": "KP_SZ_002",
+        "order_index": 3,
+        "title": "不良土质路基处理的分类",
+        "main_question": "不良土质路基按作用机理可以分为哪几类，各类处理分别通过什么原理改善路基土？",
+        "knowledge_object": "不良土质路基处理的作用机理分类",
+        "core_conclusion": "按路基处理的作用机理，不良土质路基处理大致分为土质改良、土的置换和土的补强三类。土质改良通过机械、化学、电、热等手段增加路基土密度或使其固结，尽可能利用原有路基；土的置换通过良质土置换软土层；土的补强通过约束路基土或设置高抗拉强度材料形成复合路基，以加强和改善路基土的剪切特性。",
+        "knowledge_type": "TREATMENT_MECHANISM_CLASSIFICATION",
+        "knowledge_type_name": "处理机理分类",
+        "page_start": null,
+        "page_end": 10,
+        "start_offset": 1050,
+        "end_offset": 1261,
+        "start_block_id": "S0078",
+        "end_block_id": "S0087",
+        "source_text": "## 3. 不良土质路基处理\n\n## 1) 不良土质路基处理的分类\n\n按路基处理的作用机理，大致分为：土质改良、土的置换、土的补强三类。土质改良是指用机械（力学）、化学、电、热等手段增加路基土的密度，或使路基土固结，这一方法的原理是尽可能地利用原有路基。土的置换是将软土层换填为良质土如砂垫层等。土的补强是采用薄膜、绳网、板桩等约束住路基土，或者在土中放入抗拉强度高的补强材料形成复合路基以加强和改善路基土的剪切特性。\n\n",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "MECHANISM_CLASSIFICATION",
+            "element_type_name": "作用机理分类",
+            "name": "不良土质路基处理的三类作用机理及改善方式",
+            "content": "土质改良是用机械（力学）、化学、电、热等手段增加路基土的密度或使其固结，原理是尽可能利用原有路基；土的置换是将软土层换填为良质土，如砂垫层；土的补强是采用薄膜、绳网、板桩等约束路基土，或在土中放入抗拉强度高的补强材料形成复合路基，以加强和改善路基土的剪切特性。"
+          }
+        ]
+      },
+      {
+        "ku_id": "KP_SZ_002_KU_04",
+        "kp_id": "KP_SZ_002",
+        "order_index": 4,
+        "title": "路基处理方法分类",
+        "main_question": "路基处理方法依据作用和原理分为哪几类，各类方法的处理方式、原理作用、适用范围及选用依据是什么？",
+        "knowledge_object": "路基处理方法的分类、处理机理、适用范围与选用依据",
+        "core_conclusion": "路基处理方法根据作用和原理大致分为碾压及夯实、换土垫层、排水固结、振冲挤密、振冲置换及拌入、加筋六类。各类方法分别通过压实、置换、排水固结、振动或挤密、形成加固体以及设置加筋材料等方式提高承载力、减小沉降或改善变形与稳定性能；具体选用应综合考虑软弱土特点、路基条件、处理指标和范围、工程费用、进度、材料来源及当地环境等因素。",
+        "knowledge_type": "TREATMENT_METHOD_CLASSIFICATION",
+        "knowledge_type_name": "处理方法分类",
+        "page_start": null,
+        "page_end": 10,
+        "start_offset": 1261,
+        "end_offset": 2629,
+        "start_block_id": "S0088",
+        "end_block_id": "S0101",
+        "source_text": "## 2）路基处理方法分类\n\n路基处理的方法，根据其作用和原理大致分为六类，见表 1.2-1。表中所列各种方法是根据软弱土的特点和所需处理的目的而发展起来的，各种方法的具体选用，应从路基条件、处理的指标及范围、工程费用、工程进度及材料来源、当地环境等多方面进行考虑和研究。\n\n表 1.2-1 路基处理的方法\n\n<table><tr><td>序号</td><td>分类</td><td>处理方法</td><td>原理及作用</td><td>适用范围</td></tr><tr><td>1</td><td>碾压及夯实</td><td>重锤夯实、机械碾压、振动压实、强夯(动力固结)</td><td>利用压实原理,通过机械碾压、夯击,把表层地基压实;强夯则利用强大的夯击能,在地基中产生强烈的冲击波和动应力,迫使土在动力固结效应下密实</td><td>适用于碎石土、砂土、粉土、低饱和度的黏性土、杂填土等,对饱和黏性土应慎重采用</td></tr><tr><td>2</td><td>换土垫层</td><td>砂石垫层、素土垫层、灰土垫层、矿渣垫层</td><td>以砂石、素土、灰土和矿渣等强度较高的材料,置换地基表层软弱土,提高持力层的承载力,扩散应力,减小沉降量</td><td>适用于暗沟、暗塘等软弱土的浅层处理</td></tr><tr><td>3</td><td>排水固结</td><td>天然地基预压、砂井预压、塑料排水板预压、真空预压、降水预压</td><td>在地基中设竖向排水体,加速地基的固结和强度增长,提升地基的稳定性;加速沉降发展,使基础沉降提前完成</td><td>适用于处理饱和软弱土层,对于渗透性极低的泥炭土,必须慎重对待</td></tr><tr><td>4</td><td>振冲、挤密</td><td>振冲挤密、灰土挤密桩、砂桩、砂砾桩、碎石桩、石灰桩、爆破挤密、强夯置换</td><td>采用一定的技术措施,通过振动或挤密,使土体的孔隙减少,强度提升;必要时,在振动挤密过程中,回填砂、砾石、碎石、灰土、素土等,在夯坑中回填片块石、碎砾石、卵石与地基土组成复合地基,从而提升地基的承载力,减小沉降量</td><td>适用于处理松砂、粉土、杂填土及湿陷性黄土</td></tr><tr><td>5</td><td>振冲置换及拌入</td><td>振冲置换、深层搅拌、高压喷射注浆、石灰桩、CFG桩等</td><td>采用专门的技术措施,以砂、碎石等置换软弱土地基中的部分软弱土,或在部分软弱土地基中掺入水泥、石灰或砂浆等形成加固体,与未处理部分的土组成复合地基,从而提升地基承载力,减小沉降量</td><td>黏性土、冲填土、粉砂、细砂等;振冲置换法在不排水剪切强度 $c_{U} < 20kPa$ 时慎用</td></tr><tr><td>6</td><td>加筋</td><td>土工聚合物加筋、锚固、树根桩、加筋土</td><td>在地基或土体中埋设强度较大的土工聚合物、钢片等加筋材料,使地基或土体能承受抗拉力,防止断裂,保持整体性,提升刚度,改变地基土体的应力场和应变场,从而提升地基的承载力,改善变形特性</td><td>软弱土地基、填土及陡坡填土、砂土</td></tr></table>\n\n",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "METHOD_CLASSIFICATION_TABLE",
+            "element_type_name": "方法分类及适用说明",
+            "name": "六类路基处理方法的处理方式、原理作用和适用范围",
+            "content": "六类方法包括：碾压及夯实，采用重锤夯实、机械碾压、振动压实、强夯等，利用压实原理使地基密实，适用于碎石土、砂土、粉土、低饱和度黏性土、杂填土等，对饱和黏性土应慎重；换土垫层，采用砂石垫层、素土垫层、灰土垫层、矿渣垫层等置换浅层软弱土，适用于暗沟、暗塘等软弱土浅层处理；排水固结，通过竖向排水体和预压加速固结、强度增长和沉降完成，适用于饱和软弱土层，对渗透性极低的泥炭土应慎重；振冲、挤密，通过振动或挤密减少孔隙、提升强度，必要时回填材料形成复合地基，适用于松砂、粉土、杂填土及湿陷性黄土；振冲置换及拌入，通过置换部分软弱土或掺入水泥、石灰、砂浆等形成加固体，适用于黏性土、冲填土、粉砂、细砂等，振冲置换法在不排水剪切强度cU<20kPa时慎用；加筋，在地基或土体中埋设土工聚合物、钢片等高强材料，提升承载力、刚度并改善变形特性，适用于软弱土地基、填土及陡坡填土、砂土。具体方法应根据软弱土特点、处理目的、路基条件、处理指标及范围、费用、进度、材料来源和环境等综合选用。"
+          }
+        ]
+      },
+      {
+        "ku_id": "KP_SZ_002_KU_05",
+        "kp_id": "KP_SZ_002",
+        "order_index": 5,
+        "title": "路基处理常用的方法",
+        "main_question": "考虑城镇道路的地下管线、环境、资源和费用等因素，路基处理常用哪些具体方法？",
+        "knowledge_object": "城镇道路路基处理的常用工程方法",
+        "core_conclusion": "考虑城镇道路地下管线众多以及环境、土方资源和工程费用等因素，路基处理常用方法包括路基土方掺灰或掺好土改良、土方或石方等换填、铺设土工格栅或土工布补强、抛石挤淤、打石灰桩挤密或固化土方，以及堆载预压和加强压实。",
+        "knowledge_type": "PRACTICAL_METHOD_SET",
+        "knowledge_type_name": "常用处理方法",
+        "page_start": null,
+        "page_end": 10,
+        "start_offset": 2629,
+        "end_offset": 2811,
+        "start_block_id": "S0102",
+        "end_block_id": "S0121",
+        "source_text": "## 3）路基处理常用的方法\n\n考虑到城镇道路地下管线众多、环境、土方资源、工程费用等因素，常用方法如下：\n\n（1）路基土方掺灰、好土等改良。\n\n（2）路基土方换填处理（土方、石方、石灰土、水泥土、碎石土、级配碎石等）。\n\n（3）路基加铺土工格栅、土工布等补强处理。\n\n（4）抛石挤淤。\n\n（5）路基打石灰桩挤密土方固化土方处理。\n\n（6）路基堆载预压和加强压实。",
+        "content_elements": [
+          {
+            "element_id": "CE_01",
+            "element_type": "APPLICATION_METHOD_LIST",
+            "element_type_name": "工程应用方法清单",
+            "name": "城镇道路路基处理的常用方法",
+            "content": "常用方法包括：（1）路基土方掺灰、好土等改良；（2）路基土方换填处理，包括土方、石方、石灰土、水泥土、碎石土、级配碎石等；（3）路基加铺土工格栅、土工布等补强处理；（4）抛石挤淤；（5）路基打石灰桩挤密土方、固化土方处理；（6）路基堆载预压和加强压实。"
+          }
+        ]
+      }
+    ],
+    "stage1_validation": {
+      "coverage_rate": 1.0,
+      "gap_count": 0,
+      "overlap_count": 0,
+      "order_valid": true,
+      "all_blocks_covered": true,
+      "status": "PASS",
+      "errors": []
+    }
+  }
+}
