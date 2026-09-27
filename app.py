@@ -123,7 +123,7 @@ def render_stage1(mode, api):
         else:
             payload, run_id = build_stage1_input(kp, segment_source_text(kp.source_text)), new_run_id()
             try:
-                store.save_run(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, stage="STAGE1", mode="CODEX" if mode.startswith("模式A") else "API", status="PENDING", prompt_version=selected, input_payload=payload)
+                store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=selected, input_payload=payload)
                 if mode.startswith("模式A"):
                     task = create_codex_task("STAGE1", run_id, prompt, payload)
                     st.session_state.update(stage1_task_dir=str(task), current_run_id=run_id)
@@ -132,10 +132,10 @@ def render_stage1(mode, api):
                     raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
                     llm, resolved = parse_stage1(raw, kp)
                     st.session_state.update(stage1_llm=llm.model_dump(), stage1_resolved=resolved.model_dump(), stage1_editor=json.dumps(llm.model_dump(), ensure_ascii=False, indent=2), current_run_id=run_id)
-                    store.update_run(run_id=run_id, stage="STAGE1", status="STAGE1_COMPLETED", raw_response=raw, parsed_payload=llm, validation_payload=resolved.validation)
+                    store.update_batch(run_id=run_id, status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw, parsed_payload=llm, validation_payload=resolved.validation)
                     persist(); st.success("Stage 1 已完成。")
             except Exception as exc:
-                store.update_run(run_id=run_id, stage="STAGE1", status="FAIL")
+                store.update_batch(run_id=run_id, status="FAIL", current_stage="STAGE1")
                 st.exception(exc)
     if st.session_state.get("stage1_task_dir"):
         task = Path(st.session_state["stage1_task_dir"])
@@ -147,11 +147,11 @@ def render_stage1(mode, api):
             else:
                 try:
                     llm, resolved = parse_stage1(raw, current_kp())
-                    store.update_run(run_id=st.session_state.get("current_run_id", ""), stage="STAGE1", status="STAGE1_COMPLETED", raw_response=raw, parsed_payload=llm, validation_payload=resolved.validation)
+                    store.update_batch(run_id=st.session_state.get("current_run_id", ""), status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw, parsed_payload=llm, validation_payload=resolved.validation)
                     st.session_state.update(stage1_llm=llm.model_dump(), stage1_resolved=resolved.model_dump(), stage1_editor=json.dumps(llm.model_dump(), ensure_ascii=False, indent=2))
                     persist(); st.success("Codex Stage 1 结果已加载。")
                 except Exception as exc:
-                    store.update_run(run_id=st.session_state.get("current_run_id", ""), stage="STAGE1", status="FAIL", raw_response=raw)
+                    store.update_batch(run_id=st.session_state.get("current_run_id", ""), status="FAIL", current_stage="STAGE1", raw_response=raw)
                     st.exception(exc)
     if st.session_state.get("stage1_resolved"):
         from schemas.models import Stage1ResolvedResult
@@ -180,16 +180,17 @@ def render_stage2(mode, api):
     prompt = st.text_area("Prompt B 内容（本次可临时修改）", load_prompt("ku_extract", selected), height=260, key=prompt_widget_key("extract_prompt_runtime", "ku_extract", selected))
     if st.button("开始属性抽取", type="primary"):
         kp, stage1 = current_kp(), Stage1ResolvedResult.model_validate(st.session_state["stage1_resolved"])
-        payload, run_id = build_stage2_input(stage1), new_run_id()
+        payload = build_stage2_input(stage1)
+        run_id = st.session_state.get("current_run_id") or new_run_id()
         try:
-            store.save_run(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, stage="STAGE2", mode="CODEX" if mode.startswith("模式A") else "API", status="PENDING", prompt_version=selected, input_payload=payload)
+            store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=selected, input_payload=payload)
             if mode.startswith("模式A"):
-                task = create_codex_task("STAGE2", run_id, prompt, payload); st.session_state.update(stage2_task_dir=str(task), stage2_run_id=run_id); persist(); st.success("已生成 Codex Stage 2 待办任务。")
+                task = create_codex_task("STAGE2", run_id, prompt, payload); store.update_batch(run_id=run_id, status="STAGE2_IN_PROGRESS", current_stage="STAGE2"); st.session_state.update(stage2_task_dir=str(task), stage2_run_id=run_id); persist(); st.success("已生成 Codex Stage 2 待办任务。")
             else:
                 raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
-                llm, final = parse_stage2(raw, kp, stage1); store.update_run(run_id=run_id, stage="STAGE2", status="COMPLETED", raw_response=raw, parsed_payload=llm, validation_payload=final); st.session_state.update(stage2_llm=llm.model_dump(), final_result=final.model_dump()); persist(); st.success("Stage 2 已完成。")
+                llm, final = parse_stage2(raw, kp, stage1); store.update_batch(run_id=run_id, status="COMPLETED", current_stage="STAGE2", raw_response=raw, parsed_payload=llm, validation_payload=final, final_payload=final); st.session_state.update(stage2_llm=llm.model_dump(), final_result=final.model_dump()); persist(); st.success("Stage 2 已完成。")
         except Exception as exc:
-            store.update_run(run_id=run_id, stage="STAGE2", status="FAIL")
+            store.update_batch(run_id=run_id, status="FAIL", current_stage="STAGE2")
             st.exception(exc)
     if st.session_state.get("stage2_task_dir"):
         task = Path(st.session_state["stage2_task_dir"]); st.info("请在 Codex 输入“处理最新任务”，完成后点击加载。"); st.code(str(task))
@@ -198,9 +199,9 @@ def render_stage2(mode, api):
             if not raw: st.warning("还没有 result.json。")
             else:
                 try:
-                    stage1 = Stage1ResolvedResult.model_validate(st.session_state["stage1_resolved"]); llm, final = parse_stage2(raw, current_kp(), stage1); store.update_run(run_id=st.session_state.get("stage2_run_id", ""), stage="STAGE2", status="COMPLETED", raw_response=raw, parsed_payload=llm, validation_payload=final); st.session_state.update(stage2_llm=llm.model_dump(), final_result=final.model_dump()); persist(); st.success("Codex Stage 2 结果已加载。")
+                    stage1 = Stage1ResolvedResult.model_validate(st.session_state["stage1_resolved"]); llm, final = parse_stage2(raw, current_kp(), stage1); store.update_batch(run_id=st.session_state.get("stage2_run_id", ""), status="COMPLETED", current_stage="STAGE2", raw_response=raw, parsed_payload=llm, validation_payload=final, final_payload=final); st.session_state.update(stage2_llm=llm.model_dump(), final_result=final.model_dump()); persist(); st.success("Codex Stage 2 结果已加载。")
                 except Exception as exc:
-                    store.update_run(run_id=st.session_state.get("stage2_run_id", ""), stage="STAGE2", status="FAIL", raw_response=raw)
+                    store.update_batch(run_id=st.session_state.get("stage2_run_id", ""), status="FAIL", current_stage="STAGE2", raw_response=raw)
                     st.exception(exc)
 
 
@@ -217,6 +218,13 @@ def render_result():
             st.write(f"核心结论：{unit.core_conclusion}")
             st.text_area("教材原文", unit.source_text, height=160, disabled=True, key=f"final_{unit.ku_id}")
     st.download_button("导出最终 JSON", json.dumps(final.model_dump(), ensure_ascii=False, indent=2), file_name=f"{final.kp.kp_id}_result.json", mime="application/json", use_container_width=True)
+
+
+@st.dialog("最终图谱", width="large")
+def show_history_graph(run):
+    from schemas.models import FinalExtraction
+    final = FinalExtraction.model_validate(json.loads(run["final_json"]))
+    components.html(render_html_report(final), height=900, scrolling=True)
 
 
 for key, value in load_checkpoint().items(): st.session_state.setdefault(key, value)
@@ -257,7 +265,17 @@ with main_panel.container():
     elif section == "历史运行":
         st.subheader("历史运行")
         rows = store.list_runs(200)
-        st.dataframe([{"run_id": r["run_id"], "kp_id": r["kp_id"], "kp_name": r["kp_name"], "stage": r["stage"], "mode": r["mode"], "model": r["model_name"], "prompt": r["prompt_version"], "status": r["status"], "created_at": r["created_at"]} for r in rows], use_container_width=True)
+        for run in rows:
+            cols = st.columns([1.3, 1.4, 1.2, 2.8, 1.2])
+            cols[0].write(run["kp_id"])
+            cols[1].write(run["kp_name"])
+            cols[2].write(run["status"])
+            cols[3].write(run.get("status_description") or run["status"])
+            if run["status"] == "COMPLETED" and run.get("final_json"):
+                if cols[4].button("查看图谱", key=f"graph_{run['run_id']}"):
+                    show_history_graph(run)
+            else:
+                cols[4].write("—")
     else:
         st.subheader("Prompt 管理")
         kind = st.selectbox("Prompt 类型", ["ku_split", "ku_extract"], key="prompt_mgmt_kind")

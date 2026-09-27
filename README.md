@@ -62,7 +62,9 @@ result.json
 
 回到 Streamlit 点击“加载 Codex 结果”即可。
 
-加载结果并通过校验后，历史运行记录会自动回写状态：Stage 1 为 `STAGE1_COMPLETED`，Stage 2 为 `COMPLETED`；解析或校验失败会记录为 `FAIL`。任务目录仍保留在 `.kg_tasks/pending/`，其中是否存在 `result.json` 用于判断任务文件是否已完成。
+每次实验批次在历史中只保留一条记录。加载结果并通过校验后，批次状态会自动推进：`PENDING`、`STAGE1_COMPLETED`、`STAGE2_IN_PROGRESS`、`COMPLETED` 或 `FAIL`，并同时显示中文状态描述。任务目录仍保留在 `.kg_tasks/pending/`，其中是否存在 `result.json` 用于判断任务文件是否已完成。
+
+最终状态为 `COMPLETED` 的历史批次会显示“查看图谱”按钮，可直接打开最终图谱报告；报告内保留“全屏展示”功能。
 
 > 说明：Streamlit 按钮本身不能“自动借用”当前 Codex/ChatGPT 账号额度发起一次隐藏模型调用。模式 A 是一个 workspace handoff：由 Codex 当前会话完成语义任务，因此使用当前 Codex 会话的用量。
 
