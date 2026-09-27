@@ -38,7 +38,7 @@ from repositories.run_store import RunStore
 st.set_page_config(page_title="教材知识单元 AI 抽取实验台", layout="wide")
 store = RunStore()
 
-DEFAULT_STAGE1_PROMPT_VERSION = "v1.4"
+DEFAULT_STAGE1_PROMPT_VERSION = "v1.5"
 
 
 def persist_current_experiment() -> None:
@@ -127,16 +127,20 @@ with st.sidebar:
     mode = st.radio(
         "选择模型调用方式",
         ["模式A｜Codex Workspace", "模式B｜API自动调用"],
+        key="run_mode",
         help="模式A不需要API Key：应用生成待办任务，你让当前Codex处理并写回结果。模式B由程序直接调用OpenAI-compatible API。",
     )
-    if mode.startswith("模式B"):
-        st.subheader("API 设置")
-        api_base = st.text_input("Base URL", value=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1"))
-        api_key = st.text_input("API Key", value=os.getenv("LLM_API_KEY", ""), type="password")
-        api_model = st.text_input("Model", value=os.getenv("LLM_MODEL", ""))
-        api_temperature = st.slider("Temperature", 0.0, 1.0, float(os.getenv("LLM_TEMPERATURE", "0.1")), 0.05)
+    api_panel = st.empty()
+    if mode == "模式B｜API自动调用":
+        with api_panel.container():
+            st.subheader("API 设置")
+            api_base = st.text_input("Base URL", value=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1"))
+            api_key = st.text_input("API Key", value=os.getenv("LLM_API_KEY", ""), type="password")
+            api_model = st.text_input("Model", value=os.getenv("LLM_MODEL", ""))
+            api_temperature = st.slider("Temperature", 0.0, 1.0, float(os.getenv("LLM_TEMPERATURE", "0.1")), 0.05)
     else:
-        st.info("模式A使用当前 Codex 会话完成语义抽取。应用按钮不会直接消耗API额度；需要在Codex里执行一次“处理最新任务”。")
+        with api_panel.container():
+            st.info("模式A使用当前 Codex 会话完成语义抽取。应用按钮不会直接消耗API额度；需要在Codex里执行一次“处理最新任务”。")
 
 page_exp, page_hist, page_prompt = st.tabs(["单 KP 实验", "历史运行", "Prompt 管理"])
 
@@ -287,6 +291,8 @@ with page_exp:
         for ku in resolved.knowledge_units:
             with st.expander(f"KU {ku.order_index:02d}｜{ku.title}", expanded=True):
                 st.write(f"**主问题：** {ku.main_question}")
+                if ku.section_path:
+                    st.write(f"**章节路径：** {' › '.join(ku.section_path)}")
                 st.write(f"**原文范围：** {ku.start_block_id} → {ku.end_block_id}")
                 st.text_area("KU 原文（程序从KP原文精确截取）", ku.source_text, height=160, disabled=True, key=f"src_{ku.temp_ku_id}")
 
@@ -415,6 +421,8 @@ with page_exp:
         for ku in final.knowledge_units:
             with st.expander(f"{ku.ku_id}｜{ku.title}", expanded=True):
                 st.write(f"**主问题：** {ku.main_question}")
+                if ku.section_path:
+                    st.write(f"**章节路径：** {' › '.join(ku.section_path)}")
                 st.write(f"**知识对象：** {ku.knowledge_object}")
                 st.write(f"**核心结论：** {ku.core_conclusion}")
                 knowledge_type_label = ku.knowledge_type_name or ku.knowledge_type

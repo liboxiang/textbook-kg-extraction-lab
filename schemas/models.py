@@ -25,6 +25,7 @@ class KUSplitItem(BaseModel):
     order_index: int
     title: str
     main_question: str
+    section_path: list[str] = Field(default_factory=list)
     start_block_id: str
     end_block_id: str
 
@@ -48,6 +49,7 @@ class KUResolved(BaseModel):
     order_index: int
     title: str
     main_question: str
+    section_path: list[str] = Field(default_factory=list)
     start_block_id: str
     end_block_id: str
     start_offset: int
@@ -119,6 +121,7 @@ class FinalKU(BaseModel):
     order_index: int
     title: str
     main_question: str
+    section_path: list[str] = Field(default_factory=list)
     knowledge_object: str
     core_conclusion: str
     knowledge_type: KnowledgeType

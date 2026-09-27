@@ -38,6 +38,7 @@ def build_graph_data(result: FinalExtraction) -> dict:
             "y": ku_y,
             "attributes": {
                 "title": ku.title,
+                "section_path": ku.section_path,
                 "main_question": ku.main_question,
                 "knowledge_object": ku.knowledge_object,
                 "core_conclusion": ku.core_conclusion,

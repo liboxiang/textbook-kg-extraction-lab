@@ -26,6 +26,7 @@ def validate_and_build_final(
                 order_index=s1.order_index,
                 title=s2.title or s1.title,
                 main_question=s2.main_question or s1.main_question,
+                section_path=s1.section_path,
                 knowledge_object=s2.knowledge_object,
                 core_conclusion=s2.core_conclusion,
                 knowledge_type=s2.knowledge_type,

@@ -33,7 +33,7 @@ Codex 会根据项目说明启动 Streamlit。服务启动后，浏览器打开 
 - Source Block 只是技术定位地址，不是业务实体，也不是 KU。
 - Stage 1 边界人工确认后才允许进入 Stage 2。
 - 模型负责语义判断；代码负责 Coverage、Gap、Overlap、顺序和 Schema 等确定性校验。
-- Stage 1 只负责 KU 边界、标题和统领性主问题；当前默认 Prompt 为 `ku_split/v1.4`。
+- Stage 1 只负责 KU 边界、标题、章节路径和统领性主问题；当前默认 Prompt 为 `ku_split/v1.5`。
 - Stage 2 在已确认的 KU 内抽取属性和内容要素；当前默认使用最新的 `ku_extract/v1.3`。
 - `knowledge_type`、`element_type` 是开放式语义类型，同时输出清晰的中文类型名称，不使用 `OTHER` 作为新结果兜底。
 - 内容要素不关联证据字段；KU 完整原文由程序单独保存。
@@ -141,7 +141,7 @@ start.bat
 app.py
 AGENTS.md
 prompts/
-  ku_split/v1.0.md ... v1.4.md
+  ku_split/v1.0.md ... v1.5.md
   ku_extract/v1.0.md ... v1.3.md
 schemas/
 services/

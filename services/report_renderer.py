@@ -40,6 +40,7 @@ def render_html_report(result: FinalExtraction) -> str:
         parts += [
             "<div class='ku'>",
             f"<h2>{ku.order_index}. {escape(ku.title)}</h2>",
+            f"<p><b>章节路径：</b>{escape(' › '.join(ku.section_path) if ku.section_path else '-')}</p>",
             f"<p><span class='tag'>{escape(ku.knowledge_type_name or ku.knowledge_type)}（{escape(ku.knowledge_type)}）</span><b>主问题：</b>{escape(ku.main_question)}</p>",
             f"<p><b>知识对象：</b>{escape(ku.knowledge_object)}</p>",
             f"<p><b>核心结论：</b>{escape(ku.core_conclusion)}</p>",

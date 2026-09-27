@@ -11,6 +11,7 @@ def test_stage2_builds_final():
         "knowledge_units":[{
             "temp_ku_id":"KU_01","order_index":1,"title":"模板拆除条件",
             "main_question":"模板在什么条件下可以拆除？",
+            "section_path":["模板工程", "模板拆除条件"],
             "start_block_id":blocks[0].block_id,"end_block_id":blocks[-1].block_id
         }]
     })
@@ -18,6 +19,7 @@ def test_stage2_builds_final():
     s2 = Stage2LLMResult.model_validate({
         "knowledge_units":[{
             "temp_ku_id":"KU_01","title":"模板拆除条件","main_question":"模板在什么条件下可以拆除？",
+            "section_path":["模板工程", "模板拆除条件"],
             "knowledge_object":"模板拆除","core_conclusion":"模板达到要求后方可拆除。","knowledge_type":"CONDITION",
             "content_elements":[]
         }]
@@ -25,6 +27,7 @@ def test_stage2_builds_final():
     final = validate_and_build_final(kp, resolved, s2)
     assert final.knowledge_units[0].source_text == kp.source_text
     assert final.knowledge_units[0].ku_id == "KP1_KU_01"
+    assert final.knowledge_units[0].section_path == ["模板工程", "模板拆除条件"]
 
 
 def test_stage2_preserves_open_semantic_type_names():

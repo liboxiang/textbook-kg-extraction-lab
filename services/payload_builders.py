@@ -28,6 +28,7 @@ def build_stage2_input(stage1: Stage1ResolvedResult) -> dict:
                 "order_index": ku.order_index,
                 "title": ku.title,
                 "main_question": ku.main_question,
+                "section_path": ku.section_path,
                 "source_text": ku.source_text,
                 "source_blocks": ku_blocks,
                 "page_start": ku.page_start,

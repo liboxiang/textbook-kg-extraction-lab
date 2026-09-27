@@ -57,6 +57,7 @@ def validate_and_resolve_stage1(
                 order_index=unit.order_index,
                 title=unit.title,
                 main_question=unit.main_question,
+                section_path=unit.section_path,
                 start_block_id=unit.start_block_id,
                 end_block_id=unit.end_block_id,
                 start_offset=blocks[s].start_offset,
