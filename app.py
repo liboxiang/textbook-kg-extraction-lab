@@ -132,6 +132,9 @@ def render_batch_experiments(mode, api):
     st.caption("一次导入多个 KP；每个 KP 独立完成两阶段抽取，结果和图谱分别查看。")
     with st.expander("创建批次", expanded=not store.list_batches(1)):
         batch_name = st.text_input("批次名称", placeholder="例如：道路工程章节批量实验", key="batch_name_input")
+        batch_mode = st.radio("批次执行模式", ["人工确认模式", "自动连续模式"], horizontal=True, key="batch_execution_mode")
+        if batch_mode == "自动连续模式":
+            st.warning("自动连续模式会跳过阶段 1 人工确认；API 模式将一键完成两个阶段，Codex 模式将为每个 KP 创建待处理任务。")
         uploaded = st.file_uploader("上传 JSON 文件（可选）", type=["json"], key="batch_json_file")
         default_text = "[{\"kp_id\":\"KP_001\",\"kp_name\":\"示例知识点\",\"source_text\":\"请输入教材原文\"}]"
         raw = uploaded.getvalue().decode("utf-8") if uploaded else st.text_area("或粘贴 JSON", value=default_text, height=180, key="batch_json_input")
@@ -146,7 +149,22 @@ def render_batch_experiments(mode, api):
                     kp = KnowledgePointInput.model_validate(item)
                     payload = build_stage1_input(kp, segment_source_text(kp.source_text))
                     store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=DEFAULT_STAGE1_PROMPT_VERSION, input_payload=payload, batch_id=batch_id, batch_name=name)
-                    if mode.startswith("模式A"):
+                    if batch_mode == "自动连续模式" and mode.startswith("模式B"):
+                        try:
+                            split_prompt = load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION)
+                            raw_stage1 = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(split_prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+                            stage1_llm, stage1 = parse_stage1(raw_stage1, kp)
+                            if stage1.validation.status != "PASS":
+                                raise ValueError("Stage 1 Coverage Validator 未通过")
+                            store.update_batch(run_id=run_id, status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw_stage1, parsed_payload=stage1_llm, validation_payload=stage1.validation)
+                            stage2_payload = build_stage2_input(stage1)
+                            extract_prompt = load_prompt("ku_extract", DEFAULT_STAGE2_PROMPT_VERSION)
+                            raw_stage2 = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(extract_prompt, json.dumps(stage2_payload, ensure_ascii=False), api["temperature"])
+                            stage2_llm, final = parse_stage2(raw_stage2, kp, stage1)
+                            store.update_batch(run_id=run_id, status="COMPLETED", current_stage="STAGE2", raw_response=raw_stage2, parsed_payload=stage2_llm, validation_payload=final, final_payload=final)
+                        except Exception as item_error:
+                            store.update_batch(run_id=run_id, status="FAIL", current_stage="STAGE2", raw_response=str(item_error))
+                    elif mode.startswith("模式A"):
                         create_codex_task("STAGE1", run_id, load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION), payload)
                 st.session_state["selected_batch_id"] = batch_id
                 st.success(f"批次已创建：{batch_id}，共 {len(items)} 个 KP")
