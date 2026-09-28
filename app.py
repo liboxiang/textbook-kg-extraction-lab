@@ -123,7 +123,7 @@ def activate_batch_item(run):
         st.session_state["stage1_task_dir"] = str(task_dir)
     else:
         st.session_state.pop("stage1_task_dir", None)
-    st.session_state["app_section"] = "单 KP 实验"
+    st.session_state["pending_app_section"] = "单 KP 实验"
     persist()
 
 
@@ -359,6 +359,8 @@ with st.sidebar:
         with api_panel.container():
             st.info("模式A使用当前 Codex 会话完成语义抽取。")
     st.divider(); st.header("功能菜单")
+    if st.session_state.pop("pending_app_section", None):
+        st.session_state["app_section"] = "单 KP 实验"
     section = st.radio("选择功能", ["单 KP 实验", "批量实验", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
     if st.button("重新开始实验", use_container_width=True): restart(); st.rerun()
 
