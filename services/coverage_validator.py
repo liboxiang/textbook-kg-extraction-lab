@@ -32,6 +32,16 @@ def validate_and_resolve_stage1(
     if len(ids) != len(set(ids)):
         errors.append("temp_ku_id 存在重复")
 
+    evidence_ids = [item.temp_ku_id for item in result.evidence.ku_split]
+    if len(evidence_ids) != len(set(evidence_ids)):
+        errors.append("KU 拆分证据存在重复引用")
+    if set(evidence_ids) != set(ids):
+        errors.append(
+            "KU 拆分证据必须与 KU 一一对应。"
+            f"missing={sorted(set(ids) - set(evidence_ids))}, "
+            f"extra={sorted(set(evidence_ids) - set(ids))}"
+        )
+
     last_end = -1
     for unit in units:
         if unit.start_block_id not in block_index:
@@ -110,4 +120,5 @@ def validate_and_resolve_stage1(
         source_blocks=blocks,
         knowledge_units=resolved,
         validation=validation,
+        evidence=result.evidence,
     )

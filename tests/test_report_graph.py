@@ -3,6 +3,9 @@ import unittest
 from schemas.models import (
     ContentElement,
     FinalExtraction,
+    FinalEvidence,
+    FinalKUSplitEvidence,
+    FinalContentElementSplitEvidence,
     FinalKU,
     KnowledgePointInput,
     Stage1Validation,
@@ -46,6 +49,12 @@ class ReportGraphTests(unittest.TestCase):
                     ],
                 )
             ],
+            evidence=FinalEvidence(
+                ku_split=[FinalKUSplitEvidence(ku_id="KP1_KU_01", evidence="KU证据")],
+                content_element_split=[FinalContentElementSplitEvidence(
+                    ku_id="KP1_KU_01", element_id="CE_01", evidence="内容要素证据"
+                )],
+            ),
         )
 
     def test_content_element_has_chinese_type_name(self):
@@ -67,6 +76,10 @@ class ReportGraphTests(unittest.TestCase):
         ku_node = next(node for node in graph["nodes"] if node["id"] == "ku:KP1_KU_01")
         self.assertEqual(ce_node["attributes"]["element_type_name"], "定义")
         self.assertIn("source_text", ku_node["attributes"])
+        self.assertEqual(ku_node["evidence"], "KU证据")
+        self.assertEqual(ce_node["evidence"], "内容要素证据")
+        self.assertNotIn("evidence", ku_node["attributes"])
+        self.assertNotIn("evidence", ce_node["attributes"])
 
     def test_graph_allocates_vertical_space_for_many_content_elements(self):
         from services.report_graph import build_graph_data
@@ -91,12 +104,23 @@ class ReportGraphTests(unittest.TestCase):
         html = render_html_report(self.make_result())
         self.assertIn("知识图谱", html)
         self.assertIn("element_type_name", html)
-        self.assertNotIn("证据</th>", html)
+        self.assertIn("拆分证据</th>", html)
         self.assertIn("全屏展示", html)
         self.assertIn("requestFullscreen", html)
         self.assertIn("教材原文", html)
         self.assertIn("detail-source", html)
         self.assertIn("KP1_KU_01", html)
+        self.assertIn("KU证据", html)
+        self.assertIn("内容要素证据", html)
+
+    def test_legacy_final_result_without_evidence_still_renders(self):
+        from services.report_renderer import render_html_report
+
+        payload = self.make_result().model_dump()
+        payload.pop("evidence")
+        result = FinalExtraction.model_validate(payload)
+        html = render_html_report(result)
+        self.assertIn("暂无拆分证据", html)
 
 
 if __name__ == "__main__":

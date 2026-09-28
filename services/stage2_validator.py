@@ -1,6 +1,15 @@
 from __future__ import annotations
 
-from schemas.models import Stage1ResolvedResult, Stage2LLMResult, FinalExtraction, FinalKU, KnowledgePointInput
+from schemas.models import (
+    FinalContentElementSplitEvidence,
+    FinalEvidence,
+    FinalExtraction,
+    FinalKU,
+    FinalKUSplitEvidence,
+    KnowledgePointInput,
+    Stage1ResolvedResult,
+    Stage2LLMResult,
+)
 
 
 def validate_and_build_final(
@@ -15,6 +24,24 @@ def validate_and_build_final(
         missing = set(s1_map) - set(s2_map)
         extra = set(s2_map) - set(s1_map)
         raise ValueError(f"Stage2 KU集合与已确认Stage1不一致。missing={missing}, extra={extra}")
+
+    expected_elements = {
+        (unit.temp_ku_id, element.element_id)
+        for unit in stage2.knowledge_units
+        for element in unit.content_elements
+    }
+    evidence_keys = [
+        (item.temp_ku_id, item.element_id)
+        for item in stage2.evidence.content_element_split
+    ]
+    if len(evidence_keys) != len(set(evidence_keys)):
+        raise ValueError("内容要素拆分证据存在重复引用")
+    if set(evidence_keys) != expected_elements:
+        raise ValueError(
+            "内容要素拆分证据必须与内容要素一一对应。"
+            f"missing={sorted(expected_elements - set(evidence_keys))}, "
+            f"extra={sorted(set(evidence_keys) - expected_elements)}"
+        )
 
     finals: list[FinalKU] = []
     for s1 in sorted(stage1.knowledge_units, key=lambda x: x.order_index):
@@ -42,4 +69,30 @@ def validate_and_build_final(
             )
         )
 
-    return FinalExtraction(kp=kp, knowledge_units=finals, stage1_validation=stage1.validation)
+    final_ku_ids = {
+        unit.temp_ku_id: f"{kp.kp_id}_KU_{unit.order_index:02d}"
+        for unit in stage1.knowledge_units
+    }
+    evidence = FinalEvidence(
+        ku_split=[
+            FinalKUSplitEvidence(
+                ku_id=final_ku_ids[item.temp_ku_id],
+                evidence=item.evidence,
+            )
+            for item in stage1.evidence.ku_split
+        ],
+        content_element_split=[
+            FinalContentElementSplitEvidence(
+                ku_id=final_ku_ids[item.temp_ku_id],
+                element_id=item.element_id,
+                evidence=item.evidence,
+            )
+            for item in stage2.evidence.content_element_split
+        ],
+    )
+    return FinalExtraction(
+        kp=kp,
+        knowledge_units=finals,
+        stage1_validation=stage1.validation,
+        evidence=evidence,
+    )

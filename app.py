@@ -29,7 +29,8 @@ from repositories.run_store import RunStore
 
 st.set_page_config(page_title="教材知识单元 AI 抽取实验台", layout="wide")
 store = RunStore()
-DEFAULT_STAGE1_PROMPT_VERSION = "v1.5"
+DEFAULT_STAGE1_PROMPT_VERSION = "v1.6"
+DEFAULT_STAGE2_PROMPT_VERSION = "v1.4"
 DEFAULT_EXAMPLE_KP_ID = "KP_SZ_1.1.2"
 
 
@@ -165,11 +166,14 @@ def render_stage1(mode, api):
         a.metric("KU 数量", len(resolved.knowledge_units)); b.metric("Coverage", f"{v.coverage_rate:.0%}"); c.metric("Gap", v.gap_count); d.metric("Overlap", v.overlap_count)
         if v.status == "PASS": st.success("Coverage Validator：PASS")
         else: st.error("Coverage Validator：FAIL")
+        ku_evidence = {item.temp_ku_id: item.evidence for item in resolved.evidence.ku_split}
         for unit in resolved.knowledge_units:
             with st.expander(f"KU {unit.order_index:02d}｜{unit.title}", expanded=True):
                 st.write(f"主问题：{unit.main_question}")
                 st.write(f"原文范围：{unit.start_block_id} → {unit.end_block_id}")
                 st.text_area("KU 原文", unit.source_text, height=160, disabled=True, key=f"src_{unit.temp_ku_id}")
+                st.markdown("**KU 拆分证据**")
+                st.info(ku_evidence.get(unit.temp_ku_id, "暂无拆分证据"))
         if st.button("确认 KU 划分", disabled=v.status != "PASS", type="primary"):
             st.session_state["stage1_confirmed"] = True; persist(); st.success("KU 划分已确认，可以进入阶段2。")
 
@@ -179,7 +183,7 @@ def render_stage2(mode, api):
         st.warning("请先在阶段1确认 KU 划分。"); return
     from schemas.models import Stage1ResolvedResult
     versions = list_prompt_versions("ku_extract")
-    sync_prompt_selection(st.session_state, "extract_prompt_version", "_extract_prompt_default_applied", versions)
+    sync_prompt_selection(st.session_state, "extract_prompt_version", "_extract_prompt_default_applied", versions, DEFAULT_STAGE2_PROMPT_VERSION)
     selected = st.selectbox("Prompt B｜属性抽取", versions, key="extract_prompt_version")
     prompt = st.text_area("Prompt B 内容（本次可临时修改）", load_prompt("ku_extract", selected), height=260, key=prompt_widget_key("extract_prompt_runtime", "ku_extract", selected))
     if st.button("开始属性抽取", type="primary"):
@@ -215,12 +219,24 @@ def render_result():
     from schemas.models import FinalExtraction
     final = FinalExtraction.model_validate(st.session_state["final_result"])
     components.html(render_html_report(final), height=900, scrolling=True)
+    ku_evidence = {item.ku_id: item.evidence for item in final.evidence.ku_split}
+    element_evidence = {
+        (item.ku_id, item.element_id): item.evidence
+        for item in final.evidence.content_element_split
+    }
     for unit in final.knowledge_units:
         with st.expander(f"{unit.ku_id}｜{unit.title}", expanded=True):
             st.write(f"主问题：{unit.main_question}")
             st.write(f"知识对象：{unit.knowledge_object}")
             st.write(f"核心结论：{unit.core_conclusion}")
             st.text_area("教材原文", unit.source_text, height=160, disabled=True, key=f"final_{unit.ku_id}")
+            st.markdown("**KU 拆分证据**")
+            st.info(ku_evidence.get(unit.ku_id, "暂无拆分证据"))
+            if unit.content_elements:
+                st.markdown("**内容要素及拆分证据**")
+                for element in unit.content_elements:
+                    st.write(f"**{element.name}**：{element.content}")
+                    st.caption(element_evidence.get((unit.ku_id, element.element_id), "暂无拆分证据"))
     st.download_button("导出最终 JSON", json.dumps(final.model_dump(), ensure_ascii=False, indent=2), file_name=f"{final.kp.kp_id}_result.json", mime="application/json", use_container_width=True)
 
 

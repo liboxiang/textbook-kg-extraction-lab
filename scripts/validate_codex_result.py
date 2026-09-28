@@ -31,12 +31,27 @@ def main():
             used.extend(block_ids[s:e+1])
         if used != block_ids:
             raise ValueError("Stage1 must cover every block exactly once, in order")
+        unit_ids = {u.temp_ku_id for u in parsed.knowledge_units}
+        evidence_ids = [e.temp_ku_id for e in parsed.evidence.ku_split]
+        if len(evidence_ids) != len(set(evidence_ids)) or set(evidence_ids) != unit_ids:
+            raise ValueError("Stage1 evidence must reference every KU exactly once")
     elif stage == "STAGE2":
         parsed = Stage2LLMResult.model_validate(result_data)
         expected = {u["temp_ku_id"] for u in input_data["knowledge_units"]}
         actual = {u.temp_ku_id for u in parsed.knowledge_units}
         if expected != actual:
             raise ValueError(f"KU ID mismatch expected={expected} actual={actual}")
+        expected_elements = {
+            (unit.temp_ku_id, element.element_id)
+            for unit in parsed.knowledge_units
+            for element in unit.content_elements
+        }
+        evidence_keys = [
+            (item.temp_ku_id, item.element_id)
+            for item in parsed.evidence.content_element_split
+        ]
+        if len(evidence_keys) != len(set(evidence_keys)) or set(evidence_keys) != expected_elements:
+            raise ValueError("Stage2 evidence must reference every content element exactly once")
     else:
         raise ValueError(f"Unknown task stage: {stage}")
     print("VALIDATION PASS")

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Literal
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class KnowledgePointInput(BaseModel):
@@ -30,8 +30,20 @@ class KUSplitItem(BaseModel):
     end_block_id: str
 
 
+class KUSplitEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    temp_ku_id: str
+    evidence: str = Field(min_length=1)
+
+
+class Stage1Evidence(BaseModel):
+    ku_split: list[KUSplitEvidence]
+
+
 class Stage1LLMResult(BaseModel):
     knowledge_units: list[KUSplitItem]
+    evidence: Stage1Evidence
 
 
 class Stage1Validation(BaseModel):
@@ -65,6 +77,7 @@ class Stage1ResolvedResult(BaseModel):
     source_blocks: list[SourceBlock]
     knowledge_units: list[KUResolved]
     validation: Stage1Validation
+    evidence: Stage1Evidence
 
 
 # 类型不是封闭枚举：教材知识角色不可预先穷举，模型需要根据语义生成稳定标识。
@@ -111,8 +124,21 @@ class KUStructured(BaseModel):
     content_elements: list[ContentElement] = Field(default_factory=list)
 
 
+class ContentElementSplitEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    temp_ku_id: str
+    element_id: str
+    evidence: str = Field(min_length=1)
+
+
+class Stage2Evidence(BaseModel):
+    content_element_split: list[ContentElementSplitEvidence]
+
+
 class Stage2LLMResult(BaseModel):
     knowledge_units: list[KUStructured]
+    evidence: Stage2Evidence
 
 
 class FinalKU(BaseModel):
@@ -136,7 +162,24 @@ class FinalKU(BaseModel):
     content_elements: list[ContentElement] = Field(default_factory=list)
 
 
+class FinalKUSplitEvidence(BaseModel):
+    ku_id: str
+    evidence: str
+
+
+class FinalContentElementSplitEvidence(BaseModel):
+    ku_id: str
+    element_id: str
+    evidence: str
+
+
+class FinalEvidence(BaseModel):
+    ku_split: list[FinalKUSplitEvidence] = Field(default_factory=list)
+    content_element_split: list[FinalContentElementSplitEvidence] = Field(default_factory=list)
+
+
 class FinalExtraction(BaseModel):
     kp: KnowledgePointInput
     knowledge_units: list[FinalKU]
     stage1_validation: Stage1Validation
+    evidence: FinalEvidence = Field(default_factory=FinalEvidence)

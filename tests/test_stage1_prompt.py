@@ -5,7 +5,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-class Stage1PromptV15Tests(unittest.TestCase):
+class Stage1PromptV16Tests(unittest.TestCase):
     def test_stage1_v15_is_generic_and_audits_over_splitting(self):
         prompt = (ROOT / "prompts" / "ku_split" / "v1.5.md").read_text(encoding="utf-8")
 
@@ -23,10 +23,18 @@ class Stage1PromptV15Tests(unittest.TestCase):
         ):
             self.assertIn(generic_concept, prompt)
 
-    def test_stage1_default_prompt_version_is_v15(self):
+    def test_stage1_v16_requires_separate_natural_language_evidence(self):
+        prompt = (ROOT / "prompts" / "ku_split" / "v1.6.md").read_text(encoding="utf-8")
+
+        self.assertIn('"evidence"', prompt)
+        self.assertIn('"ku_split"', prompt)
+        self.assertIn("与 KU 一一对应", prompt)
+        self.assertIn("不输出 `source_block_ids`", prompt)
+
+    def test_stage1_default_prompt_version_is_v16(self):
         app_source = (ROOT / "app.py").read_text(encoding="utf-8")
 
-        self.assertIn('DEFAULT_STAGE1_PROMPT_VERSION = "v1.5"', app_source)
+        self.assertIn('DEFAULT_STAGE1_PROMPT_VERSION = "v1.6"', app_source)
 
     def test_mode_switch_uses_replaceable_api_panel(self):
         app_source = (ROOT / "app.py").read_text(encoding="utf-8")

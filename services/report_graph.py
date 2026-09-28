@@ -13,6 +13,11 @@ def build_graph_data(result: FinalExtraction) -> dict:
     element_gap = 30
     current_y = top
     ku_positions: list[tuple[str, int]] = []
+    ku_evidence = {item.ku_id: item.evidence for item in result.evidence.ku_split}
+    element_evidence = {
+        (item.ku_id, item.element_id): item.evidence
+        for item in result.evidence.content_element_split
+    }
 
     kp_id = f"kp:{result.kp.kp_id}"
     nodes.append({
@@ -47,6 +52,7 @@ def build_graph_data(result: FinalExtraction) -> dict:
                 "source_range": f"{ku.start_block_id} ~ {ku.end_block_id}",
                 "source_text": ku.source_text,
             },
+            "evidence": ku_evidence.get(ku.ku_id, "暂无拆分证据"),
         })
         edges.append({"source": kp_id, "target": ku_id, "label": "包含"})
         for element_index, element in enumerate(ku.content_elements):
@@ -64,6 +70,9 @@ def build_graph_data(result: FinalExtraction) -> dict:
                     "name": element.name,
                     "content": element.content,
                 },
+                "evidence": element_evidence.get(
+                    (ku.ku_id, element.element_id), "暂无拆分证据"
+                ),
             })
             edges.append({"source": ku_id, "target": element_id, "label": "包含"})
         current_y += cluster_height + ku_gap

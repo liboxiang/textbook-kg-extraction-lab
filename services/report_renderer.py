@@ -14,6 +14,11 @@ def _safe_json(data: dict) -> str:
 def render_html_report(result: FinalExtraction) -> str:
     graph_data = build_graph_data(result)
     graph_json = _safe_json(graph_data)
+    ku_evidence = {item.ku_id: item.evidence for item in result.evidence.ku_split}
+    element_evidence = {
+        (item.ku_id, item.element_id): item.evidence
+        for item in result.evidence.content_element_split
+    }
     parts = [
         "<!doctype html><html><head><meta charset='utf-8'>",
         "<title>教材知识图谱完整报告</title>",
@@ -21,7 +26,7 @@ def render_html_report(result: FinalExtraction) -> str:
         "body{font-family:Arial,'Microsoft YaHei',sans-serif;max-width:1400px;margin:24px auto;padding:0 20px;color:#1f2937;background:#f8fafc}",
         ".meta,.ku,.graph-wrap{background:white;border:1px solid #dbe3ee;border-radius:12px;padding:18px;margin:16px 0;box-shadow:0 2px 10px #0f172a0d}",
         ".ku h2{margin-top:0}.tag{display:inline-block;background:#e8eef7;border-radius:6px;padding:3px 8px;margin-right:6px}",
-        ".source{white-space:pre-wrap;background:#f8fafc;padding:12px;border-radius:8px;border-left:4px solid #94a3b8;max-height:280px;overflow:auto}",
+        ".source{white-space:pre-wrap;background:#f8fafc;padding:12px;border-radius:8px;border-left:4px solid #94a3b8;max-height:280px;overflow:auto}.evidence{white-space:pre-wrap;background:#fffbeb;padding:12px;border-radius:8px;border-left:4px solid #f59e0b;margin-top:8px}",
         "table{border-collapse:collapse;width:100%;margin-top:10px}td,th{border:1px solid #dbe3ee;padding:8px;text-align:left;vertical-align:top}th{background:#f1f5f9}",
         ".graph-toolbar{display:flex;justify-content:flex-end;margin:8px 0}.fullscreen-btn{border:1px solid #94a3b8;border-radius:6px;background:#0f172a;color:#f8fafc;padding:7px 12px;cursor:pointer}.graph-shell{background:white}.graph-shell:fullscreen{padding:18px;background:#f8fafc;overflow:auto}.graph-shell:fullscreen .graph-layout{height:calc(100vh - 90px);grid-template-columns:minmax(0,1fr) 380px}.graph-shell:fullscreen .graph{height:100%}.graph-shell:fullscreen .details{overflow:auto}.graph-layout{display:grid;grid-template-columns:minmax(600px,1fr) 360px;gap:16px}.graph{overflow:auto;border:1px solid #dbe3ee;border-radius:10px;background:#0f172a;padding:8px}.details{border:1px solid #dbe3ee;border-radius:10px;padding:14px;background:#f8fafc;min-height:300px}.details h3{margin-top:0}.detail-source{white-space:pre-wrap;background:white;border:1px solid #dbe3ee;border-radius:6px;padding:8px;max-height:420px;overflow:auto;font-family:inherit;font-size:12px}.node{cursor:pointer}.node text{font-size:13px;fill:#e5e7eb;pointer-events:none}.edge{stroke:#94a3b8;stroke-width:1.5}.edge-label{font-size:11px;fill:#cbd5e1}.hint{color:#64748b;font-size:13px}",
         "</style></head><body>",
@@ -46,9 +51,11 @@ def render_html_report(result: FinalExtraction) -> str:
             f"<p><b>核心结论：</b>{escape(ku.core_conclusion)}</p>",
             f"<p><b>原文范围：</b>{escape(ku.start_block_id)} ~ {escape(ku.end_block_id)}</p>",
             f"<div class='source'>{escape(ku.source_text)}</div>",
+            "<h3>KU 拆分证据</h3>",
+            f"<div class='evidence'>{escape(ku_evidence.get(ku.ku_id, '暂无拆分证据'))}</div>",
         ]
         if ku.content_elements:
-            parts.append("<h3>内容要素</h3><table><tr><th>类型代码</th><th>类型中文</th><th>名称</th><th>内容</th></tr>")
+            parts.append("<h3>内容要素</h3><table><tr><th>类型代码</th><th>类型中文</th><th>名称</th><th>内容</th><th>拆分证据</th></tr>")
             for ce in ku.content_elements:
                 parts.append(
                     "<tr>"
@@ -56,6 +63,7 @@ def render_html_report(result: FinalExtraction) -> str:
                     f"<td>{escape(ce.element_type_name)}</td>"
                     f"<td>{escape(ce.name)}</td>"
                     f"<td>{escape(ce.content)}</td>"
+                    f"<td>{escape(element_evidence.get((ku.ku_id, ce.element_id), '暂无拆分证据'))}</td>"
                     "</tr>"
                 )
             parts.append("</table>")
@@ -66,7 +74,7 @@ def render_html_report(result: FinalExtraction) -> str:
         "const byId=Object.fromEntries(GRAPH.nodes.map(n=>[n.id,n]));const ns='http://www.w3.org/2000/svg';",
         "function el(tag,attrs){const x=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))x.setAttribute(k,v);return x;}",
         "function escapeHtml(v){return String(v).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));}",
-        "function show(n){details.innerHTML='<h3>'+escapeHtml(n.label)+'</h3>'+Object.entries(n.attributes).map(([k,v])=>{const value=Array.isArray(v)?v.join(', '):String(v);return k==='source_text'?'<p><b>教材原文</b></p><div class=\"detail-source\">'+escapeHtml(value)+'</div>':'<p><b>'+escapeHtml(k)+'</b><br>'+escapeHtml(value)+'</p>';}).join('');}",
+        "function show(n){const attrs=Object.entries(n.attributes).map(([k,v])=>{const value=Array.isArray(v)?v.join(', '):String(v);return k==='source_text'?'<p><b>教材原文</b></p><div class=\"detail-source\">'+escapeHtml(value)+'</div>':k==='content'?'<p><b>内容</b></p><div class=\"detail-source\">'+escapeHtml(value)+'</div>':'<p><b>'+escapeHtml(k)+'</b><br>'+escapeHtml(value)+'</p>';}).join('');const evidence=n.evidence?'<p><b>拆分证据</b></p><div class=\"evidence\">'+escapeHtml(n.evidence)+'</div>':'';details.innerHTML='<h3>'+escapeHtml(n.label)+'</h3>'+attrs+evidence;}",
         "function updateFullscreenLabel(){fullscreenBtn.textContent=document.fullscreenElement?'退出全屏':'全屏展示';}",
         "fullscreenBtn.addEventListener('click',async()=>{try{if(document.fullscreenElement){await document.exitFullscreen();}else{await shell.requestFullscreen();}}catch(e){fullscreenBtn.textContent='全屏不可用';}});document.addEventListener('fullscreenchange',updateFullscreenLabel);",
         "for(const e of GRAPH.edges){const a=byId[e.source],b=byId[e.target];if(!a||!b)continue;svg.appendChild(el('line',{x1:a.x+200,y1:a.y+30,x2:b.x,y2:b.y+30,class:'edge'}));const t=el('text',{x:(a.x+b.x)/2+80,y:(a.y+b.y)/2+25,class:'edge-label'});t.textContent=e.label;svg.appendChild(t);}",

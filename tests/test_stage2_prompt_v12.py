@@ -31,6 +31,15 @@ class Stage2PromptV12Tests(unittest.TestCase):
         self.assertNotIn('"knowledge_type": "OTHER"', prompt)
         self.assertNotIn('"element_type": "OTHER"', prompt)
 
+    def test_stage2_v14_requires_separate_content_element_evidence(self):
+        prompt = (ROOT / "prompts" / "ku_extract" / "v1.4.md").read_text(encoding="utf-8")
+        app_source = (ROOT / "app.py").read_text(encoding="utf-8")
+
+        self.assertIn('"content_element_split"', prompt)
+        self.assertIn("与全部内容要素一一对应", prompt)
+        self.assertIn("不输出 `source_block_ids`", prompt)
+        self.assertIn('DEFAULT_STAGE2_PROMPT_VERSION = "v1.4"', app_source)
+
 
 if __name__ == "__main__":
     unittest.main()
