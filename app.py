@@ -21,7 +21,7 @@ from services.json_utils import extract_json_object
 from services.llm_client import OpenAICompatibleClient
 from services.payload_builders import build_stage1_input, build_stage2_input
 from services.prompt_loader import list_prompt_versions, load_prompt, prompt_widget_key, sync_prompt_selection
-from services.report_renderer import render_html_report
+from services.report_renderer import render_html_report, render_history_overview
 from services.source_segmenter import render_blocks_for_prompt, segment_source_text
 from services.stage2_validator import validate_and_build_final
 from services.task_bridge import create_codex_task, load_codex_result
@@ -380,6 +380,21 @@ with main_panel.container():
     elif section == "历史运行":
         st.subheader("历史运行")
         rows = store.list_runs(200)
+        completed_reports = []
+        for run in rows:
+            if run["status"] == "COMPLETED" and run.get("final_json"):
+                try:
+                    from schemas.models import FinalExtraction
+                    completed_reports.append((run["run_id"], FinalExtraction.model_validate(json.loads(run["final_json"]))))
+                except (TypeError, ValueError, json.JSONDecodeError):
+                    pass
+        if completed_reports:
+            overview_html = render_history_overview(completed_reports)
+            st.subheader("完成结果 HTML 总览")
+            components.html(overview_html, height=1050, scrolling=True)
+            st.download_button("下载历史完成结果 HTML", overview_html, file_name="completed_history_overview.html", mime="text/html", use_container_width=True)
+        else:
+            st.info("暂无 COMPLETED 历史记录。")
         for run in rows:
             cols = st.columns([1.3, 1.4, 1.2, 2.8, 1.2])
             cols[0].write(run["kp_id"])
