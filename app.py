@@ -30,6 +30,7 @@ from repositories.run_store import RunStore
 st.set_page_config(page_title="教材知识单元 AI 抽取实验台", layout="wide")
 store = RunStore()
 DEFAULT_STAGE1_PROMPT_VERSION = "v1.5"
+DEFAULT_EXAMPLE_KP_ID = "KP_SZ_1.1.2"
 
 
 def new_run_id():
@@ -76,6 +77,9 @@ def load_example_kp():
                     candidates.append((task_dir.stat().st_mtime, value))
             except (OSError, json.JSONDecodeError):
                 continue
+    preferred = [item for item in candidates if item[1].get("kp_id") == DEFAULT_EXAMPLE_KP_ID]
+    if preferred:
+        return max(preferred, key=lambda item: item[0])[1]
     if candidates:
         return max(candidates, key=lambda item: item[0])[1]
     return {"kp_id": "", "kp_name": "", "source_text": "", "page_start": 0, "page_end": 0}
