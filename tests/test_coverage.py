@@ -53,3 +53,23 @@ def test_stage1_evidence_rejects_source_block_ids():
     except ValidationError:
         return
     raise AssertionError("source_block_ids should be rejected")
+
+
+def test_legacy_stage1_resolved_evidence_defaults_empty():
+    from schemas.models import Stage1ResolvedResult
+
+    legacy = Stage1ResolvedResult.model_validate({
+        "kp_id": "KP1",
+        "kp_name": "测试",
+        "source_blocks": [],
+        "knowledge_units": [],
+        "validation": {
+            "coverage_rate": 0,
+            "gap_count": 0,
+            "overlap_count": 0,
+            "order_valid": True,
+            "all_blocks_covered": False,
+            "status": "FAIL",
+        },
+    })
+    assert legacy.evidence.ku_split == []

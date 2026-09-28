@@ -77,7 +77,7 @@ class Stage1ResolvedResult(BaseModel):
     source_blocks: list[SourceBlock]
     knowledge_units: list[KUResolved]
     validation: Stage1Validation
-    evidence: Stage1Evidence
+    evidence: Stage1Evidence = Field(default_factory=lambda: Stage1Evidence(ku_split=[]))
 
 
 # 类型不是封闭枚举：教材知识角色不可预先穷举，模型需要根据语义生成稳定标识。
