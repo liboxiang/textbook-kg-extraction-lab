@@ -38,6 +38,10 @@ def new_run_id():
     return f"RUN_{datetime.now():%Y%m%d_%H%M%S}_{uuid.uuid4().hex[:6]}"
 
 
+def new_batch_id():
+    return f"BATCH_{datetime.now():%Y%m%d_%H%M%S}_{uuid.uuid4().hex[:6]}"
+
+
 def persist():
     save_checkpoint(st.session_state)
 
@@ -84,6 +88,93 @@ def load_example_kp():
     if candidates:
         return max(candidates, key=lambda item: item[0])[1]
     return {"kp_id": "", "kp_name": "", "source_text": "", "page_start": 0, "page_end": 0}
+
+
+def parse_batch_input(raw):
+    data = json.loads(raw)
+    if isinstance(data, dict):
+        data = data.get("knowledge_points", data.get("items", []))
+    if not isinstance(data, list) or not data:
+        raise ValueError("批量输入必须是非空 JSON 数组，或包含 knowledge_points 数组的对象")
+    normalized, seen = [], set()
+    for index, item in enumerate(data, 1):
+        if not isinstance(item, dict):
+            raise ValueError(f"第 {index} 条不是对象")
+        if any(not str(item.get(key, "")).strip() for key in ("kp_id", "kp_name", "source_text")):
+            raise ValueError(f"第 {index} 条缺少 kp_id、kp_name 或 source_text")
+        if item["kp_id"] in seen:
+            raise ValueError(f"KP ID 重复：{item['kp_id']}")
+        seen.add(item["kp_id"])
+        normalized.append({"kp_id": item["kp_id"], "kp_name": item["kp_name"], "source_text": item["source_text"], "page_start": item.get("page_start"), "page_end": item.get("page_end")})
+    return normalized
+
+
+def activate_batch_item(run):
+    payload = json.loads(run.get("input_json") or "{}")
+    kp = payload.get("knowledge_point") or payload
+    for key in ("kp_id", "kp_name", "source_text", "page_start", "page_end"):
+        value = kp.get(key, 0 if key in ("page_start", "page_end") else "")
+        st.session_state[key] = value or (0 if key in ("page_start", "page_end") else "")
+    for key in ("stage1_llm", "stage1_resolved", "stage1_editor", "stage1_confirmed", "stage2_task_dir", "stage2_run_id", "stage2_llm", "final_result"):
+        st.session_state.pop(key, None)
+    st.session_state["current_run_id"] = run["run_id"]
+    task_dir = ROOT / ".kg_tasks" / "pending" / f"{run['run_id']}_stage1"
+    if task_dir.exists():
+        st.session_state["stage1_task_dir"] = str(task_dir)
+    else:
+        st.session_state.pop("stage1_task_dir", None)
+    st.session_state["app_section"] = "单 KP 实验"
+    persist()
+
+
+def render_batch_experiments(mode, api):
+    st.subheader("批量知识点实验")
+    st.caption("一次导入多个 KP；每个 KP 独立完成两阶段抽取，结果和图谱分别查看。")
+    with st.expander("创建批次", expanded=not store.list_batches(1)):
+        batch_name = st.text_input("批次名称", placeholder="例如：道路工程章节批量实验", key="batch_name_input")
+        uploaded = st.file_uploader("上传 JSON 文件（可选）", type=["json"], key="batch_json_file")
+        default_text = "[{\"kp_id\":\"KP_001\",\"kp_name\":\"示例知识点\",\"source_text\":\"请输入教材原文\"}]"
+        raw = uploaded.getvalue().decode("utf-8") if uploaded else st.text_area("或粘贴 JSON", value=default_text, height=180, key="batch_json_input")
+        if st.button("创建批量实验", type="primary", use_container_width=True):
+            try:
+                items = parse_batch_input(raw)
+                batch_id = new_batch_id()
+                name = batch_name.strip() or batch_id
+                store.create_batch(batch_id=batch_id, batch_name=name, total_count=len(items))
+                for item in items:
+                    run_id = f"{batch_id}_{item['kp_id']}"
+                    kp = KnowledgePointInput.model_validate(item)
+                    payload = build_stage1_input(kp, segment_source_text(kp.source_text))
+                    store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=DEFAULT_STAGE1_PROMPT_VERSION, input_payload=payload, batch_id=batch_id, batch_name=name)
+                    if mode.startswith("模式A"):
+                        create_codex_task("STAGE1", run_id, load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION), payload)
+                st.session_state["selected_batch_id"] = batch_id
+                st.success(f"批次已创建：{batch_id}，共 {len(items)} 个 KP")
+                st.rerun()
+            except Exception as exc:
+                st.error(str(exc))
+    batches = store.list_batches(100)
+    if not batches:
+        st.info("还没有批量实验批次。")
+        return
+    options = {f"{item['batch_name']}｜{item['batch_id']}": item["batch_id"] for item in batches}
+    labels = list(options)
+    current = st.session_state.get("selected_batch_id")
+    index = next((i for i, label in enumerate(labels) if options[label] == current), 0)
+    selected_label = st.selectbox("选择批次", labels, index=index, key="batch_selector")
+    selected_batch_id = options[selected_label]
+    st.session_state["selected_batch_id"] = selected_batch_id
+    batch = next(item for item in batches if item["batch_id"] == selected_batch_id)
+    a, b, c, d = st.columns(4)
+    a.metric("KP 总数", batch["total_count"]); b.metric("已完成", batch["completed_count"]); c.metric("失败", batch["failed_count"]); d.metric("批次状态", batch["status"])
+    st.caption(f"完成进度：{batch['completed_count']} / {batch['total_count']}；点击“进入处理”可继续单个 KP。")
+    for run in store.list_batch_items(selected_batch_id):
+        cols = st.columns([1.4, 2.5, 1.2, 2.5, 1.2, 1.2])
+        cols[0].write(run["kp_id"]); cols[1].write(run["kp_name"]); cols[2].write(run["status"]); cols[3].write(run.get("status_description") or "")
+        if cols[4].button("进入处理", key=f"batch_open_{run['run_id']}"):
+            activate_batch_item(run); st.rerun()
+        if run["status"] == "COMPLETED" and run.get("final_json") and cols[5].button("查看图谱", key=f"batch_graph_{run['run_id']}"):
+            show_history_graph(run)
 
 
 def initialize_example_kp():
@@ -268,7 +359,7 @@ with st.sidebar:
         with api_panel.container():
             st.info("模式A使用当前 Codex 会话完成语义抽取。")
     st.divider(); st.header("功能菜单")
-    section = st.radio("选择功能", ["单 KP 实验", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
+    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
     if st.button("重新开始实验", use_container_width=True): restart(); st.rerun()
 
 main_panel = st.empty()
@@ -282,6 +373,8 @@ with main_panel.container():
             render_stage2(mode, api)
         with tab3:
             render_result()
+    elif section == "批量实验":
+        render_batch_experiments(mode, api)
     elif section == "历史运行":
         st.subheader("历史运行")
         rows = store.list_runs(200)

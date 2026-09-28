@@ -45,8 +45,12 @@ class RunStore:
                 prompt_version TEXT, status TEXT NOT NULL, input_json TEXT, raw_response TEXT,
                 parsed_json TEXT, validation_json TEXT, created_at TEXT NOT NULL,
                 current_stage TEXT, status_description TEXT, final_json TEXT)""")
+            conn.execute("""CREATE TABLE IF NOT EXISTS experiment_batch (
+                batch_id TEXT PRIMARY KEY, batch_name TEXT NOT NULL, total_count INTEGER NOT NULL,
+                created_at TEXT NOT NULL
+            )""")
             columns = {row[1] for row in conn.execute("PRAGMA table_info(experiment_run)")}
-            for name in ("current_stage", "status_description", "final_json"):
+            for name in ("current_stage", "status_description", "final_json", "batch_id", "batch_name"):
                 if name not in columns:
                     conn.execute(f"ALTER TABLE experiment_run ADD COLUMN {name} TEXT")
             self._deduplicate(conn)
@@ -62,18 +66,27 @@ class RunStore:
                 continue
             chosen = max(rows, key=lambda row: (row["status"] in ("COMPLETED", "PASS"), row["id"]))
             conn.execute("DELETE FROM experiment_run WHERE run_id=?", (run_id,))
-            names = ("run_id", "kp_id", "kp_name", "stage", "mode", "model_name", "prompt_version", "status", "input_json", "raw_response", "parsed_json", "validation_json", "created_at", "current_stage", "status_description", "final_json")
+            names = ("run_id", "kp_id", "kp_name", "stage", "mode", "model_name", "prompt_version", "status", "input_json", "raw_response", "parsed_json", "validation_json", "created_at", "current_stage", "status_description", "final_json", "batch_id", "batch_name")
             conn.execute("INSERT INTO experiment_run (" + ",".join(names) + ") VALUES (" + ",".join("?" for _ in names) + ")", tuple(chosen[name] for name in names))
+
+    def create_batch(self, *, batch_id: str, batch_name: str, total_count: int) -> None:
+        with self._connect() as conn:
+            conn.execute(
+                "INSERT INTO experiment_batch(batch_id,batch_name,total_count,created_at) VALUES (?,?,?,?)",
+                (batch_id, batch_name, total_count, datetime.now().isoformat(timespec="seconds")),
+            )
+            conn.commit()
 
     def save_batch(self, *, run_id: str, kp_id: str, kp_name: str, mode: str,
                    prompt_version: str, input_payload: Any = None,
-                   model_name: str | None = None) -> None:
+                   model_name: str | None = None, batch_id: str | None = None,
+                   batch_name: str | None = None) -> None:
         with self._connect() as conn:
             conn.execute("""INSERT INTO experiment_run
-                (run_id,kp_id,kp_name,stage,mode,model_name,prompt_version,status,input_json,created_at,current_stage,status_description)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING""",
+                (run_id,kp_id,kp_name,stage,mode,model_name,prompt_version,status,input_json,created_at,current_stage,status_description,batch_id,batch_name)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING""",
                 (run_id, kp_id, kp_name, "BATCH", mode, model_name, prompt_version, "PENDING",
-                 self._dumps(input_payload), datetime.now().isoformat(timespec="seconds"), "STAGE1", STATUS_DESCRIPTIONS["PENDING"]))
+                 self._dumps(input_payload), datetime.now().isoformat(timespec="seconds"), "STAGE1", STATUS_DESCRIPTIONS["PENDING"], batch_id, batch_name))
             conn.commit()
 
     def update_batch(self, *, run_id: str, status: str, current_stage: str,
@@ -92,6 +105,29 @@ class RunStore:
         with self._connect() as conn:
             rows = conn.execute("SELECT * FROM experiment_run ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
         return [dict(row) for row in rows]
+
+    def list_batch_items(self, batch_id: str) -> list[dict]:
+        with self._connect() as conn:
+            rows = conn.execute(
+                "SELECT * FROM experiment_run WHERE batch_id=? ORDER BY id", (batch_id,)
+            ).fetchall()
+        return [dict(row) for row in rows]
+
+    def list_batches(self, limit: int = 100) -> list[dict]:
+        with self._connect() as conn:
+            rows = conn.execute("SELECT * FROM experiment_batch ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
+            result = []
+            for batch in rows:
+                items = conn.execute("SELECT status FROM experiment_run WHERE batch_id=?", (batch["batch_id"],)).fetchall()
+                counts = {}
+                for item in items:
+                    counts[item["status"]] = counts.get(item["status"], 0) + 1
+                total = batch["total_count"]
+                completed = counts.get("COMPLETED", 0)
+                failed = counts.get("FAIL", 0)
+                status = "COMPLETED" if completed == total and total else "FAIL" if failed else "IN_PROGRESS"
+                result.append({**dict(batch), "status": status, "completed_count": completed, "failed_count": failed, "counts": counts})
+        return result
 
     def get_batch(self, run_id: str) -> dict | None:
         with self._connect() as conn:
