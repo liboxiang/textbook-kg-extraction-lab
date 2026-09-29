@@ -127,15 +127,46 @@ def activate_batch_item(run):
     persist()
 
 
+def execute_batch(batch_id, api):
+    """Run every unfinished KP in one batch through both API stages."""
+    client = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"])
+    for run in store.list_batch_items(batch_id):
+        if run["status"] == "COMPLETED":
+            continue
+        try:
+            payload = json.loads(run.get("input_json") or "{}")
+            kp = KnowledgePointInput.model_validate(payload.get("knowledge_point") or payload)
+            store.update_batch(run_id=run["run_id"], status="STAGE1_IN_PROGRESS", current_stage="STAGE1")
+            split_prompt = load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION)
+            raw_stage1 = client.generate(split_prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+            stage1_llm, stage1 = parse_stage1(raw_stage1, kp)
+            if stage1.validation.status != "PASS":
+                raise ValueError("Stage 1 Coverage Validator 未通过")
+            store.update_batch(run_id=run["run_id"], status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw_stage1, parsed_payload=stage1_llm, validation_payload=stage1.validation)
+            store.update_batch(run_id=run["run_id"], status="STAGE2_IN_PROGRESS", current_stage="STAGE2")
+            stage2_payload = build_stage2_input(stage1)
+            extract_prompt = load_prompt("ku_extract", DEFAULT_STAGE2_PROMPT_VERSION)
+            raw_stage2 = client.generate(extract_prompt, json.dumps(stage2_payload, ensure_ascii=False), api["temperature"])
+            stage2_llm, final = parse_stage2(raw_stage2, kp, stage1)
+            store.update_batch(run_id=run["run_id"], status="COMPLETED", current_stage="STAGE2", raw_response=raw_stage2, parsed_payload=stage2_llm, validation_payload=final, final_payload=final)
+        except Exception as item_error:
+            store.update_batch(run_id=run["run_id"], status="FAIL", current_stage="STAGE2", raw_response=str(item_error))
+
+
 def render_batch_experiments(mode, api):
     st.subheader("批量知识点实验")
     st.caption("一次导入多个 KP；每个 KP 独立完成两阶段抽取，结果和图谱分别查看。")
     with st.expander("创建批次", expanded=not store.list_batches(1)):
-        batch_name = st.text_input("批次名称", placeholder="例如：道路工程章节批量实验", key="batch_name_input")
-        batch_mode = st.radio("批次执行模式", ["人工确认模式", "自动连续模式"], horizontal=True, key="batch_execution_mode")
-        if batch_mode == "自动连续模式":
-            st.warning("自动连续模式会跳过阶段 1 人工确认；API 模式将一键完成两个阶段，Codex 模式将为每个 KP 创建待处理任务。")
         uploaded = st.file_uploader("上传 JSON 文件（可选）", type=["json"], key="batch_json_file")
+        if uploaded:
+            uploaded_stem = Path(uploaded.name).stem
+            previous_auto_name = st.session_state.get("batch_name_auto_source")
+            current_name = st.session_state.get("batch_name_input", "")
+            if not current_name or current_name == previous_auto_name:
+                st.session_state["batch_name_input"] = uploaded_stem
+            st.session_state["batch_name_auto_source"] = uploaded_stem
+        batch_name = st.text_input("批次名称", placeholder="例如：道路工程章节批量实验", key="batch_name_input")
+        st.info("创建后请在运行记录区域点击“执行跑批”；批量执行使用 API 自动完成两个阶段。")
         default_text = "[{\"kp_id\":\"KP_001\",\"kp_name\":\"示例知识点\",\"source_text\":\"请输入教材原文\"}]"
         raw = uploaded.getvalue().decode("utf-8") if uploaded else st.text_area("或粘贴 JSON", value=default_text, height=180, key="batch_json_input")
         if st.button("创建批量实验", type="primary", use_container_width=True):
@@ -148,25 +179,14 @@ def render_batch_experiments(mode, api):
                     run_id = f"{batch_id}_{item['kp_id']}"
                     kp = KnowledgePointInput.model_validate(item)
                     payload = build_stage1_input(kp, segment_source_text(kp.source_text))
-                    store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=DEFAULT_STAGE1_PROMPT_VERSION, input_payload=payload, batch_id=batch_id, batch_name=name)
-                    if batch_mode == "自动连续模式" and mode.startswith("模式B"):
-                        try:
-                            split_prompt = load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION)
-                            raw_stage1 = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(split_prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
-                            stage1_llm, stage1 = parse_stage1(raw_stage1, kp)
-                            if stage1.validation.status != "PASS":
-                                raise ValueError("Stage 1 Coverage Validator 未通过")
-                            store.update_batch(run_id=run_id, status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw_stage1, parsed_payload=stage1_llm, validation_payload=stage1.validation)
-                            stage2_payload = build_stage2_input(stage1)
-                            extract_prompt = load_prompt("ku_extract", DEFAULT_STAGE2_PROMPT_VERSION)
-                            raw_stage2 = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(extract_prompt, json.dumps(stage2_payload, ensure_ascii=False), api["temperature"])
-                            stage2_llm, final = parse_stage2(raw_stage2, kp, stage1)
-                            store.update_batch(run_id=run_id, status="COMPLETED", current_stage="STAGE2", raw_response=raw_stage2, parsed_payload=stage2_llm, validation_payload=final, final_payload=final)
-                        except Exception as item_error:
-                            store.update_batch(run_id=run_id, status="FAIL", current_stage="STAGE2", raw_response=str(item_error))
-                    elif mode.startswith("模式A"):
+                    store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", model_name=api["model"] or "gpt-6-luna", prompt_version=DEFAULT_STAGE1_PROMPT_VERSION, input_payload=payload, batch_id=batch_id, batch_name=name)
+                    if mode.startswith("模式A"):
                         create_codex_task("STAGE1", run_id, load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION), payload)
                 st.session_state["selected_batch_id"] = batch_id
+                # Clear the selectbox widget state so a newly created batch is
+                # not replaced by the previously selected batch on rerun.
+                st.session_state.pop("batch_selector", None)
+                st.session_state["batch_selector_epoch"] = st.session_state.get("batch_selector_epoch", 0) + 1
                 st.success(f"批次已创建：{batch_id}，共 {len(items)} 个 KP")
                 st.rerun()
             except Exception as exc:
@@ -179,17 +199,52 @@ def render_batch_experiments(mode, api):
     labels = list(options)
     current = st.session_state.get("selected_batch_id")
     index = next((i for i, label in enumerate(labels) if options[label] == current), 0)
-    selected_label = st.selectbox("选择批次", labels, index=index, key="batch_selector")
+    selector_key = f"batch_selector_{st.session_state.get('batch_selector_epoch', 0)}"
+    selected_label = st.selectbox("选择批次", labels, index=index, key=selector_key)
     selected_batch_id = options[selected_label]
     st.session_state["selected_batch_id"] = selected_batch_id
     batch = next(item for item in batches if item["batch_id"] == selected_batch_id)
     a, b, c, d = st.columns(4)
     a.metric("KP 总数", batch["total_count"]); b.metric("已完成", batch["completed_count"]); c.metric("失败", batch["failed_count"]); d.metric("批次状态", batch["status"])
-    st.caption(f"完成进度：{batch['completed_count']} / {batch['total_count']}；点击“进入处理”可继续单个 KP。")
+    st.caption(f"完成进度：{batch['completed_count']} / {batch['total_count']}；使用模型：{batch['model_name']}；批次执行仅支持 API 自动调用。")
+    action_cols = st.columns([1, 1, 3])
+    can_execute = mode.startswith("模式B") and batch["status"] != "COMPLETED"
+    if action_cols[0].button("执行跑批", type="primary", disabled=not can_execute, key=f"execute_batch_{selected_batch_id}"):
+        if not api["key"] or not api["model"]:
+            st.error("请先在左侧填写 API Key 和 Model。")
+        else:
+            with st.status("正在执行批次", expanded=True) as progress:
+                execute_batch(selected_batch_id, api)
+                progress.update(label="批次执行完成", state="complete")
+            # Re-select the batch from the database after execution. The
+            # selectbox widget may still hold a previous batch id across the
+            # rerun, which can make the UI jump back to an older result.
+            st.session_state["selected_batch_id"] = selected_batch_id
+            st.session_state.pop("batch_selector", None)
+            st.session_state["batch_selector_epoch"] = st.session_state.get("batch_selector_epoch", 0) + 1
+            st.rerun()
+    if not mode.startswith("模式B"):
+        action_cols[0].caption("切换到 API 自动调用后可执行")
+    if action_cols[1].button("查看批次结果", disabled=batch["completed_count"] == 0, key=f"batch_result_{selected_batch_id}"):
+        st.session_state[f"show_batch_result_{selected_batch_id}"] = True
+    if st.session_state.get(f"show_batch_result_{selected_batch_id}"):
+        reports = []
+        for item in store.list_batch_items(selected_batch_id):
+            if item["status"] == "COMPLETED" and item.get("final_json"):
+                try:
+                    from schemas.models import FinalExtraction
+                    reports.append((item["run_id"], FinalExtraction.model_validate(json.loads(item["final_json"])), item.get("model_name", "gpt-6-luna")))
+                except (TypeError, ValueError, json.JSONDecodeError):
+                    pass
+        if reports:
+            st.subheader("批次完成结果")
+            html = render_history_overview(reports)
+            components.html(html, height=900, scrolling=True)
+            st.download_button("下载批次 HTML 总览", html, file_name=f"{selected_batch_id}.html", mime="text/html", key=f"download_batch_{selected_batch_id}")
     for run in store.list_batch_items(selected_batch_id):
-        cols = st.columns([1.4, 2.5, 1.2, 2.5, 1.2, 1.2])
-        cols[0].write(run["kp_id"]); cols[1].write(run["kp_name"]); cols[2].write(run["status"]); cols[3].write(run.get("status_description") or "")
-        if cols[4].button("进入处理", key=f"batch_open_{run['run_id']}"):
+        cols = st.columns([1.2, 2.2, 1.1, 1.5, 2.2, 1.2, 1.2])
+        cols[0].write(run["kp_id"]); cols[1].write(run["kp_name"]); cols[2].write(run["status"]); cols[3].write(run.get("model_name") or "gpt-6-luna"); cols[4].write(run.get("status_description") or "")
+        if cols[4].button("单独处理", key=f"batch_open_{run['run_id']}"):
             activate_batch_item(run); st.rerun()
         if run["status"] == "COMPLETED" and run.get("final_json") and cols[5].button("查看图谱", key=f"batch_graph_{run['run_id']}"):
             show_history_graph(run)
@@ -237,13 +292,16 @@ def render_stage1(mode, api):
         else:
             payload, run_id = build_stage1_input(kp, segment_source_text(kp.source_text)), new_run_id()
             try:
-                store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=selected, input_payload=payload)
+                store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", model_name=api["model"] or "gpt-6-luna", prompt_version=selected, input_payload=payload)
                 if mode.startswith("模式A"):
                     task = create_codex_task("STAGE1", run_id, prompt, payload)
                     st.session_state.update(stage1_task_dir=str(task), current_run_id=run_id)
                     persist(); st.success("已生成 Codex Stage 1 待办任务。")
                 else:
-                    raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+                    if not api["base"] or not api["key"] or not api["model"]:
+                        raise ValueError("请先填写 Base URL、API Key 和 Model。")
+                    with st.spinner("正在调用中转站执行 Stage 1，请耐心等待…"):
+                        raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
                     llm, resolved = parse_stage1(raw, kp)
                     st.session_state.update(stage1_llm=llm.model_dump(), stage1_resolved=resolved.model_dump(), stage1_editor=json.dumps(llm.model_dump(), ensure_ascii=False, indent=2), current_run_id=run_id)
                     store.update_batch(run_id=run_id, status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw, parsed_payload=llm, validation_payload=resolved.validation)
@@ -300,11 +358,14 @@ def render_stage2(mode, api):
         payload = build_stage2_input(stage1)
         run_id = st.session_state.get("current_run_id") or new_run_id()
         try:
-            store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", prompt_version=selected, input_payload=payload)
+            store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", model_name=api["model"] or "gpt-6-luna", prompt_version=selected, input_payload=payload)
             if mode.startswith("模式A"):
                 task = create_codex_task("STAGE2", run_id, prompt, payload); store.update_batch(run_id=run_id, status="STAGE2_IN_PROGRESS", current_stage="STAGE2"); st.session_state.update(stage2_task_dir=str(task), stage2_run_id=run_id); persist(); st.success("已生成 Codex Stage 2 待办任务。")
             else:
-                raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+                if not api["base"] or not api["key"] or not api["model"]:
+                    raise ValueError("请先填写 Base URL、API Key 和 Model。")
+                with st.spinner("正在调用中转站执行 Stage 2，请耐心等待…"):
+                    raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
                 llm, final = parse_stage2(raw, kp, stage1); store.update_batch(run_id=run_id, status="COMPLETED", current_stage="STAGE2", raw_response=raw, parsed_payload=llm, validation_payload=final, final_payload=final); st.session_state.update(stage2_llm=llm.model_dump(), final_result=final.model_dump()); persist(); st.success("Stage 2 已完成。")
         except Exception as exc:
             store.update_batch(run_id=run_id, status="FAIL", current_stage="STAGE2")
@@ -361,16 +422,22 @@ initialize_example_kp()
 st.title("教材知识单元 AI 抽取实验台")
 with st.sidebar:
     st.header("运行模式")
-    mode = st.radio("模型调用方式", ["模式A｜Codex Workspace", "模式B｜API自动调用"], key="run_mode")
+    mode = st.radio("模型调用方式", ["模式A｜Codex Workspace", "模式B｜API自动调用"], index=1, key="run_mode")
     api_panel = st.empty()
     api_panel.empty()
     api = {"base": "", "key": "", "model": "", "temperature": 0.1}
     if mode == "模式B｜API自动调用":
         with api_panel.container():
-            api["base"] = st.text_input("Base URL", value=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1"), key="api_base_url")
+            api["base"] = st.text_input("Base URL", value=os.getenv("LLM_BASE_URL", "https://new-api.reg.highso.com.cn/v1"), key="api_base_url")
             api["key"] = st.text_input("API Key", value=os.getenv("LLM_API_KEY", ""), type="password", key="api_key")
             api["model"] = st.text_input("Model", value=os.getenv("LLM_MODEL", ""), key="api_model")
             api["temperature"] = st.slider("Temperature", 0.0, 1.0, 0.1, 0.05, key="api_temperature")
+            if st.button("校验 API 配置", use_container_width=True, key="validate_api_config"):
+                try:
+                    message = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).validate_configuration()
+                    st.success(message)
+                except Exception as exc:
+                    st.error(f"配置校验失败：{exc}")
     else:
         for key in ("api_base_url", "api_key", "api_model", "api_temperature"):
             st.session_state.pop(key, None)
@@ -379,7 +446,7 @@ with st.sidebar:
     st.divider(); st.header("功能菜单")
     if st.session_state.pop("pending_app_section", None):
         st.session_state["app_section"] = "单 KP 实验"
-    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
+    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "HTML 总览", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
     if st.button("重新开始实验", use_container_width=True): restart(); st.rerun()
 
 main_panel = st.empty()
@@ -395,35 +462,38 @@ with main_panel.container():
             render_result()
     elif section == "批量实验":
         render_batch_experiments(mode, api)
-    elif section == "历史运行":
-        st.subheader("历史运行")
-        rows = store.list_runs(200)
+    elif section == "HTML 总览":
+        st.subheader("历史完成结果 HTML 总览")
+        rows = store.list_runs(500)
         completed_reports = []
         for run in rows:
             if run["status"] == "COMPLETED" and run.get("final_json"):
                 try:
                     from schemas.models import FinalExtraction
-                    completed_reports.append((run["run_id"], FinalExtraction.model_validate(json.loads(run["final_json"]))))
+                    completed_reports.append((run["run_id"], FinalExtraction.model_validate(json.loads(run["final_json"])), run.get("model_name", "gpt-6-luna")))
                 except (TypeError, ValueError, json.JSONDecodeError):
                     pass
         if completed_reports:
             overview_html = render_history_overview(completed_reports)
-            st.subheader("完成结果 HTML 总览")
             components.html(overview_html, height=1050, scrolling=True)
             st.download_button("下载历史完成结果 HTML", overview_html, file_name="completed_history_overview.html", mime="text/html", use_container_width=True)
         else:
             st.info("暂无 COMPLETED 历史记录。")
+    elif section == "历史运行":
+        st.subheader("历史运行")
+        rows = store.list_runs(200)
         for run in rows:
-            cols = st.columns([1.3, 1.4, 1.2, 2.8, 1.2])
+            cols = st.columns([1.2, 1.3, 1.1, 1.5, 2.4, 1.2])
             cols[0].write(run["kp_id"])
             cols[1].write(run["kp_name"])
             cols[2].write(run["status"])
-            cols[3].write(run.get("status_description") or run["status"])
+            cols[3].write(run.get("model_name") or "gpt-6-luna")
+            cols[4].write(run.get("status_description") or run["status"])
             if run["status"] == "COMPLETED" and run.get("final_json"):
-                if cols[4].button("查看图谱", key=f"graph_{run['run_id']}"):
+                if cols[5].button("查看图谱", key=f"graph_{run['run_id']}"):
                     show_history_graph(run)
             else:
-                cols[4].write("—")
+                cols[5].write("—")
     else:
         st.subheader("Prompt 管理")
         kind = st.selectbox("Prompt 类型", ["ku_split", "ku_extract"], key="prompt_mgmt_kind")

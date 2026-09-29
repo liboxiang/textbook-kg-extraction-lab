@@ -11,11 +11,13 @@ DB_PATH = ROOT / "data" / "app.db"
 
 STATUS_DESCRIPTIONS = {
     "PENDING": "批次已创建",
+    "STAGE1_IN_PROGRESS": "阶段 1：考点拆分（KU 切分）执行中",
     "STAGE1_COMPLETED": "阶段 1：考点拆分（KU 切分）已完成，等待确认/阶段 2",
     "STAGE2_IN_PROGRESS": "阶段 2：知识单元属性与内容要素任务已创建",
     "COMPLETED": "最终图谱结果已生成",
     "FAIL": "当前批次某一步失败",
 }
+DEFAULT_MODEL_NAME = "gpt-6-luna"
 
 
 class RunStore:
@@ -55,6 +57,7 @@ class RunStore:
                     conn.execute(f"ALTER TABLE experiment_run ADD COLUMN {name} TEXT")
             self._deduplicate(conn)
             conn.execute("UPDATE experiment_run SET status='COMPLETED', current_stage='STAGE2', status_description=? WHERE status='PASS'", (STATUS_DESCRIPTIONS["COMPLETED"],))
+            conn.execute("UPDATE experiment_run SET model_name=? WHERE model_name IS NULL OR model_name=''", (DEFAULT_MODEL_NAME,))
             conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS ux_experiment_run_run_id ON experiment_run(run_id)")
             conn.commit()
 
@@ -104,14 +107,14 @@ class RunStore:
     def list_runs(self, limit: int = 100) -> list[dict]:
         with self._connect() as conn:
             rows = conn.execute("SELECT * FROM experiment_run ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
-        return [dict(row) for row in rows]
+        return [{**dict(row), "model_name": row["model_name"] or DEFAULT_MODEL_NAME} for row in rows]
 
     def list_batch_items(self, batch_id: str) -> list[dict]:
         with self._connect() as conn:
             rows = conn.execute(
                 "SELECT * FROM experiment_run WHERE batch_id=? ORDER BY id", (batch_id,)
             ).fetchall()
-        return [dict(row) for row in rows]
+        return [{**dict(row), "model_name": row["model_name"] or DEFAULT_MODEL_NAME} for row in rows]
 
     def list_batches(self, limit: int = 100) -> list[dict]:
         with self._connect() as conn:
@@ -125,8 +128,10 @@ class RunStore:
                 total = batch["total_count"]
                 completed = counts.get("COMPLETED", 0)
                 failed = counts.get("FAIL", 0)
-                status = "COMPLETED" if completed == total and total else "FAIL" if failed else "IN_PROGRESS"
-                result.append({**dict(batch), "status": status, "completed_count": completed, "failed_count": failed, "counts": counts})
+                status = "COMPLETED" if completed == total and total else "FAIL" if failed and completed + failed == total else "IN_PROGRESS"
+                model_rows = conn.execute("SELECT DISTINCT model_name FROM experiment_run WHERE batch_id=? AND model_name IS NOT NULL AND model_name!=''", (batch["batch_id"],)).fetchall()
+                model_names = [row[0] for row in model_rows] or [DEFAULT_MODEL_NAME]
+                result.append({**dict(batch), "status": status, "completed_count": completed, "failed_count": failed, "counts": counts, "model_name": ", ".join(model_names)})
         return result
 
     def get_batch(self, run_id: str) -> dict | None:

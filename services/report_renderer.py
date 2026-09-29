@@ -84,15 +84,19 @@ def render_html_report(result: FinalExtraction) -> str:
     return "".join(parts)
 
 
-def render_history_overview(results: list[tuple[str, FinalExtraction]]) -> str:
+def render_history_overview(results: list[tuple]) -> str:
     """Render one standalone HTML page that switches among completed KP reports."""
     reports = []
-    for run_id, result in results:
+    for item in results:
+        run_id, result = item[:2]
+        model_name = item[2] if len(item) > 2 and item[2] else "gpt-6-luna"
         graph = build_graph_data(result)
         reports.append({
             "run_id": run_id,
-            "kp_id": result.kp.kp_id,
+            "model_name": model_name,
+            "kp_id": f"{result.kp.kp_id}｜模型：{model_name}",
             "kp_name": result.kp.kp_name,
+            "model_label": f"模型：{model_name}",
             "graph": graph,
             "units": [unit.model_dump() for unit in result.knowledge_units],
             "evidence": result.evidence.model_dump(),
