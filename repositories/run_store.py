@@ -51,6 +51,10 @@ class RunStore:
                 batch_id TEXT PRIMARY KEY, batch_name TEXT NOT NULL, total_count INTEGER NOT NULL,
                 created_at TEXT NOT NULL
             )""")
+            conn.execute("""CREATE TABLE IF NOT EXISTS stability_evaluation (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, model_a TEXT NOT NULL, model_b TEXT NOT NULL,
+                created_at TEXT NOT NULL, report_json TEXT NOT NULL
+            )""")
             columns = {row[1] for row in conn.execute("PRAGMA table_info(experiment_run)")}
             for name in ("current_stage", "status_description", "final_json", "batch_id", "batch_name"):
                 if name not in columns:
@@ -138,6 +142,22 @@ class RunStore:
         with self._connect() as conn:
             row = conn.execute("SELECT * FROM experiment_run WHERE run_id=?", (run_id,)).fetchone()
         return dict(row) if row else None
+
+    def save_stability_evaluation(self, model_a: str, model_b: str, report: Any) -> int:
+        with self._connect() as conn:
+            cursor = conn.execute("INSERT INTO stability_evaluation(model_a,model_b,created_at,report_json) VALUES (?,?,?,?)", (model_a, model_b, datetime.now().isoformat(timespec="seconds"), self._dumps(report)))
+            conn.commit()
+            return int(cursor.lastrowid)
+
+    def list_stability_evaluations(self, limit: int = 50) -> list[dict]:
+        with self._connect() as conn:
+            rows = conn.execute("SELECT * FROM stability_evaluation ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
+        result = []
+        for row in rows:
+            item = dict(row)
+            item["report"] = json.loads(item["report_json"])
+            result.append(item)
+        return result
 
     def save_run(self, *, run_id: str, kp_id: str, kp_name: str, stage: str, mode: str,
                  status: str, prompt_version: str, model_name: str | None = None,

@@ -26,6 +26,7 @@ from services.source_segmenter import render_blocks_for_prompt, segment_source_t
 from services.stage2_validator import validate_and_build_final
 from services.task_bridge import create_codex_task, load_codex_result
 from repositories.run_store import RunStore
+from services.model_stability import build_stability_report, render_stability_html
 
 st.set_page_config(page_title="教材知识单元 AI 抽取实验台", layout="wide")
 store = RunStore()
@@ -446,12 +447,11 @@ with st.sidebar:
     st.divider(); st.header("功能菜单")
     if st.session_state.pop("pending_app_section", None):
         st.session_state["app_section"] = "单 KP 实验"
-    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "HTML 总览", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
+    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "HTML 总览", "模型稳定性评测", "历史评测", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
     if st.button("重新开始实验", use_container_width=True): restart(); st.rerun()
 
 main_panel = st.empty()
 with main_panel.container():
-    render_flow()
     if section == "单 KP 实验":
         tab1, tab2, tab3 = st.tabs(["阶段1｜KU 划分", "阶段2｜属性与内容要素", "最终结果｜图谱与导出"])
         with tab1:
@@ -479,6 +479,151 @@ with main_panel.container():
             st.download_button("下载历史完成结果 HTML", overview_html, file_name="completed_history_overview.html", mime="text/html", use_container_width=True)
         else:
             st.info("暂无 COMPLETED 历史记录。")
+    elif section == "模型稳定性评测":
+        st.subheader("模型稳定性评测")
+        st.info("评测会读取已完成的多模型结果并进行 KU 边界比较。只有点击下方按钮后才开始，避免任务未完成时提前计算。")
+        evaluation_runs = store.list_runs(1000)
+        available_models = sorted({run.get("model_name") or "gpt-6-luna" for run in evaluation_runs if run.get("status") == "COMPLETED"})
+        if len(available_models) < 2:
+            st.warning("当前已完成记录中少于两个不同模型，暂时无法进行对比。")
+            st.stop()
+        m1, m2 = st.columns(2)
+        model_a = m1.selectbox("模型 A", available_models, key="stability_model_a")
+        model_b_options = [model for model in available_models if model != model_a]
+        model_b = m2.selectbox("模型 B", model_b_options, key="stability_model_b")
+        if st.button("开始稳定性评测", type="primary", key="start_stability_evaluation"):
+            with st.spinner("正在汇总并比较不同模型的拆分结果…"):
+                report = build_stability_report(evaluation_runs, (model_a, model_b))
+                if api["key"] and api["model"]:
+                    advice_payload = {
+                        "models": [model_a, model_b],
+                        "total": report["total"],
+                        "ku_consistent": report["exact_count"],
+                        "kind_counts": report.get("kind_counts", {}),
+                        "conclusion": report["conclusion"],
+                        "representative_differences": [
+                            {"kp_name": x["kp_name"], "count_a": x["count_a"], "count_b": x["count_b"], "kind": x["kind"], "units_a": x["units_a"], "units_b": x["units_b"]}
+                            for x in report["comparisons"][:10] if x["kind"] != "KU 一致"
+                        ],
+                    }
+                    advice_prompt = "你是教材知识单元拆分评测专家。请根据以下两个模型的 Stage 1 KU 对比结果，给出一份总体评价和统一优化建议。不要逐个知识点机械给建议；请归纳最主要的稳定性问题，并区分 Prompt 优化、流程优化和人工复核建议。输出中文，结构为：总体评价、主要问题、优化建议、建议优先级。\n\n" + json.dumps(advice_payload, ensure_ascii=False)
+                    try:
+                        report["ai_advice"] = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate("你负责知识抽取稳定性评测。", advice_prompt, 0.1)
+                    except Exception as exc:
+                        report["ai_advice_error"] = str(exc)
+                st.session_state["stability_report"] = report
+                evaluation_id = store.save_stability_evaluation(model_a, model_b, report)
+                st.session_state["stability_evaluation_id"] = evaluation_id
+        report = st.session_state.get("stability_report")
+        if not report:
+            st.warning("尚未开始评测。请等待相关模型任务完成后，再点击“开始稳定性评测”。")
+            st.stop()
+        a, b = st.columns(2)
+        a.metric("可比较知识点", report["total"])
+        b.metric("KU 一致", report["exact_count"])
+        st.markdown("#### 总体分析结论")
+        exact_rate = report["exact_count"] / report["total"] if report["total"] else 0
+        count_rate = report["count_equal"] / report["total"] if report["total"] else 0
+        st.write(f"本次共比较 **{report['total']}** 个知识点，KU 一致率为 **{exact_rate:.0%}**。")
+        st.info(report["conclusion"])
+        if report["kind_counts"]:
+            st.write("差异类型分布：" + "；".join(f"{kind} {count} 个" for kind, count in report["kind_counts"].items()) + "。")
+        if report.get("ai_advice"):
+            with st.expander("模型综合分析建议（点击展开）", expanded=False):
+                st.markdown(report["ai_advice"])
+        elif report.get("ai_advice_error"):
+            st.warning(f"模型建议生成失败，已保留规则分析结果：{report['ai_advice_error']}")
+        report_json = json.dumps(report, ensure_ascii=False, indent=2)
+        report_md = "\n".join([
+            "# 模型稳定性评测报告", "",
+            f"- 可比较知识点：{report['total']}",
+            f"- KU 一致：{report['exact_count']}",
+            "",
+            "## 总体结论", report["conclusion"], "",
+            "## 统一改进建议", *[f"- {item}" for item in report["suggestions"]], "",
+            "## 对比明细", "| 知识点 | 模型 A | 模型 B | KU 数量 | 评价 |", "|---|---|---|---:|---|",
+            *[f"| {x['kp_name']} | {x['model_a']} | {x['model_b']} | {x['count_a']} / {x['count_b']} | {x['boundary_rate']:.0%} | {x['kind']} |" for x in report["comparisons"]],
+        ])
+        dl1, dl2 = st.columns(2)
+        dl1.download_button("下载当前评测 JSON", report_json, file_name="model_stability_evaluation.json", mime="application/json", key="download_stability_json")
+        dl2.download_button("下载当前评测 Markdown", report_md, file_name="model_stability_evaluation.md", mime="text/markdown", key="download_stability_md")
+        st.download_button("下载当前评测 HTML", render_stability_html(report, model_a, model_b), file_name="model_stability_evaluation.html", mime="text/html", key="download_stability_html")
+        if report["comparisons"]:
+            st.markdown("#### 知识点对比明细")
+            st.dataframe([
+                {"知识点": x["kp_name"], "模型 A": x["model_a"], "模型 B": x["model_b"], "KU 数量": f"{x['count_a']} / {x['count_b']}", "评价": x["kind"]}
+                for x in report["comparisons"]
+            ], use_container_width=True, hide_index=True)
+            selected = st.selectbox("查看差异知识点", [x["kp_name"] for x in report["comparisons"]], key="stability_kp")
+            detail = next(x for x in report["comparisons"] if x["kp_name"] == selected)
+            st.write(f"{detail['model_a']}：{detail['count_a']} 个 KU；{detail['model_b']}：{detail['count_b']} 个 KU；评价：{detail['kind']}")
+            st.caption("以下为两个模型的知识图谱结果；整体改进建议以上方汇总为准。")
+            if not detail.get("final_a") or not detail.get("final_b"):
+                historical_runs = store.list_runs(1000)
+                for candidate in historical_runs:
+                    candidate_model = candidate.get("model_name") or "gpt-6-luna"
+                    if candidate.get("kp_id") == detail.get("kp_key") and candidate_model == detail["model_a"] and candidate.get("final_json"):
+                        detail["final_a"] = json.loads(candidate["final_json"])
+                    if candidate.get("kp_id") == detail.get("kp_key") and candidate_model == detail["model_b"] and candidate.get("final_json"):
+                        detail["final_b"] = json.loads(candidate["final_json"])
+            if detail.get("final_a") and detail.get("final_b"):
+                from schemas.models import FinalExtraction
+                from services.report_renderer import render_html_report
+                graph_a, graph_b = st.columns(2)
+                with graph_a:
+                    st.markdown(f"**模型 A｜{detail['model_a']}**")
+                    components.html(render_html_report(FinalExtraction.model_validate(detail["final_a"])), height=720, scrolling=True)
+                with graph_b:
+                    st.markdown(f"**模型 B｜{detail['model_b']}**")
+                    components.html(render_html_report(FinalExtraction.model_validate(detail["final_b"])), height=720, scrolling=True)
+            else:
+                st.info("该历史评测记录未保存完整图谱数据，仅提供文字差异对比。重新评测后即可查看并排图谱。")
+        else:
+            st.warning("需要同一知识点至少有两个不同模型的 COMPLETED 记录后才能评测。")
+    elif section == "历史评测":
+        st.subheader("历史评测结果")
+        history = store.list_stability_evaluations()
+        if history:
+            history_options = {f"#{item['id']}｜{item['created_at']}｜{item['model_a']} vs {item['model_b']}": item for item in history}
+            chosen = st.selectbox("选择历史评测", list(history_options), key="stability_history_selector")
+            historical = history_options[chosen]["report"]
+            ha, hb = st.columns(2)
+            ha.metric("可比较知识点", historical.get("total", 0))
+            hb.metric("KU 一致", historical.get("exact_count", 0))
+            st.markdown("#### 总体分析结论")
+            total_h = historical.get("total", 0)
+            st.write(f"本次共比较 **{total_h}** 个知识点。" if total_h else "暂无可比较知识点。")
+            st.info(historical.get("conclusion", ""))
+            if historical.get("kind_counts"):
+                st.write("差异类型分布：" + "；".join(f"{kind} {count} 个" for kind, count in historical["kind_counts"].items()) + "。")
+            if historical.get("ai_advice"):
+                with st.expander("模型综合分析建议（点击展开）", expanded=False):
+                    st.markdown(historical["ai_advice"])
+            if historical.get("comparisons"):
+                st.dataframe([
+                    {"知识点": x["kp_name"], "模型 A": x["model_a"], "模型 B": x["model_b"], "KU 数量": f"{x['count_a']} / {x['count_b']}", "评价": x["kind"]}
+                    for x in historical["comparisons"]
+                ], use_container_width=True, hide_index=True)
+                history_kp = st.selectbox("查看历史评测知识点", [x["kp_name"] for x in historical["comparisons"]], key=f"history_stability_kp_{history_options[chosen]['id']}")
+                history_detail = next(x for x in historical["comparisons"] if x["kp_name"] == history_kp)
+                runs_for_history = store.list_runs(1000)
+                history_payloads = {}
+                for candidate in runs_for_history:
+                    candidate_model = candidate.get("model_name") or "gpt-6-luna"
+                    if candidate.get("kp_id") == history_detail.get("kp_key") and candidate_model in (history_detail["model_a"], history_detail["model_b"]) and candidate.get("final_json"):
+                        history_payloads[candidate_model] = json.loads(candidate["final_json"])
+                if history_detail["model_a"] in history_payloads and history_detail["model_b"] in history_payloads:
+                    from schemas.models import FinalExtraction
+                    from services.report_renderer import render_html_report
+                    st.markdown(f"**模型 A｜{history_detail['model_a']}**")
+                    components.html(render_html_report(FinalExtraction.model_validate(history_payloads[history_detail["model_a"]])), height=720, scrolling=True)
+                    st.markdown(f"**模型 B｜{history_detail['model_b']}**")
+                    components.html(render_html_report(FinalExtraction.model_validate(history_payloads[history_detail["model_b"]])), height=720, scrolling=True)
+            historical_json = json.dumps(historical, ensure_ascii=False, indent=2)
+            st.download_button("下载历史评测 JSON", historical_json, file_name=f"stability_evaluation_{history_options[chosen]['id']}.json", mime="application/json", key=f"download_history_stability_{history_options[chosen]['id']}")
+            st.download_button("下载历史评测 HTML", render_stability_html(historical, history_options[chosen]["model_a"], history_options[chosen]["model_b"]), file_name=f"stability_evaluation_v2_{history_options[chosen]['id']}.html", mime="text/html", key=f"download_history_stability_html_v2_{history_options[chosen]['id']}")
+        else:
+            st.caption("暂无历史评测记录。")
     elif section == "历史运行":
         st.subheader("历史运行")
         rows = store.list_runs(200)
