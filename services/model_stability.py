@@ -8,6 +8,7 @@ from typing import Any
 
 
 DEFAULT_MODEL = "gpt-6-luna"
+STABILITY_ELIGIBLE_STATUSES = {"COMPLETED", "STAGE1_ONLY"}
 
 
 def render_stability_html(report: dict[str, Any], model_a: str = "", model_b: str = "") -> str:
@@ -85,21 +86,30 @@ def _final_payload(run: dict[str, Any]) -> dict[str, Any]:
         return {}
 
 
-def build_stability_report(runs: list[dict[str, Any]], selected_models: tuple[str, str] | None = None) -> dict[str, Any]:
+def build_stability_report(runs: list[dict[str, Any]], selected_models: tuple[str, str] | None = None, selected_labels: tuple[str, str] | None = None) -> dict[str, Any]:
     if selected_models:
         runs = [run for run in runs if (run.get("model_name") or DEFAULT_MODEL) in selected_models]
+    if selected_labels:
+        runs = [run for run in runs if (run.get("batch_label") or "未标记") in selected_labels]
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for run in runs:
-        if run.get("status") == "COMPLETED" and run.get("final_json"):
+        if run.get("status") in STABILITY_ELIGIBLE_STATUSES and run.get("final_json"):
             groups[_key(run)].append(run)
     comparisons = []
     for kp_key, items in groups.items():
-        if len(items) < 2:
-            continue
-        base = items[0]
-        for other in items[1:]:
-            if (base.get("model_name") or DEFAULT_MODEL) == (other.get("model_name") or DEFAULT_MODEL):
-                continue
+        label_groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for item in items:
+            label_groups[item.get("batch_label") or "未标记"].append(item)
+        pairs = []
+        if selected_labels:
+            left = label_groups.get(selected_labels[0], [])
+            right = label_groups.get(selected_labels[1], [])
+            if left and right:
+                pairs.append((max(left, key=lambda x: x.get("created_at") or ""), max(right, key=lambda x: x.get("created_at") or "")))
+        else:
+            base = items[0]
+            pairs = [(base, other) for other in items[1:] if (base.get("model_name") or DEFAULT_MODEL) != (other.get("model_name") or DEFAULT_MODEL)]
+        for base, other in pairs:
             a, b = _units(base), _units(other)
             same_count = len(a) == len(b)
             same_boundaries = [
@@ -116,7 +126,7 @@ def build_stability_report(runs: list[dict[str, Any]], selected_models: tuple[st
                 kind = "模型B拆分更多"
             else:
                 kind = "模型B合并更多"
-            comparisons.append({"kp_key": kp_key, "kp_name": base.get("kp_name", kp_key), "model_a": base.get("model_name") or DEFAULT_MODEL, "model_b": other.get("model_name") or DEFAULT_MODEL, "count_a": len(a), "count_b": len(b), "boundary_rate": boundary_rate, "kind": kind, "units_a": a, "units_b": b, "final_a": _final_payload(base), "final_b": _final_payload(other)})
+            comparisons.append({"kp_key": kp_key, "kp_name": base.get("kp_name", kp_key), "label_a": base.get("batch_label") or "未标记", "label_b": other.get("batch_label") or "未标记", "model_a": base.get("model_name") or DEFAULT_MODEL, "model_b": other.get("model_name") or DEFAULT_MODEL, "count_a": len(a), "count_b": len(b), "boundary_rate": boundary_rate, "kind": kind, "units_a": a, "units_b": b, "final_a": _final_payload(base), "final_b": _final_payload(other)})
     total = len(comparisons)
     exact_count = sum(x["kind"] == "KU 一致" for x in comparisons)
     kind_counts = {kind: sum(x["kind"] == kind for x in comparisons) for kind in sorted({x["kind"] for x in comparisons})}

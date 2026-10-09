@@ -20,7 +20,7 @@ class OpenAICompatibleClient:
         self.model = model or os.getenv("LLM_MODEL", "")
         self.timeout_seconds = float(timeout_seconds or os.getenv("LLM_TIMEOUT_SECONDS", "300"))
 
-    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.1) -> str:
+    def generate(self, system_prompt: str, user_prompt: str, temperature: float = 0.0, reasoning_effort: str | None = None) -> str:
         if not self.api_key:
             raise RuntimeError("未配置 LLM_API_KEY")
         if not self.model:
@@ -31,10 +31,17 @@ class OpenAICompatibleClient:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            "temperature": temperature,
         }
+        if reasoning_effort and reasoning_effort != "none":
+            payload["reasoning_effort"] = reasoning_effort
+        else:
+            payload["temperature"] = temperature
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
-        with httpx.Client(timeout=self.timeout_seconds) as client:
+        # The configured OpenAI-compatible endpoint is reachable directly.
+        # Ignore stale HTTP(S)_PROXY/ALL_PROXY environment variables such as
+        # localhost:9, which otherwise make the request fail before reaching
+        # the API server.
+        with httpx.Client(timeout=self.timeout_seconds, trust_env=False) as client:
             resp = client.post(f"{self.base_url}/chat/completions", headers=headers, json=payload)
             resp.raise_for_status()
             data = resp.json()
@@ -48,7 +55,7 @@ class OpenAICompatibleClient:
             raise RuntimeError("未配置 Model")
         headers = {"Authorization": f"Bearer {self.api_key}"}
         try:
-            with httpx.Client(timeout=self.timeout_seconds) as client:
+            with httpx.Client(timeout=self.timeout_seconds, trust_env=False) as client:
                 resp = client.get(f"{self.base_url}/models", headers=headers)
                 resp.raise_for_status()
                 data = resp.json()

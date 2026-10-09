@@ -13,7 +13,7 @@ import streamlit.components.v1 as components
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
-from schemas.models import KnowledgePointInput, Stage1LLMResult, Stage2LLMResult
+from schemas.models import FinalEvidence, FinalExtraction, FinalKU, FinalKUSplitEvidence, KnowledgePointInput, Stage1LLMResult, Stage2LLMResult
 from services.coverage_validator import validate_and_resolve_stage1
 from services.experiment_checkpoint import clear_checkpoint, load_checkpoint, save_checkpoint
 from services.experiment_state import get_experiment_stage, reset_experiment_state
@@ -26,17 +26,30 @@ from services.source_segmenter import render_blocks_for_prompt, segment_source_t
 from services.stage2_validator import validate_and_build_final
 from services.task_bridge import create_codex_task, load_codex_result
 from repositories.run_store import RunStore
-from services.model_stability import build_stability_report, render_stability_html
+from services.model_stability import STABILITY_ELIGIBLE_STATUSES, build_stability_report, render_stability_html
+from services.benchmark_evaluation import build_benchmark_report, render_benchmark_markdown
 
 st.set_page_config(page_title="教材知识单元 AI 抽取实验台", layout="wide")
 store = RunStore()
 DEFAULT_STAGE1_PROMPT_VERSION = "v1.6"
 DEFAULT_STAGE2_PROMPT_VERSION = "v1.4"
 DEFAULT_EXAMPLE_KP_ID = "KP_SZ_1.1.2"
+RECOMMENDED_STAGE1_PROMPT_VERSIONS = {"v1.6", "v1.10"}
 
 
 def new_run_id():
     return f"RUN_{datetime.now():%Y%m%d_%H%M%S}_{uuid.uuid4().hex[:6]}"
+
+
+def labels_by_creation_desc(runs):
+    """Return distinct labels ordered by the label's first run creation time."""
+    first_created = {}
+    for run in runs:
+        label = run.get("batch_label") or "未标记"
+        created_at = run.get("created_at") or ""
+        if label not in first_created or created_at < first_created[label]:
+            first_created[label] = created_at
+    return sorted(first_created, key=lambda label: (first_created[label], label), reverse=True)
 
 
 def new_batch_id():
@@ -128,26 +141,63 @@ def activate_batch_item(run):
     persist()
 
 
-def execute_batch(batch_id, api):
-    """Run every unfinished KP in one batch through both API stages."""
+def execute_batch(batch_id, api, split_prompt_version, extract_prompt_version, skip_stage2=False, only_run_id=None):
+    """Run every unfinished KP, or one selected KP, through both API stages."""
     client = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"])
     for run in store.list_batch_items(batch_id):
+        if only_run_id and run["run_id"] != only_run_id:
+            continue
         if run["status"] == "COMPLETED":
             continue
         try:
             payload = json.loads(run.get("input_json") or "{}")
             kp = KnowledgePointInput.model_validate(payload.get("knowledge_point") or payload)
-            store.update_batch(run_id=run["run_id"], status="STAGE1_IN_PROGRESS", current_stage="STAGE1")
-            split_prompt = load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION)
-            raw_stage1 = client.generate(split_prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+            store.update_batch(
+                run_id=run["run_id"],
+                status="STAGE1_IN_PROGRESS",
+                current_stage="STAGE1",
+                model_name=api["model"],
+                prompt_version=split_prompt_version,
+            )
+            split_prompt = load_prompt("ku_split", split_prompt_version)
+            raw_stage1 = client.generate(split_prompt, json.dumps(payload, ensure_ascii=False), api["temperature"], api.get("reasoning_effort"))
             stage1_llm, stage1 = parse_stage1(raw_stage1, kp)
             if stage1.validation.status != "PASS":
                 raise ValueError("Stage 1 Coverage Validator 未通过")
             store.update_batch(run_id=run["run_id"], status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw_stage1, parsed_payload=stage1_llm, validation_payload=stage1.validation)
+            if skip_stage2:
+                stage1_final = FinalExtraction(
+                    kp=kp,
+                    knowledge_units=[
+                        FinalKU(
+                            ku_id=unit.temp_ku_id,
+                            kp_id=kp.kp_id,
+                            order_index=unit.order_index,
+                            title=unit.title,
+                            main_question=unit.main_question,
+                            section_path=unit.section_path,
+                            knowledge_object="",
+                            core_conclusion="",
+                            knowledge_type="",
+                            start_offset=unit.start_offset,
+                            end_offset=unit.end_offset,
+                            start_block_id=unit.start_block_id,
+                            end_block_id=unit.end_block_id,
+                            source_text=unit.source_text,
+                            page_start=unit.page_start,
+                            page_end=unit.page_end,
+                        )
+                        for unit in stage1.knowledge_units
+                    ],
+                    stage1_validation=stage1.validation,
+                    evidence=FinalEvidence(ku_split=[FinalKUSplitEvidence(ku_id=item.temp_ku_id, evidence=item.evidence) for item in stage1.evidence.ku_split]),
+                )
+                store.update_batch(run_id=run["run_id"], status="STAGE1_ONLY", current_stage="STAGE1", final_payload=stage1_final)
+                continue
             store.update_batch(run_id=run["run_id"], status="STAGE2_IN_PROGRESS", current_stage="STAGE2")
             stage2_payload = build_stage2_input(stage1)
-            extract_prompt = load_prompt("ku_extract", DEFAULT_STAGE2_PROMPT_VERSION)
-            raw_stage2 = client.generate(extract_prompt, json.dumps(stage2_payload, ensure_ascii=False), api["temperature"])
+            extract_prompt = load_prompt("ku_extract", extract_prompt_version)
+            raw_stage2 = client.generate(extract_prompt, json.dumps(stage2_payload, ensure_ascii=False), api["temperature"], api.get("reasoning_effort"))
             stage2_llm, final = parse_stage2(raw_stage2, kp, stage1)
             store.update_batch(run_id=run["run_id"], status="COMPLETED", current_stage="STAGE2", raw_response=raw_stage2, parsed_payload=stage2_llm, validation_payload=final, final_payload=final)
         except Exception as item_error:
@@ -167,6 +217,8 @@ def render_batch_experiments(mode, api):
                 st.session_state["batch_name_input"] = uploaded_stem
             st.session_state["batch_name_auto_source"] = uploaded_stem
         batch_name = st.text_input("批次名称", placeholder="例如：道路工程章节批量实验", key="batch_name_input")
+        st.session_state.setdefault("batch_label_input", "v1.6-temp0-luna-2.7.3")
+        batch_label = st.text_input("实验标签", placeholder="例如：v1.7-temp0", key="batch_label_input")
         st.info("创建后请在运行记录区域点击“执行跑批”；批量执行使用 API 自动完成两个阶段。")
         default_text = "[{\"kp_id\":\"KP_001\",\"kp_name\":\"示例知识点\",\"source_text\":\"请输入教材原文\"}]"
         raw = uploaded.getvalue().decode("utf-8") if uploaded else st.text_area("或粘贴 JSON", value=default_text, height=180, key="batch_json_input")
@@ -175,12 +227,14 @@ def render_batch_experiments(mode, api):
                 items = parse_batch_input(raw)
                 batch_id = new_batch_id()
                 name = batch_name.strip() or batch_id
-                store.create_batch(batch_id=batch_id, batch_name=name, total_count=len(items))
+                label = batch_label.strip() or "未标记"
+                store.create_batch(batch_id=batch_id, batch_name=name, total_count=len(items), batch_label=label)
                 for item in items:
                     run_id = f"{batch_id}_{item['kp_id']}"
                     kp = KnowledgePointInput.model_validate(item)
                     payload = build_stage1_input(kp, segment_source_text(kp.source_text))
-                    store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", model_name=api["model"] or "gpt-6-luna", prompt_version=DEFAULT_STAGE1_PROMPT_VERSION, input_payload=payload, batch_id=batch_id, batch_name=name)
+                    initial_prompt_version = DEFAULT_STAGE1_PROMPT_VERSION if mode.startswith("模式A") else "待执行"
+                    store.save_batch(run_id=run_id, kp_id=kp.kp_id, kp_name=kp.kp_name, mode="CODEX" if mode.startswith("模式A") else "API", model_name="待执行", prompt_version=initial_prompt_version, input_payload=payload, batch_id=batch_id, batch_name=name, batch_label=label)
                     if mode.startswith("模式A"):
                         create_codex_task("STAGE1", run_id, load_prompt("ku_split", DEFAULT_STAGE1_PROMPT_VERSION), payload)
                 st.session_state["selected_batch_id"] = batch_id
@@ -208,6 +262,12 @@ def render_batch_experiments(mode, api):
     a, b, c, d = st.columns(4)
     a.metric("KP 总数", batch["total_count"]); b.metric("已完成", batch["completed_count"]); c.metric("失败", batch["failed_count"]); d.metric("批次状态", batch["status"])
     st.caption(f"完成进度：{batch['completed_count']} / {batch['total_count']}；使用模型：{batch['model_name']}；批次执行仅支持 API 自动调用。")
+    prompt_cols = st.columns(2)
+    split_versions = list_prompt_versions("ku_split")
+    extract_versions = list_prompt_versions("ku_extract")
+    split_prompt_version = prompt_cols[0].selectbox("Stage 1 Prompt 版本", split_versions, index=len(split_versions) - 1 if split_versions else 0, key=f"batch_split_prompt_{selected_batch_id}")
+    extract_prompt_version = prompt_cols[1].selectbox("Stage 2 Prompt 版本", extract_versions, index=len(extract_versions) - 1 if extract_versions else 0, key=f"batch_extract_prompt_{selected_batch_id}")
+    skip_stage2 = st.checkbox("跳过 Stage 2（仅执行 KU 划分）", value=True, key=f"batch_skip_stage2_{selected_batch_id}")
     action_cols = st.columns([1, 1, 3])
     can_execute = mode.startswith("模式B") and batch["status"] != "COMPLETED"
     if action_cols[0].button("执行跑批", type="primary", disabled=not can_execute, key=f"execute_batch_{selected_batch_id}"):
@@ -215,7 +275,7 @@ def render_batch_experiments(mode, api):
             st.error("请先在左侧填写 API Key 和 Model。")
         else:
             with st.status("正在执行批次", expanded=True) as progress:
-                execute_batch(selected_batch_id, api)
+                execute_batch(selected_batch_id, api, split_prompt_version, extract_prompt_version, skip_stage2=skip_stage2)
                 progress.update(label="批次执行完成", state="complete")
             # Re-select the batch from the database after execution. The
             # selectbox widget may still hold a previous batch id across the
@@ -231,7 +291,7 @@ def render_batch_experiments(mode, api):
     if st.session_state.get(f"show_batch_result_{selected_batch_id}"):
         reports = []
         for item in store.list_batch_items(selected_batch_id):
-            if item["status"] == "COMPLETED" and item.get("final_json"):
+            if item["status"] in ("COMPLETED", "STAGE1_ONLY") and item.get("final_json"):
                 try:
                     from schemas.models import FinalExtraction
                     reports.append((item["run_id"], FinalExtraction.model_validate(json.loads(item["final_json"])), item.get("model_name", "gpt-6-luna")))
@@ -243,11 +303,20 @@ def render_batch_experiments(mode, api):
             components.html(html, height=900, scrolling=True)
             st.download_button("下载批次 HTML 总览", html, file_name=f"{selected_batch_id}.html", mime="text/html", key=f"download_batch_{selected_batch_id}")
     for run in store.list_batch_items(selected_batch_id):
-        cols = st.columns([1.2, 2.2, 1.1, 1.5, 2.2, 1.2, 1.2])
+        cols = st.columns([1.2, 2.2, 1.1, 1.5, 2.2, 1.2, 1.2, 1.2])
         cols[0].write(run["kp_id"]); cols[1].write(run["kp_name"]); cols[2].write(run["status"]); cols[3].write(run.get("model_name") or "gpt-6-luna"); cols[4].write(run.get("status_description") or "")
-        if cols[4].button("单独处理", key=f"batch_open_{run['run_id']}"):
+        if cols[5].button("单独处理", key=f"batch_open_{run['run_id']}"):
             activate_batch_item(run); st.rerun()
-        if run["status"] == "COMPLETED" and run.get("final_json") and cols[5].button("查看图谱", key=f"batch_graph_{run['run_id']}"):
+        if run["status"] == "FAIL" and cols[6].button("重试", key=f"batch_retry_{run['run_id']}"):
+            if not mode.startswith("模式B"):
+                st.warning("重试需要切换到 API 自动调用模式。")
+            elif not api["key"] or not api["model"]:
+                st.error("请先在左侧填写 API Key 和 Model。")
+            else:
+                with st.spinner(f"正在重试：{run['kp_name']}"):
+                    execute_batch(selected_batch_id, api, split_prompt_version, extract_prompt_version, skip_stage2=skip_stage2, only_run_id=run["run_id"])
+                st.rerun()
+        if run["status"] in ("COMPLETED", "STAGE1_ONLY") and run.get("final_json") and cols[7].button("查看图谱", key=f"batch_graph_{run['run_id']}"):
             show_history_graph(run)
 
 
@@ -302,7 +371,7 @@ def render_stage1(mode, api):
                     if not api["base"] or not api["key"] or not api["model"]:
                         raise ValueError("请先填写 Base URL、API Key 和 Model。")
                     with st.spinner("正在调用中转站执行 Stage 1，请耐心等待…"):
-                        raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+                        raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"], api.get("reasoning_effort"))
                     llm, resolved = parse_stage1(raw, kp)
                     st.session_state.update(stage1_llm=llm.model_dump(), stage1_resolved=resolved.model_dump(), stage1_editor=json.dumps(llm.model_dump(), ensure_ascii=False, indent=2), current_run_id=run_id)
                     store.update_batch(run_id=run_id, status="STAGE1_COMPLETED", current_stage="STAGE1", raw_response=raw, parsed_payload=llm, validation_payload=resolved.validation)
@@ -366,7 +435,7 @@ def render_stage2(mode, api):
                 if not api["base"] or not api["key"] or not api["model"]:
                     raise ValueError("请先填写 Base URL、API Key 和 Model。")
                 with st.spinner("正在调用中转站执行 Stage 2，请耐心等待…"):
-                    raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"])
+                    raw = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate(prompt, json.dumps(payload, ensure_ascii=False), api["temperature"], api.get("reasoning_effort"))
                 llm, final = parse_stage2(raw, kp, stage1); store.update_batch(run_id=run_id, status="COMPLETED", current_stage="STAGE2", raw_response=raw, parsed_payload=llm, validation_payload=final, final_payload=final); st.session_state.update(stage2_llm=llm.model_dump(), final_result=final.model_dump()); persist(); st.success("Stage 2 已完成。")
         except Exception as exc:
             store.update_batch(run_id=run_id, status="FAIL", current_stage="STAGE2")
@@ -426,13 +495,14 @@ with st.sidebar:
     mode = st.radio("模型调用方式", ["模式A｜Codex Workspace", "模式B｜API自动调用"], index=1, key="run_mode")
     api_panel = st.empty()
     api_panel.empty()
-    api = {"base": "", "key": "", "model": "", "temperature": 0.1}
+    api = {"base": "", "key": "", "model": "gpt-5.6-sol", "temperature": 0.0, "reasoning_effort": "medium"}
     if mode == "模式B｜API自动调用":
         with api_panel.container():
             api["base"] = st.text_input("Base URL", value=os.getenv("LLM_BASE_URL", "https://new-api.reg.highso.com.cn/v1"), key="api_base_url")
             api["key"] = st.text_input("API Key", value=os.getenv("LLM_API_KEY", ""), type="password", key="api_key")
-            api["model"] = st.text_input("Model", value=os.getenv("LLM_MODEL", ""), key="api_model")
-            api["temperature"] = st.slider("Temperature", 0.0, 1.0, 0.1, 0.05, key="api_temperature")
+            api["model"] = st.text_input("Model", value=os.getenv("LLM_MODEL", "gpt-5.6-sol"), key="api_model")
+            api["temperature"] = st.slider("Temperature", 0.0, 1.0, 0.0, 0.05, key="api_temperature")
+            api["reasoning_effort"] = st.selectbox("Reasoning effort", ["none", "low", "medium", "high"], index=2, key="api_reasoning_effort")
             if st.button("校验 API 配置", use_container_width=True, key="validate_api_config"):
                 try:
                     message = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).validate_configuration()
@@ -440,14 +510,14 @@ with st.sidebar:
                 except Exception as exc:
                     st.error(f"配置校验失败：{exc}")
     else:
-        for key in ("api_base_url", "api_key", "api_model", "api_temperature"):
+        for key in ("api_base_url", "api_key", "api_model", "api_temperature", "api_reasoning_effort"):
             st.session_state.pop(key, None)
         with api_panel.container():
             st.info("模式A使用当前 Codex 会话完成语义抽取。")
     st.divider(); st.header("功能菜单")
     if st.session_state.pop("pending_app_section", None):
         st.session_state["app_section"] = "单 KP 实验"
-    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "HTML 总览", "模型稳定性评测", "历史评测", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
+    section = st.radio("选择功能", ["单 KP 实验", "批量实验", "HTML 总览", "模型稳定性评测", "基准评测", "历史评测", "历史运行", "Prompt 管理"], key="app_section", label_visibility="collapsed")
     if st.button("重新开始实验", use_container_width=True): restart(); st.rerun()
 
 main_panel = st.empty()
@@ -467,7 +537,7 @@ with main_panel.container():
         rows = store.list_runs(500)
         completed_reports = []
         for run in rows:
-            if run["status"] == "COMPLETED" and run.get("final_json"):
+            if run["status"] in ("COMPLETED", "STAGE1_ONLY") and run.get("final_json"):
                 try:
                     from schemas.models import FinalExtraction
                     completed_reports.append((run["run_id"], FinalExtraction.model_validate(json.loads(run["final_json"])), run.get("model_name", "gpt-6-luna")))
@@ -483,20 +553,23 @@ with main_panel.container():
         st.subheader("模型稳定性评测")
         st.info("评测会读取已完成的多模型结果并进行 KU 边界比较。只有点击下方按钮后才开始，避免任务未完成时提前计算。")
         evaluation_runs = store.list_runs(1000)
-        available_models = sorted({run.get("model_name") or "gpt-6-luna" for run in evaluation_runs if run.get("status") == "COMPLETED"})
-        if len(available_models) < 2:
-            st.warning("当前已完成记录中少于两个不同模型，暂时无法进行对比。")
+        available_labels = labels_by_creation_desc([
+            run for run in evaluation_runs
+            if run.get("status") in STABILITY_ELIGIBLE_STATUSES and run.get("final_json")
+        ])
+        if len(available_labels) < 2:
+            st.warning("当前已完成记录中少于两个不同实验标签，暂时无法进行对比。")
             st.stop()
         m1, m2 = st.columns(2)
-        model_a = m1.selectbox("模型 A", available_models, key="stability_model_a")
-        model_b_options = [model for model in available_models if model != model_a]
-        model_b = m2.selectbox("模型 B", model_b_options, key="stability_model_b")
+        label_a = m1.selectbox("实验标签 A", available_labels, key="stability_label_a")
+        label_b_options = [label for label in available_labels if label != label_a]
+        label_b = m2.selectbox("实验标签 B", label_b_options, key="stability_label_b")
         if st.button("开始稳定性评测", type="primary", key="start_stability_evaluation"):
             with st.spinner("正在汇总并比较不同模型的拆分结果…"):
-                report = build_stability_report(evaluation_runs, (model_a, model_b))
+                report = build_stability_report(evaluation_runs, selected_labels=(label_a, label_b))
                 if api["key"] and api["model"]:
                     advice_payload = {
-                        "models": [model_a, model_b],
+                        "labels": [label_a, label_b],
                         "total": report["total"],
                         "ku_consistent": report["exact_count"],
                         "kind_counts": report.get("kind_counts", {}),
@@ -508,11 +581,11 @@ with main_panel.container():
                     }
                     advice_prompt = "你是教材知识单元拆分评测专家。请根据以下两个模型的 Stage 1 KU 对比结果，给出一份总体评价和统一优化建议。不要逐个知识点机械给建议；请归纳最主要的稳定性问题，并区分 Prompt 优化、流程优化和人工复核建议。输出中文，结构为：总体评价、主要问题、优化建议、建议优先级。\n\n" + json.dumps(advice_payload, ensure_ascii=False)
                     try:
-                        report["ai_advice"] = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate("你负责知识抽取稳定性评测。", advice_prompt, 0.1)
+                        report["ai_advice"] = OpenAICompatibleClient(base_url=api["base"], api_key=api["key"], model=api["model"]).generate("你负责知识抽取稳定性评测。", advice_prompt, 0.0, api.get("reasoning_effort"))
                     except Exception as exc:
                         report["ai_advice_error"] = str(exc)
                 st.session_state["stability_report"] = report
-                evaluation_id = store.save_stability_evaluation(model_a, model_b, report)
+                evaluation_id = store.save_stability_evaluation(label_a, label_b, report)
                 st.session_state["stability_evaluation_id"] = evaluation_id
         report = st.session_state.get("stability_report")
         if not report:
@@ -547,7 +620,7 @@ with main_panel.container():
         dl1, dl2 = st.columns(2)
         dl1.download_button("下载当前评测 JSON", report_json, file_name="model_stability_evaluation.json", mime="application/json", key="download_stability_json")
         dl2.download_button("下载当前评测 Markdown", report_md, file_name="model_stability_evaluation.md", mime="text/markdown", key="download_stability_md")
-        st.download_button("下载当前评测 HTML", render_stability_html(report, model_a, model_b), file_name="model_stability_evaluation.html", mime="text/html", key="download_stability_html")
+        st.download_button("下载当前评测 HTML", render_stability_html(report, label_a, label_b), file_name="model_stability_evaluation.html", mime="text/html", key="download_stability_html")
         if report["comparisons"]:
             st.markdown("#### 知识点对比明细")
             st.dataframe([
@@ -556,30 +629,94 @@ with main_panel.container():
             ], use_container_width=True, hide_index=True)
             selected = st.selectbox("查看差异知识点", [x["kp_name"] for x in report["comparisons"]], key="stability_kp")
             detail = next(x for x in report["comparisons"] if x["kp_name"] == selected)
-            st.write(f"{detail['model_a']}：{detail['count_a']} 个 KU；{detail['model_b']}：{detail['count_b']} 个 KU；评价：{detail['kind']}")
+            st.write(f"{detail.get('label_a', label_a)}：{detail['count_a']} 个 KU；{detail.get('label_b', label_b)}：{detail['count_b']} 个 KU；评价：{detail['kind']}")
             st.caption("以下为两个模型的知识图谱结果；整体改进建议以上方汇总为准。")
             if not detail.get("final_a") or not detail.get("final_b"):
                 historical_runs = store.list_runs(1000)
                 for candidate in historical_runs:
                     candidate_model = candidate.get("model_name") or "gpt-6-luna"
-                    if candidate.get("kp_id") == detail.get("kp_key") and candidate_model == detail["model_a"] and candidate.get("final_json"):
+                    if candidate.get("kp_id") == detail.get("kp_key") and (candidate.get("batch_label") or "未标记") == detail.get("label_a", label_a) and candidate.get("final_json"):
                         detail["final_a"] = json.loads(candidate["final_json"])
-                    if candidate.get("kp_id") == detail.get("kp_key") and candidate_model == detail["model_b"] and candidate.get("final_json"):
+                    if candidate.get("kp_id") == detail.get("kp_key") and (candidate.get("batch_label") or "未标记") == detail.get("label_b", label_b) and candidate.get("final_json"):
                         detail["final_b"] = json.loads(candidate["final_json"])
             if detail.get("final_a") and detail.get("final_b"):
                 from schemas.models import FinalExtraction
                 from services.report_renderer import render_html_report
                 graph_a, graph_b = st.columns(2)
                 with graph_a:
-                    st.markdown(f"**模型 A｜{detail['model_a']}**")
+                    st.markdown(f"**标签 A｜{detail.get('label_a', label_a)}（{detail['model_a']}）**")
                     components.html(render_html_report(FinalExtraction.model_validate(detail["final_a"])), height=720, scrolling=True)
                 with graph_b:
-                    st.markdown(f"**模型 B｜{detail['model_b']}**")
+                    st.markdown(f"**标签 B｜{detail.get('label_b', label_b)}（{detail['model_b']}）**")
                     components.html(render_html_report(FinalExtraction.model_validate(detail["final_b"])), height=720, scrolling=True)
             else:
                 st.info("该历史评测记录未保存完整图谱数据，仅提供文字差异对比。重新评测后即可查看并排图谱。")
         else:
-            st.warning("需要同一知识点至少有两个不同模型的 COMPLETED 记录后才能评测。")
+            st.warning("需要同一知识点至少有两个已完成 Stage 1 的不同标签记录后才能评测。")
+    elif section == "基准评测":
+        st.subheader("知识单元拆分基准评测")
+        st.info("选择一个实验标签，与知识单元拆分评测基准 V1 对比。评测读取历史完成结果，不会重新调用模型。")
+        benchmark_doc_path = ROOT / "references" / "知识单元拆分评测基准V1.md"
+        if benchmark_doc_path.exists():
+            with st.expander("查看评测基准 Markdown", expanded=False):
+                st.markdown(benchmark_doc_path.read_text(encoding="utf-8"))
+        evaluation_runs = store.list_runs(1000)
+        available_labels = labels_by_creation_desc([
+            run for run in evaluation_runs
+            if run.get("status") in STABILITY_ELIGIBLE_STATUSES and run.get("final_json")
+        ])
+        if not available_labels:
+            st.warning("当前没有可用于基准评测的完成记录。")
+            st.stop()
+        benchmark_label = st.selectbox("实验标签", available_labels, key="benchmark_label")
+        if st.button("开始基准评测", type="primary", key="start_benchmark_evaluation"):
+            with st.spinner("正在将实验结果与基准逐项对比…"):
+                benchmark_report = build_benchmark_report(evaluation_runs, benchmark_label)
+                st.session_state["benchmark_report"] = benchmark_report
+                st.session_state["benchmark_evaluation_id"] = store.save_benchmark_evaluation(benchmark_label, benchmark_report["benchmark_version"], benchmark_report)
+        report = st.session_state.get("benchmark_report")
+        if not report or report.get("label") != benchmark_label:
+            st.warning("尚未开始评测，请选择标签后点击“开始基准评测”。")
+            st.stop()
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("基准覆盖", f"{report['covered']} / {report['total']}")
+        m2.metric("数量通过", report["passed"])
+        m3.metric("过度拆分", report["counts"]["过度拆分"])
+        m4.metric("过度合并", report["counts"]["过度合并"])
+        st.info(report["conclusion"])
+        st.caption("当前自动判定依据为 KU 数量范围；每项下方同时展示基准边界规则，便于复核具体拆分位置。")
+        table = []
+        for row in report["results"]:
+            expected = str(row["min"]) if row["min"] == row["max"] else f"{row['min']}～{row['max']}"
+            table.append({"编号": row["id"], "知识点": row["name"], "实际 KU": row["actual_count"] if row["actual_count"] is not None else "—", "基准范围": expected, "结果": row["status"], "模型": row.get("model_name") or "—", "Prompt": row.get("prompt_version") or "—"})
+        st.dataframe(table, use_container_width=True, hide_index=True)
+        for row in report["results"]:
+            with st.expander(f"{row['id']}｜{row['name']}｜{row['status']}", expanded=row["status"] in ("过度拆分", "过度合并")):
+                st.write(f"基准范围：{row['min']}～{row['max']} KU；实际：{row['actual_count'] if row['actual_count'] is not None else '未覆盖'}")
+                st.write(f"主要风险：{row['risk']}")
+                st.write(f"边界规则：{row['boundary']}")
+                if row.get("titles"):
+                    st.write("实际 KU 标题：" + "；".join(row["titles"]))
+                    st.caption(row["boundary_review"])
+        report_json = json.dumps(report, ensure_ascii=False, indent=2)
+        report_md = render_benchmark_markdown(report)
+        d1, d2 = st.columns(2)
+        d1.download_button("下载基准评测 JSON", report_json, file_name="knowledge_unit_benchmark_evaluation.json", mime="application/json", key="download_benchmark_json")
+        d2.download_button("下载基准评测 Markdown", report_md, file_name="knowledge_unit_benchmark_evaluation.md", mime="text/markdown", key="download_benchmark_md")
+        benchmark_history = store.list_benchmark_evaluations(50)
+        if benchmark_history:
+            st.markdown("#### 基准评测记录")
+            history_options = {
+                f"#{item['id']}｜{item['created_at']}｜{item['batch_label']}｜通过 {item['report'].get('passed', 0)}/{item['report'].get('covered', 0)}": item
+                for item in benchmark_history
+            }
+            selected_history = st.selectbox("选择历史基准评测", list(history_options), key="benchmark_history_selector")
+            history_item = history_options[selected_history]
+            historical_report = history_item["report"]
+            st.caption(f"记录时间：{history_item['created_at']}；标签：{history_item['batch_label']}；基准版本：{history_item['benchmark_version']}")
+            hd1, hd2 = st.columns(2)
+            hd1.download_button("下载历史基准 JSON", json.dumps(historical_report, ensure_ascii=False, indent=2), file_name=f"benchmark_evaluation_{history_item['id']}.json", mime="application/json", key=f"download_benchmark_history_json_{history_item['id']}")
+            hd2.download_button("下载历史基准 Markdown", render_benchmark_markdown(historical_report), file_name=f"benchmark_evaluation_{history_item['id']}.md", mime="text/markdown", key=f"download_benchmark_history_md_{history_item['id']}")
     elif section == "历史评测":
         st.subheader("历史评测结果")
         history = store.list_stability_evaluations()
@@ -610,15 +747,19 @@ with main_panel.container():
                 history_payloads = {}
                 for candidate in runs_for_history:
                     candidate_model = candidate.get("model_name") or "gpt-6-luna"
-                    if candidate.get("kp_id") == history_detail.get("kp_key") and candidate_model in (history_detail["model_a"], history_detail["model_b"]) and candidate.get("final_json"):
-                        history_payloads[candidate_model] = json.loads(candidate["final_json"])
-                if history_detail["model_a"] in history_payloads and history_detail["model_b"] in history_payloads:
+                    candidate_label = candidate.get("batch_label") or "未标记"
+                    if candidate.get("kp_id") == history_detail.get("kp_key") and candidate.get("final_json"):
+                        if candidate_label == history_detail.get("label_a", history_detail["model_a"]):
+                            history_payloads["a"] = json.loads(candidate["final_json"])
+                        elif candidate_label == history_detail.get("label_b", history_detail["model_b"]):
+                            history_payloads["b"] = json.loads(candidate["final_json"])
+                if "a" in history_payloads and "b" in history_payloads:
                     from schemas.models import FinalExtraction
                     from services.report_renderer import render_html_report
-                    st.markdown(f"**模型 A｜{history_detail['model_a']}**")
-                    components.html(render_html_report(FinalExtraction.model_validate(history_payloads[history_detail["model_a"]])), height=720, scrolling=True)
-                    st.markdown(f"**模型 B｜{history_detail['model_b']}**")
-                    components.html(render_html_report(FinalExtraction.model_validate(history_payloads[history_detail["model_b"]])), height=720, scrolling=True)
+                    st.markdown(f"**标签 A｜{history_detail.get('label_a', history_detail['model_a'])}（{history_detail.get('model_a', '')}）**")
+                    components.html(render_html_report(FinalExtraction.model_validate(history_payloads["a"])), height=720, scrolling=True)
+                    st.markdown(f"**标签 B｜{history_detail.get('label_b', history_detail['model_b'])}（{history_detail.get('model_b', '')}）**")
+                    components.html(render_html_report(FinalExtraction.model_validate(history_payloads["b"])), height=720, scrolling=True)
             historical_json = json.dumps(historical, ensure_ascii=False, indent=2)
             st.download_button("下载历史评测 JSON", historical_json, file_name=f"stability_evaluation_{history_options[chosen]['id']}.json", mime="application/json", key=f"download_history_stability_{history_options[chosen]['id']}")
             st.download_button("下载历史评测 HTML", render_stability_html(historical, history_options[chosen]["model_a"], history_options[chosen]["model_b"]), file_name=f"stability_evaluation_v2_{history_options[chosen]['id']}.html", mime="text/html", key=f"download_history_stability_html_v2_{history_options[chosen]['id']}")
@@ -626,26 +767,63 @@ with main_panel.container():
             st.caption("暂无历史评测记录。")
     elif section == "历史运行":
         st.subheader("历史运行")
-        rows = store.list_runs(200)
-        for run in rows:
-            cols = st.columns([1.2, 1.3, 1.1, 1.5, 2.4, 1.2])
+        if st.button("刷新记录", key="refresh_history_runs"):
+            st.rerun()
+        all_rows = store.list_runs(1000)
+        label_options = ["全部标签"] + labels_by_creation_desc(all_rows)
+        selected_history_label = st.selectbox("按实验标签筛选", label_options, key="history_run_label_filter")
+        status_options = ["全部状态", "PENDING", "STAGE1_IN_PROGRESS", "STAGE1_COMPLETED", "STAGE1_ONLY", "STAGE2_IN_PROGRESS", "COMPLETED", "FAIL"]
+        selected_history_status = st.selectbox("按状态筛选", status_options, key="history_run_status_filter")
+        rows = all_rows if selected_history_label == "全部标签" else [
+            run for run in all_rows if (run.get("batch_label") or "未标记") == selected_history_label
+        ]
+        if selected_history_status != "全部状态":
+            rows = [run for run in rows if run.get("status") == selected_history_status]
+        page_size = st.selectbox("每页条数", [20, 50, 100, 200], index=2, key="history_run_page_size")
+        total_pages = max((len(rows) + page_size - 1) // page_size, 1)
+        page_number = st.number_input("页码", min_value=1, max_value=total_pages, value=1, step=1, key=f"history_run_page_{selected_history_label}_{selected_history_status}")
+        start = (page_number - 1) * page_size
+        page_rows = rows[start:start + page_size]
+        st.caption(f"共 {len(rows)} 条记录；当前第 {page_number} / {total_pages} 页")
+        header = st.columns([1.1, 1.5, 1.3, 1.6, 1.0, 0.7, 1.0, 1.4, 2.1, 1.0])
+        for col, label in zip(header, ["KP ID", "实验标签", "知识点", "创建时间", "状态", "KU 数量", "Stage 1 Prompt", "模型", "状态说明", "操作"]):
+            col.markdown(f"**{label}**")
+        for run in page_rows:
+            cols = st.columns([1.1, 1.5, 1.3, 1.6, 1.0, 0.7, 1.0, 1.4, 2.1, 1.0])
             cols[0].write(run["kp_id"])
-            cols[1].write(run["kp_name"])
-            cols[2].write(run["status"])
-            cols[3].write(run.get("model_name") or "gpt-6-luna")
-            cols[4].write(run.get("status_description") or run["status"])
-            if run["status"] == "COMPLETED" and run.get("final_json"):
-                if cols[5].button("查看图谱", key=f"graph_{run['run_id']}"):
+            cols[1].write(run.get("batch_label") or "未标记")
+            cols[2].write(run["kp_name"])
+            cols[3].write(run.get("created_at") or "—")
+            cols[4].write(run["status"])
+            ku_count = "—"
+            if run["status"] in ("COMPLETED", "STAGE1_ONLY") and run.get("final_json"):
+                try:
+                    ku_count = len(json.loads(run["final_json"]).get("knowledge_units", []))
+                except (TypeError, ValueError, json.JSONDecodeError):
+                    ku_count = "—"
+            cols[5].write(ku_count)
+            cols[6].write(run.get("prompt_version") or "—")
+            cols[7].write(run.get("model_name") or "gpt-6-luna")
+            cols[8].write(run.get("status_description") or run["status"])
+            if run["status"] in ("COMPLETED", "STAGE1_ONLY") and run.get("final_json"):
+                if cols[9].button("查看图谱", key=f"graph_{run['run_id']}"):
                     show_history_graph(run)
             else:
-                cols[5].write("—")
+                cols[9].write("—")
     else:
         st.subheader("Prompt 管理")
         kind = st.selectbox("Prompt 类型", ["ku_split", "ku_extract"], key="prompt_mgmt_kind")
         versions = list_prompt_versions(kind)
         version_key = f"prompt_mgmt_version_{kind}"
         sync_prompt_selection(st.session_state, version_key, f"_prompt_mgmt_default_applied_{kind}", versions)
-        selected = st.selectbox("现有版本", versions, key=version_key)
+        selected = st.selectbox(
+            "现有版本",
+            versions,
+            key=version_key,
+            format_func=lambda version: f"{version}｜推荐" if kind == "ku_split" and version in RECOMMENDED_STAGE1_PROMPT_VERSIONS else version,
+        )
+        if kind == "ku_split" and selected in RECOMMENDED_STAGE1_PROMPT_VERSIONS:
+            st.caption("推荐版本：已通过当前项目基准样本的人工复核，适合作为后续对比起点。")
         content = st.text_area("内容", load_prompt(kind, selected), height=500, key=prompt_widget_key("prompt_mgmt_content", kind, selected))
         new_ver = st.text_input("保存为新 Prompt 版本")
         if st.button("保存新 Prompt 版本"):
